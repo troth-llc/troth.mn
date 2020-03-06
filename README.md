@@ -2,7 +2,7 @@
 `php artisan serve --host 0.0.0.0`
 <br/>
 
-*git push"*
+*git push:*
 ```
 git add .
 git commit -m "frontend: %commit name%"
