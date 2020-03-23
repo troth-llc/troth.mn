@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { MDCDialog } from "@material/dialog";
+import { MDCMenu } from "@material/menu";
 import { User } from "context/user";
 import "./style.scss";
 const guest = [
@@ -9,6 +10,22 @@ const guest = [
     type: "guest-action",
     title: "Login",
     style: { padding: "20px", fontSize: "28px" }
+  },
+  {
+    to: "/",
+    type: "link",
+    title: "Home",
+    background: require("assets/img/sidebar/home.png"),
+    exact: true
+  },
+  {
+    to: "/about",
+    type: "link",
+    title: "About",
+    background: require("assets/img/sidebar/logo.png"),
+    exact: false,
+    style: {},
+    class: " item-about"
   }
 ];
 const link = [
@@ -28,9 +45,9 @@ const link = [
     style: { padding: "26px" }
   },
   {
-    to: "/friends",
+    to: "/followers",
     type: "link",
-    title: "Friends",
+    title: "Followers",
     background: require("assets/img/sidebar/friends.png"),
     exact: false,
     style: { height: "19px" }
@@ -68,9 +85,43 @@ const Sidebar = () => {
     <div className="sidebar" id="sidebar">
       {user !== null ? (
         <>
+          {/* menu */}
+          <div className="mdc-menu mdc-menu-surface" id="profile-menu">
+            <ul
+              className="mdc-list"
+              role="menu"
+              aria-hidden="true"
+              aria-orientation="vertical"
+              tabIndex="-1"
+            >
+              <Link to="/profile" className="mdc-list-item" role="menuitem">
+                <span className="mdc-list-item__text">Profile</span>
+              </Link>
+              <li
+                className="mdc-list-item"
+                role="menuitem"
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.reload();
+                }}
+              >
+                <span className="mdc-list-item__text">Logout</span>
+              </li>
+            </ul>
+          </div>
           <div className="sidebar-item">
             <Tooltip title={user.username + " - Profile"} placement="right">
-              <NavLink to="/profile" className="avatar-link flex">
+              <NavLink
+                to="/profile"
+                className="avatar-link flex"
+                onClick={e => {
+                  e.preventDefault();
+                  const menu = new MDCMenu(
+                    document.querySelector("#profile-menu")
+                  );
+                  menu.open = true;
+                }}
+              >
                 {user.avatar !== null ? (
                   <img
                     src="https://cdn.discordapp.com/avatars/525589602900377610/7b10cb16b93c5aefa7adcadadbc4a598.png?size=512"
@@ -124,7 +175,20 @@ const Sidebar = () => {
               </div>
             </div>
           ) : (
-            ""
+            <div
+              className={`sidebar-item ${route.class ? route.class : ""}`}
+              key={index}
+            >
+              <NavLink to={route.to} exact={route.exact}>
+                <Tooltip title={route.title} placement="right">
+                  <img
+                    src={route.background}
+                    alt={route.title}
+                    style={route.style}
+                  />
+                </Tooltip>
+              </NavLink>
+            </div>
           );
         })
       )}

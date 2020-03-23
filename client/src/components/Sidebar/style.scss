@@ -98,3 +98,10 @@ a.avatar-link {
     text-decoration: none !important;
   }
 }
+#profile-menu {
+  left: 70px !important;
+  top: 10px !important;
+  .mdc-list-item {
+    height: 36px;
+  }
+}

@@ -34,16 +34,14 @@ const AuthDialog = props => {
     name: "",
     username: "",
     email: "",
-    password: "",
-    id: ""
+    password: ""
   });
   const [register_error, seterror] = useState({
     name: "",
     username: "",
     email: "",
     password: "",
-    gender: "",
-    id: ""
+    gender: ""
   });
   const [login_error, setLoginError] = useState({
     username: "",
@@ -401,26 +399,10 @@ const AuthDialog = props => {
                 {register_error.gender}
               </p>
               <div>
-                <div className="mdc-text-field">
-                  <input
-                    className="mdc-text-field__input"
-                    type="text"
-                    required
-                    name="id"
-                    autoComplete="off"
-                    value={data_register.id}
-                    onChange={e =>
-                      setData_register({
-                        ...data_register,
-                        [e.target.name]: e.target.value
-                      })
-                    }
-                  />
-                  <div className="mdc-line-ripple"></div>
-                  <label className="mdc-floating-label">ID number</label>
-                </div>
-                <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">
-                  {register_error.id}
+                <p className="terms-text">
+                  By clicking "Continue", you agree to the{" "}
+                  <a href="/terms">Terms</a> and{" "}
+                  <a href="/privacy">Privacy Policy</a>
                 </p>
               </div>
               <div className="register-input">
@@ -430,7 +412,7 @@ const AuthDialog = props => {
                     style={{ width: "100%" }}
                     disabled={loading}
                   >
-                    <span className="mdc-button__ripple"></span>Next
+                    <span className="mdc-button__ripple"></span>Continue
                   </button>
                 </div>
                 <div className="action">

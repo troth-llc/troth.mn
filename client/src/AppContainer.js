@@ -11,7 +11,7 @@ class App extends Component {
   }
   ripple = () => {
     const ripples = document.querySelectorAll(
-      ".mdc-button, .mdc-fab,.mdc-list"
+      ".mdc-button, .mdc-fab ,.mdc-list ,.mdc-menu"
     );
     const icons = document.querySelectorAll(".mdc-icon-button");
     icons.forEach(icon => (new MDCRipple(icon).unbounded = true));

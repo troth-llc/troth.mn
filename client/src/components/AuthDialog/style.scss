@@ -189,6 +189,10 @@ $base-color: #c3b59b;
 }
 #auth {
   z-index: 12;
+  ::-webkit-scrollbar {
+    width: 0px; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
+  }
 }
 .header-label {
   margin-top: 82px;
@@ -271,4 +275,11 @@ $base-color: #c3b59b;
   left: 0;
   background: rgba(255, 255, 255, 0.9);
   z-index: 1;
+}
+.terms-text {
+  text-align: center;
+  font-size: 15px;
+  max-width: 90%;
+  margin: 0 auto;
+  margin-bottom: 16px;
 }

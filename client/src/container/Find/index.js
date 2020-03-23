@@ -78,13 +78,15 @@ const Find = props => {
               <div className="user">
                 <span className="name">
                   {user.name}{" "}
-                  <Tooltip title="Verified" placement="bottom">
-                    <img
-                      src="/static/media/badge-verified.7c5d974f.svg"
-                      alt=""
-                      className="badge"
-                    ></img>
-                  </Tooltip>
+                  {user.verified && (
+                    <Tooltip title="Verified" placement="bottom">
+                      <img
+                        src={require("assets/icons/badge-verified.svg")}
+                        alt=""
+                        className="badge"
+                      ></img>
+                    </Tooltip>
+                  )}
                 </span>
                 <p className="type">{user.type}</p>
               </div>
