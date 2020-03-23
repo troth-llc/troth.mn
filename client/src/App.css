@@ -1,0 +1,36 @@
+:root {
+  --mdc-theme-primary: #000;
+  --mdc-theme-on-primary: #fff;
+}
+@import url("~@material/top-app-bar/dist/mdc.top-app-bar.min.css");
+@import url("~@material/icon-button/dist/mdc.icon-button.min.css");
+@import url("~@material/button/dist/mdc.button.min.css");
+@import url("~@material/fab/dist/mdc.fab.min.css");
+@import url("~@material/list/dist/mdc.list.min.css");
+@import url("~@material/drawer/dist/mdc.drawer.min.css");
+@import url("~@material/snackbar/dist/mdc.snackbar.min.css");
+@import url("~@material/menu-surface/dist/mdc.menu-surface.min.css");
+@import url("~@material/ripple/dist/mdc.ripple.min.css");
+@import url("~@material/dialog/dist/mdc.dialog.min.css");
+@import url("~@material/textfield/dist/mdc.textfield.min.css");
+@import url("~@material/layout-grid/dist/mdc.layout-grid.min.css");
+@import url("~@material/select/dist/mdc.select.min.css");
+@import url("~@material/linear-progress/dist/mdc.linear-progress.min.css");
+@import "assets/fonts/stylesheet.css";
+.main {
+  height: 100%;
+  margin-top: 56px;
+}
+@media (min-width: 1025px) {
+  .main {
+    margin-top: 0;
+    margin-left: 70px;
+  }
+  .drawer-closed .main {
+    margin-left: 0;
+  }
+}
+.MuiTooltip-tooltip {
+  font-size: 0.7rem !important;
+  font-weight: 400 !important;
+}
