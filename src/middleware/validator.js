@@ -50,3 +50,13 @@ exports.login = [
     })
     .withMessage("Must be between 6 and 128 in length")
 ];
+exports.find = [
+  check("username")
+    .isLength({
+      min: 4,
+      max: 128
+    })
+    .withMessage("Must be between 4 and 128 in length")
+    .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
+    .withMessage("Invalid username")
+];

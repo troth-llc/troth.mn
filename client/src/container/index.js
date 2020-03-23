@@ -1,2 +1,3 @@
 import Profile from "./Profile";
-export { Profile };
+import Find from "./Find";
+export { Profile, Find };

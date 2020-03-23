@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const user = require("../controllers/user");
+const auth = require("../controllers/auth");
 // middleware
 const token = require("../middleware/token");
 const validate = require("../middleware/validator");
@@ -11,7 +11,7 @@ const validate = require("../middleware/validator");
  *     responses:
  *       200:
  */
-router.get("/", token, user.profile);
-router.post("/", validate.login, user.login);
-router.post("/register", validate.create, user.create);
+router.get("/", token, auth.profile);
+router.post("/", validate.login, auth.login);
+router.post("/register", validate.create, auth.create);
 module.exports = router;
