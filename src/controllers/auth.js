@@ -18,7 +18,7 @@ exports.create = function(req, res) {
           User.create(
             {
               name,
-              username,
+              username: username.toLowerCase(),
               email: email.toLowerCase(),
               password,
               gender,
@@ -26,7 +26,7 @@ exports.create = function(req, res) {
             },
             err => {
               if (err) throw err;
-              console.log(username + "user registered " + new Date());
+              console.log(username + " user registered " + new Date());
               return res.status(200).json({ status: true, username });
             }
           );

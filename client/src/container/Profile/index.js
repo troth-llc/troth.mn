@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Calendar } from "components";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { User } from "context/user";
 import "./style.scss";
@@ -17,7 +17,6 @@ const Profile = () => {
       }
     });
   });
-  const username = "profile";
   const { user } = useContext(User);
   return (
     <>
@@ -85,18 +84,25 @@ const Profile = () => {
                       ></img>
                     </Tooltip>
                   )}
+                  <Link
+                    to="/settings/profile"
+                    className="mdc-button mdc-button--outlined"
+                  >
+                    <div className="mdc-button__ripple"></div>
+                    <span className="mdc-button__label">Edit</span>
+                  </Link>
                 </span>
                 <p className="type">{user.type}</p>
               </div>
               <div className="info-browser flex">
-                <NavLink to={`/${username}`} exact className="info-item">
+                <NavLink to="/profile" exact className="info-item">
                   <img
                     src={require("assets/icons/profile-info.svg")}
                     alt="info"
                   />
                   <p>info</p>
                 </NavLink>
-                <NavLink to={`/${username}/feed`} className="info-item">
+                <NavLink to="/profile/feed" className="info-item">
                   <img
                     src={require("assets/icons/profile-feed.svg")}
                     alt="info"

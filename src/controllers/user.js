@@ -16,3 +16,11 @@ exports.find = function(req, res) {
     })
     .catch(err => res.json({ err }));
 };
+exports.follow = function(req, res) {
+  const errors = validationResult(req);
+  const { id } = req.params;
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ errors: errors.array(), status: false });
+  }
+  res.json({ status: true, id });
+};

@@ -3,9 +3,9 @@ import axios from "axios";
 // React Router
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // Container
-import { Profile, Find } from "./container";
+import { Profile, Find } from "container";
 // Components
-import { AuthDialog, Sidebar, Header } from "./components";
+import { AuthDialog, Sidebar, Header } from "components";
 // App container
 import AppContainer from "AppContainer";
 // user context

@@ -22,7 +22,8 @@ exports.create = [
       "home",
       "email",
       "password",
-      "troth"
+      "troth",
+      "follow"
     ])
     .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
     .withMessage("Invalid username"),
@@ -60,3 +61,4 @@ exports.find = [
     .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
     .withMessage("Invalid username")
 ];
+exports.follow = [check("id")];

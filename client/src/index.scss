@@ -74,3 +74,9 @@ body {
     background-color: rgba(165, 165, 165, 0.1);
   }
 }
+a.mdc-button {
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}

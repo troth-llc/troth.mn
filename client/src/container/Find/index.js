@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { User } from "context/user";
 import { Calendar } from "components";
 import { NavLink } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import { Loader } from "components";
 import axios from "axios";
 const Find = props => {
   const [user, setUser] = useState(null);
-
   const [calendar, setOpen] = useState(false);
   useEffect(() => {
     axios.get("/api/user/" + props.match.params.username).then(response => {
@@ -21,6 +22,7 @@ const Find = props => {
       }
     });
   }, []);
+  const { user: current } = useContext(User);
   return (
     <>
       {user ? (
@@ -87,6 +89,15 @@ const Find = props => {
                       ></img>
                     </Tooltip>
                   )}
+                  {current !== null && (
+                    <button
+                      className="mdc-button mdc-button--outlined"
+                      onClick={() => alert(current._id)}
+                    >
+                      <div className="mdc-button__ripple"></div>
+                      <span className="mdc-button__label">Follow</span>
+                    </button>
+                  )}
                 </span>
                 <p className="type">{user.type}</p>
               </div>
@@ -108,15 +119,9 @@ const Find = props => {
               </div>
             </div>
           </div>
-          <div className="fab-container">
-            <button className="mdc-fab" aria-label="Fab">
-              <div className="mdc-fab__ripple"></div>
-              <span className="mdc-fab__icon material-icons">add</span>
-            </button>
-          </div>
         </div>
       ) : (
-        "404 not found"
+        <Loader />
       )}
     </>
   );

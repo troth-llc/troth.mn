@@ -42,6 +42,14 @@ const userSchema = new Schema({
     type: Array,
     default: []
   },
+  followers: {
+    type: Array,
+    default: []
+  },
+  following: {
+    type: Array,
+    default: []
+  },
   projects: {
     type: Array,
     default: []

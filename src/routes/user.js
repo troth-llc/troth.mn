@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const user = require("../controllers/user");
 const validate = require("../middleware/validator");
+const token = require("../middleware/token");
+
 /**
  * /api/user:
  *   post:
@@ -10,4 +12,5 @@ const validate = require("../middleware/validator");
  *       200:
  */
 router.get("/:username", validate.find, user.find);
+router.get("/follow/:id", validate.follow, user.follow);
 module.exports = router;

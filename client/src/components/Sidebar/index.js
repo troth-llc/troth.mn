@@ -19,6 +19,14 @@ const guest = [
     exact: true
   },
   {
+    to: "/search",
+    type: "link",
+    title: "Search",
+    background: require("assets/img/sidebar/search.png"),
+    exact: false,
+    style: {}
+  },
+  {
     to: "/about",
     type: "link",
     title: "About",
@@ -60,7 +68,14 @@ const link = [
     exact: false,
     style: { padding: "24px" }
   },
-
+  {
+    to: "/search",
+    type: "link",
+    title: "Search",
+    background: require("assets/img/sidebar/search.png"),
+    exact: false,
+    style: {}
+  },
   {
     to: "/settings",
     type: "link",
