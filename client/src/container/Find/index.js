@@ -8,9 +8,11 @@ import axios from "axios";
 const Find = props => {
   const [user, setUser] = useState(null);
   const [calendar, setOpen] = useState(false);
+  const follow = "follow";
   useEffect(() => {
     axios.get("/api/user/" + props.match.params.username).then(response => {
       if (response.data.status) setUser(response.data.user);
+      else setUser(false);
     });
     const element = document.querySelectorAll(".Calendar__weekRow");
     element.forEach(el => {
@@ -25,7 +27,8 @@ const Find = props => {
   const { user: current } = useContext(User);
   return (
     <>
-      {user ? (
+      {user === null && <Loader />}
+      {user && (
         <div id="profile">
           <div className="profile-container">
             <div className="profile-cover">
@@ -92,14 +95,34 @@ const Find = props => {
                   {current !== null && (
                     <button
                       className="mdc-button mdc-button--outlined"
-                      onClick={() => alert(current._id)}
+                      onClick={e => {
+                        e.currentTarget.disabled = true;
+                        axios
+                          .get("/api/user/follow/" + user.id)
+                          .then(response => console.log(response.data));
+                        console.log("follow button firing");
+                      }}
                     >
                       <div className="mdc-button__ripple"></div>
-                      <span className="mdc-button__label">Follow</span>
+                      <span className="mdc-button__label">
+                        {current._id === user.id ? "Edit" : follow}
+                      </span>
                     </button>
                   )}
                 </span>
                 <p className="type">{user.type}</p>
+                <ul className="follow">
+                  <li>
+                    <p>
+                      <span>{user.followers}</span> followers
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      <span>{user.following}</span> following
+                    </p>
+                  </li>
+                </ul>
               </div>
               <div className="info-browser flex">
                 <NavLink to={`/${user.username}`} exact className="info-item">
@@ -120,8 +143,11 @@ const Find = props => {
             </div>
           </div>
         </div>
-      ) : (
-        <Loader />
+      )}
+      {user === false && (
+        <div className="notfound">
+          <i className="material-icons">error</i>Error 404 page not found
+        </div>
       )}
     </>
   );

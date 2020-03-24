@@ -17,6 +17,10 @@
 @import url("~@material/select/dist/mdc.select.min.css");
 @import url("~@material/linear-progress/dist/mdc.linear-progress.min.css");
 @import "assets/fonts/stylesheet.css";
+ol,
+ul {
+  list-style: none;
+}
 .main {
   height: 100%;
   margin-top: 56px;
@@ -33,4 +37,23 @@
 .MuiTooltip-tooltip {
   font-size: 0.7rem !important;
   font-weight: 400 !important;
+}
+.notfound {
+  position: absolute;
+  top: 50%;
+  right: calc(50% - 140px);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.notfound .material-icons {
+  font-size: 38px;
+  color: red;
+}
+@media (max-width: 1024px) {
+  .notfound {
+    right: unset;
+    width: 100%;
+  }
 }

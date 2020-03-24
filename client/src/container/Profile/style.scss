@@ -216,3 +216,20 @@
     display: none;
   }
 }
+.follow {
+  margin-top: 10px;
+  padding: 0;
+  margin-bottom: 0;
+  flex-direction: row;
+  display: flex;
+  li {
+    font-size: 16px;
+    margin-right: 40px;
+    p {
+      span {
+        font-family: "Roboto";
+        font-weight: 500;
+      }
+    }
+  }
+}

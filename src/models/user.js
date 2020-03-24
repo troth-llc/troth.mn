@@ -42,14 +42,24 @@ const userSchema = new Schema({
     type: Array,
     default: []
   },
-  followers: {
-    type: Array,
-    default: []
-  },
-  following: {
-    type: Array,
-    default: []
-  },
+  following: [
+    {
+      user: {
+        type: Schema.ObjectId,
+        ref: "User"
+      },
+      date: { type: Date, default: new Date() }
+    }
+  ],
+  followers: [
+    {
+      user: {
+        type: Schema.ObjectId,
+        ref: "User"
+      },
+      date: { type: Date, default: new Date() }
+    }
+  ],
   projects: {
     type: Array,
     default: []

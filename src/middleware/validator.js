@@ -9,7 +9,11 @@ exports.create = [
     })
     .withMessage("Must be between 2 and 72 in length"),
   check("username")
-    .customSanitizer(value => value.toLowerCase())
+    .isLength({
+      min: 4,
+      max: 128
+    })
+    .withMessage("Must be between 4 and 128 in length")
     .not()
     .isIn([
       "admin",
