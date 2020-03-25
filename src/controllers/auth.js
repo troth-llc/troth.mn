@@ -89,7 +89,23 @@ exports.profile = function(req, res) {
       User.findById(user.id)
         .select("-password")
         .then(user => {
-          res.json({ user });
+          res.json({
+            user: {
+              _id: user._id,
+              email_verified_at: user.email_verified_at,
+              password_updated_at: user.password_updated_at,
+              username: user.username,
+              avatar: user.avatar,
+              verified: user.verified,
+              type: user.type,
+              badges: user.badges,
+              projects: user.projects,
+              name: user.name,
+              gender: user.gender,
+              following: user.following.length,
+              followers: user.followers.length
+            }
+          });
         });
     } else {
       res.json({ err });

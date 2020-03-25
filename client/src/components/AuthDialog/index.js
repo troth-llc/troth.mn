@@ -7,6 +7,7 @@ import axios from "axios";
 import "./style.scss";
 const AuthDialog = props => {
   const [login, setLogin] = useState({ username: "", password: "" });
+  const [show, setShow] = useState(false);
   const submit = e => {
     e.preventDefault();
     setLoginError({
@@ -91,6 +92,7 @@ const AuthDialog = props => {
               password: "",
               id: ""
             });
+            setShow(false);
             labels.forEach(
               label =>
                 label.classList.contains("mdc-floating-label--float-above") &&
@@ -343,10 +345,18 @@ const AuthDialog = props => {
                 </p>
               </div>
               <div>
-                <div className="mdc-text-field">
+                <div className="mdc-text-field mdc-text-field--with-trailing-icon">
+                  <button
+                    type="button"
+                    className="material-icons mdc-text-field__icon mdc-icon-button"
+                    id="password-show"
+                    onClick={() => setShow(!show)}
+                  >
+                    {show ? "visibility_off" : "visibility"}
+                  </button>
                   <input
                     className="mdc-text-field__input"
-                    type="password"
+                    type={show ? "text" : "password"}
                     required
                     name="password"
                     value={data_register.password}

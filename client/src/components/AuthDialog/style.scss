@@ -193,6 +193,9 @@ $base-color: #c3b59b;
     width: 0px; /* Remove scrollbar space */
     background: transparent; /* Optional: just make scrollbar invisible */
   }
+  .mdc-text-field--with-trailing-icon .mdc-text-field__input {
+    padding-left: 0;
+  }
 }
 .header-label {
   margin-top: 82px;
@@ -282,4 +285,22 @@ $base-color: #c3b59b;
   max-width: 90%;
   margin: 0 auto;
   margin-bottom: 16px;
+}
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__icon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.mdc-text-field--with-trailing-icon .mdc-text-field__icon {
+  left: auto;
+  right: 12px;
+}
+.mdc-text-field__icon:not([tabindex]),
+.mdc-text-field__icon[tabindex="-1"] {
+  cursor: default;
+  pointer-events: none;
+}
+#password-show {
+  cursor: pointer !important;
+  pointer-events: unset !important;
+  right: 0;
 }

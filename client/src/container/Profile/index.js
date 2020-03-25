@@ -89,10 +89,22 @@ const Profile = () => {
                     className="mdc-button mdc-button--outlined"
                   >
                     <div className="mdc-button__ripple"></div>
-                    <span className="mdc-button__label">Edit</span>
+                    <span className="mdc-button__label">Edit profile</span>
                   </Link>
                 </span>
                 <p className="type">{user.type}</p>
+                <ul className="follow">
+                  <li>
+                    <p>
+                      <span>{user.followers}</span> followers
+                    </p>
+                  </li>
+                  <li>
+                    <p>
+                      <span>{user.following}</span> following
+                    </p>
+                  </li>
+                </ul>
               </div>
               <div className="info-browser flex">
                 <NavLink to="/profile" exact className="info-item">

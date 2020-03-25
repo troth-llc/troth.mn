@@ -8,6 +8,7 @@ import axios from "axios";
 const Find = props => {
   const [user, setUser] = useState(null);
   const [following, setFollow] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [calendar, setOpen] = useState(false);
   const fetch_user = () => {
     axios.get("/api/user/" + props.match.params.username).then(response => {
@@ -19,6 +20,8 @@ const Find = props => {
   };
   useEffect(() => {
     fetch_user();
+  }, []);
+  useEffect(() => {
     const element = document.querySelectorAll(".Calendar__weekRow");
     element.forEach(el => {
       for (var i = 0; i < el.childNodes.length; i++) {
@@ -28,7 +31,7 @@ const Find = props => {
         }
       }
     });
-  }, []);
+  }, [loading]);
   const { user: current } = useContext(User);
   return (
     <>
@@ -97,33 +100,43 @@ const Find = props => {
                       ></img>
                     </Tooltip>
                   )}
-                  {current !== null && current._id === user.id ? (
-                    <Link
-                      to="/profile/edit"
-                      className="mdc-button mdc-button--outlined"
-                    >
-                      <div className="mdc-button__ripple"></div>
-                      <span className="mdc-button__label">Edit</span>
-                    </Link>
+                  {current !== null ? (
+                    current._id === user.id ? (
+                      <Link
+                        to="/profile/edit"
+                        className="mdc-button mdc-button--outlined"
+                      >
+                        <div className="mdc-button__ripple"></div>
+                        <span className="mdc-button__label">Edit profile</span>
+                      </Link>
+                    ) : (
+                      <button
+                        className="mdc-button mdc-button--outlined"
+                        onClick={() => {
+                          setLoading(true);
+                          axios
+                            .get(
+                              `/api/user/${
+                                following ? "unfollow" : "follow"
+                              }/` + user.id
+                            )
+                            .then(response => {
+                              if (response.data.status) {
+                                fetch_user();
+                                setLoading(false);
+                              }
+                            });
+                        }}
+                        disabled={loading}
+                      >
+                        <div className="mdc-button__ripple"></div>
+                        <span className="mdc-button__label">
+                          {following ? "Unfollow" : "Follow"}
+                        </span>
+                      </button>
+                    )
                   ) : (
-                    <button
-                      className="mdc-button mdc-button--outlined"
-                      onClick={e => {
-                        axios
-                          .get(
-                            `/api/user/${following ? "unfollow" : "follow"}/` +
-                              user.id
-                          )
-                          .then(response => {
-                            if (response.data.status) fetch_user();
-                          });
-                      }}
-                    >
-                      <div className="mdc-button__ripple"></div>
-                      <span className="mdc-button__label">
-                        {following ? "Unfollow" : "Follow"}
-                      </span>
-                    </button>
+                    ""
                   )}
                 </span>
                 <p className="type">{user.type}</p>
