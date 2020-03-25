@@ -405,7 +405,10 @@ const AuthDialog = props => {
                   </div>
                 </div>
               </div>
-              <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">
+              <p
+                className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg"
+                style={{ marginBottom: "5px" }}
+              >
                 {register_error.gender}
               </p>
               <div>

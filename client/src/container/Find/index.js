@@ -107,7 +107,7 @@ const Find = props => {
                         className="mdc-button mdc-button--outlined"
                       >
                         <div className="mdc-button__ripple"></div>
-                        <span className="mdc-button__label">Edit profile</span>
+                        <span className="mdc-button__label">Edit</span>
                       </Link>
                     ) : (
                       <button
