@@ -1,19 +1,24 @@
 import React, { useState, useEffect, useContext } from "react";
 import { User } from "context/user";
 import { Calendar } from "components";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Loader } from "components";
 import axios from "axios";
 const Find = props => {
   const [user, setUser] = useState(null);
+  const [following, setFollow] = useState(null);
   const [calendar, setOpen] = useState(false);
-  const follow = "follow";
-  useEffect(() => {
+  const fetch_user = () => {
     axios.get("/api/user/" + props.match.params.username).then(response => {
-      if (response.data.status) setUser(response.data.user);
-      else setUser(false);
+      if (response.data.status) {
+        setUser(response.data.user);
+        setFollow(response.data.following);
+      } else setUser(false);
     });
+  };
+  useEffect(() => {
+    fetch_user();
     const element = document.querySelectorAll(".Calendar__weekRow");
     element.forEach(el => {
       for (var i = 0; i < el.childNodes.length; i++) {
@@ -92,20 +97,31 @@ const Find = props => {
                       ></img>
                     </Tooltip>
                   )}
-                  {current !== null && (
+                  {current !== null && current._id === user.id ? (
+                    <Link
+                      to="/profile/edit"
+                      className="mdc-button mdc-button--outlined"
+                    >
+                      <div className="mdc-button__ripple"></div>
+                      <span className="mdc-button__label">Edit</span>
+                    </Link>
+                  ) : (
                     <button
                       className="mdc-button mdc-button--outlined"
                       onClick={e => {
-                        e.currentTarget.disabled = true;
                         axios
-                          .get("/api/user/follow/" + user.id)
-                          .then(response => console.log(response.data));
-                        console.log("follow button firing");
+                          .get(
+                            `/api/user/${following ? "unfollow" : "follow"}/` +
+                              user.id
+                          )
+                          .then(response => {
+                            if (response.data.status) fetch_user();
+                          });
                       }}
                     >
                       <div className="mdc-button__ripple"></div>
                       <span className="mdc-button__label">
-                        {current._id === user.id ? "Edit" : follow}
+                        {following ? "Unfollow" : "Follow"}
                       </span>
                     </button>
                   )}

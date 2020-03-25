@@ -16,8 +16,10 @@ exports.find = function(req, res) {
           if (data) current = data.id;
           else current = "";
         });
-        var following = user.followers.find(data => {
-          return data._id == current;
+        var following = false;
+        user.followers.map(data => {
+          if (data.user == current) following = true;
+          else following = false;
         });
         res.json({
           user: {
@@ -60,12 +62,12 @@ exports.follow = function(req, res) {
     User.findById(id).then(user => {
       // check if the requested user is already in follower list of other user then
       if (
-        user.followers.filter(follower => follower.user.toString() === id)
+        user.followers.filter(follower => follower.user.toString() === data.id)
           .length > 0
       ) {
         return res.json({ msg: "You already followed the user" });
       }
-      user.followers.unshift({ user: id });
+      user.followers.unshift({ user: data.id });
       user.save();
       User.findById(data.id)
         .then(user => {
@@ -74,5 +76,36 @@ exports.follow = function(req, res) {
         })
         .catch(err => res.json({ status: false }));
     });
+  });
+};
+exports.unfollow = function(req, res) {
+  const errors = validationResult(req);
+  const { id } = req.params;
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ errors: errors.array(), status: false });
+  }
+  const token = req.header("x-auth-token");
+  jwt.verify(token, process.env.JWTSECRET, function(err, data) {
+    if (err) {
+      res.json({ status: false, err });
+    }
+    if (data.id === id) {
+      return res.json({ status: false, msg: "You cannot unfollow yourself" });
+    }
+    User.findByIdAndUpdate(
+      id,
+      { $pull: { followers: { user: data.id } } },
+      (err, result) => {
+        if (result) {
+          User.findByIdAndUpdate(
+            data.id,
+            { $pull: { following: { user: result._id } } },
+            (err, done) => {
+              if (done) res.json({ status: true });
+            }
+          );
+        }
+      }
+    );
   });
 };
