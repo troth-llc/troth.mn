@@ -14,4 +14,6 @@ const token = require("../middleware/token");
 router.get("/:username", validate.find, user.find);
 router.get("/follow/:id", token, validate.follow, user.follow);
 router.get("/unfollow/:id", token, validate.follow, user.unfollow);
+router.get("/followers/:id", validate.follow, user.followers);
+router.get("/following/:id", validate.follow, user.following);
 module.exports = router;

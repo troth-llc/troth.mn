@@ -1,12 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Calendar } from "components";
+import { MDCDialog } from "@material/dialog";
+import { Calendar, FollowDialog } from "components";
 import { NavLink, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { User } from "context/user";
 import "./style.scss";
 const Profile = () => {
   const [calendar, setOpen] = useState(false);
+  const [follow, openFollow] = useState(false);
+  const { user } = useContext(User);
   useEffect(() => {
+    if (user) document.title = `${user.name} (@${user.username}) • Troth`;
     const element = document.querySelectorAll(".Calendar__weekRow");
     element.forEach(el => {
       for (var i = 0; i < el.childNodes.length; i++) {
@@ -17,7 +21,6 @@ const Profile = () => {
       }
     });
   });
-  const { user } = useContext(User);
   return (
     <>
       {user && (
@@ -95,12 +98,32 @@ const Profile = () => {
                 <p className="type">{user.type}</p>
                 <ul className="follow">
                   <li>
-                    <p>
+                    <p
+                      onClick={() => {
+                        if (user.followers !== 0) {
+                          openFollow({ id: user._id, type: "followers" });
+                          const dialog = new MDCDialog(
+                            document.querySelector("#follow")
+                          );
+                          dialog.open();
+                        }
+                      }}
+                    >
                       <span>{user.followers}</span> followers
                     </p>
                   </li>
                   <li>
-                    <p>
+                    <p
+                      onClick={() => {
+                        if (user.following !== 0) {
+                          openFollow({ id: user._id, type: "following" });
+                          const dialog = new MDCDialog(
+                            document.querySelector("#follow")
+                          );
+                          dialog.open();
+                        }
+                      }}
+                    >
                       <span>{user.following}</span> following
                     </p>
                   </li>
@@ -132,6 +155,7 @@ const Profile = () => {
           </div>
         </div>
       )}
+      <FollowDialog data={follow} />
     </>
   );
 };

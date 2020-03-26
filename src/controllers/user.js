@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const async = require("async");
 exports.find = function(req, res) {
   const errors = validationResult(req);
   const { username } = req.params;
@@ -16,10 +17,9 @@ exports.find = function(req, res) {
           if (data) current = data.id;
           else current = "";
         });
-        var following = false;
-        user.followers.map(data => {
-          if (data.user == current) following = true;
-          else following = false;
+        var following = user.followers.some(data => {
+          if (data.user.toString() === current) return true;
+          else return false;
         });
         res.json({
           user: {
@@ -108,4 +108,53 @@ exports.unfollow = function(req, res) {
       }
     );
   });
+};
+exports.followers = (req, res) => {
+  const { id, start, end } = req.query;
+  const token = req.header("x-auth-token");
+  // jwt.verify(token, process.env.JWTSECRET, function(err, data) {});
+  User.findById(id)
+    .then(user => {
+      console.log(user.followers);
+      return res.json({ status: true, user, token: token ? token : "token" });
+    })
+    .catch(err => res.json(err));
+};
+exports.following = (req, res) => {
+  const { id } = req.params;
+  const { start, end } = req.query;
+  const token = req.header("x-auth-token");
+  var follow = [];
+  var data = false;
+  if (token) {
+    jwt.verify(token, process.env.JWTSECRET, function(err, user) {
+      if (user) data = user.id;
+      else data = false;
+    });
+  }
+  User.findOne(
+    { _id: id },
+    { following: { $slice: [parseInt(start), parseInt(end)] } }
+  )
+    .then(user => {
+      user.following.map(results => {
+        User.find({ _id: results.user })
+          .select("name username avatar")
+          .exec()
+          .then(res => {
+            follow.push(res);
+          });
+      });
+    })
+    .then(() =>
+      res.json({
+        status: true,
+        user,
+        token: token ? token : "token",
+        start,
+        end,
+        data,
+        follow
+      })
+    );
 };

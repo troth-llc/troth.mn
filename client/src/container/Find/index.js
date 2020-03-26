@@ -14,6 +14,7 @@ const Find = props => {
     axios.get("/api/user/" + props.match.params.username).then(response => {
       if (response.data.status) {
         setUser(response.data.user);
+        document.title = `${response.data.user.name} (@${response.data.user.username}) • Troth`;
         setFollow(response.data.following);
       } else setUser(false);
     });
