@@ -2,8 +2,10 @@
   z-index: 10;
   .placeholder {
     padding: 5px 10px;
+    flex-direction: column;
     .line {
       width: 100%;
+      margin: 4px 0;
     }
   }
   .follow-header {
@@ -110,12 +112,11 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .follow-action {
-      button > span {
-        font-size: 14px;
-        font-weight: 400;
-        text-transform: capitalize;
-      }
+    .null-avatar {
+      background: #212121;
+      border-radius: 50%;
+      color: #fff;
+      line-height: 30px;
     }
   }
 }

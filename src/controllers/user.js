@@ -110,51 +110,74 @@ exports.unfollow = function(req, res) {
   });
 };
 exports.followers = (req, res) => {
-  const { id, start, end } = req.query;
-  const token = req.header("x-auth-token");
-  // jwt.verify(token, process.env.JWTSECRET, function(err, data) {});
-  User.findById(id)
-    .then(user => {
-      console.log(user.followers);
-      return res.json({ status: true, user, token: token ? token : "token" });
-    })
-    .catch(err => res.json(err));
-};
-exports.following = (req, res) => {
   const { id } = req.params;
   const { start, end } = req.query;
-  const token = req.header("x-auth-token");
-  var follow = [];
-  var data = false;
-  if (token) {
-    jwt.verify(token, process.env.JWTSECRET, function(err, user) {
-      if (user) data = user.id;
-      else data = false;
-    });
-  }
+  // const token = req.header("x-auth-token");
+  // var data = false;
+  // if (token) {
+  //   jwt.verify(token, process.env.JWTSECRET, function(err, user) {
+  //     if (user) data = user.id;
+  //     else data = false;
+  //   });
+  // }
   User.findOne(
     { _id: id },
     { following: { $slice: [parseInt(start), parseInt(end)] } }
   )
+    .select("-following")
     .then(user => {
-      user.following.map(results => {
-        User.find({ _id: results.user })
+      let promises = user.followers.map(results => {
+        return User.findOne({ _id: results.user })
           .select("name username avatar")
           .exec()
           .then(res => {
-            follow.push(res);
+            return res;
           });
       });
-    })
-    .then(() =>
-      res.json({
-        status: true,
-        user,
-        token: token ? token : "token",
-        start,
-        end,
-        data,
-        follow
-      })
-    );
+      Promise.all(promises).then(follow => {
+        res.json({
+          status: true,
+          start,
+          end,
+          data,
+          follow
+        });
+      });
+    });
+};
+exports.following = (req, res) => {
+  const { id } = req.params;
+  const { start, end } = req.query;
+  // const token = req.header("x-auth-token");
+  // var data = false;
+  // if (token) {
+  //   jwt.verify(token, process.env.JWTSECRET, function(err, user) {
+  //     if (user) data = user.id;
+  //     else data = false;
+  //   });
+  // }
+  User.findOne(
+    { _id: id },
+    { following: { $slice: [parseInt(start), parseInt(end)] } }
+  )
+    .select("-followers")
+    .then(user => {
+      let promises = user.following.map(results => {
+        return User.findOne({ _id: results.user })
+          .select("name username avatar")
+          .exec()
+          .then(res => {
+            return res;
+          });
+      });
+      Promise.all(promises).then(follow => {
+        res.json({
+          status: true,
+          start,
+          end,
+          data,
+          follow
+        });
+      });
+    });
 };

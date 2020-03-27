@@ -4,13 +4,26 @@ import axios from "axios";
 import "./style.scss";
 const FollowDialog = props => {
   const { id, type } = props.data;
-  const [follow, setFollow] = useState({ start: 0, end: 20 });
+  const [sliced, setFollow] = useState({ start: 0, end: 1 });
+  const [data, setData] = useState(null);
+  const follow = (start, end) => {
+    axios.get(`/api/user/${type}/${id}?start=${start}&end=${end}`).then(res => {
+      console.log(res.data);
+      if (res.data.status) {
+        setData(res.data.follow);
+        setFollow({
+          start: parseInt(res.data.start) + 1,
+          end: parseInt(res.data.end) + 1
+        });
+      } else console.log("failed to fetch data");
+    });
+  };
   useEffect(() => {
-    console.log(id, type);
     if (id) {
-      axios
-        .get(`/api/user/${type}/${id}?start=${follow.start}&end=${follow.end}`)
-        .then(res => console.log(res));
+      setData(null);
+      setFollow({ start: 0, end: 1 });
+      console.log(sliced);
+      follow(sliced.start, sliced.end);
     }
   }, [props]);
   return (
@@ -26,35 +39,60 @@ const FollowDialog = props => {
               close
             </button>
           </div>
-          <div className="mdc-dialog__content">
-            <ul className="follow-container">
-              <li className="people">
-                <div className="people-container">
-                  <div className="people-info flex">
-                    <div className="follow-avatar">
-                      <span className="avatar-picture"></span>
-                    </div>
-                    <div className="text">
-                      <div className="text-username flex">
-                        <Link title="ochrooo" to="/ochrooo">
-                          ochrooo
-                        </Link>
+          <div
+            className="mdc-dialog__content"
+            onScroll={e => {
+              if (
+                e.currentTarget.scrollHeight -
+                  e.currentTarget.scrollTop -
+                  e.currentTarget.clientHeight <=
+                0
+              ) {
+                follow(sliced.start, sliced.end);
+              }
+            }}
+          >
+            <ul className="follow-container" id="follow-scroll">
+              {data !== null ? (
+                data.map((data, index) => {
+                  return (
+                    <li className="people" key={index}>
+                      <div className="people-container">
+                        <div className="people-info flex">
+                          <div className="follow-avatar">
+                            {data.avatar !== null ? (
+                              <span className="avatar-picture"></span>
+                            ) : (
+                              <span className="avatar-picture null-avatar">
+                                {data.username.charAt(0).toUpperCase()}
+                              </span>
+                            )}
+                          </div>
+                          <div className="text">
+                            <div className="text-username flex">
+                              <Link title="ochrooo" to={`/${data.username}`}>
+                                {data.username}
+                              </Link>
+                            </div>
+                            <div className="text-name flex">{data.name}</div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-name flex">BMO</div>
-                    </div>
-                    <div className="follow-action">
-                      <button className="mdc-button mdc-button--outlined">
-                        <div className="mdc-button__ripple"></div>
-                        <span className="mdc-button__label">Follow</span>
-                      </button>
-                    </div>
-                  </div>
+                    </li>
+                  );
+                })
+              ) : (
+                <div className="placeholder">
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
                 </div>
-              </li>
+              )}
             </ul>
-            <div className="placeholder">
-              <div className="line"></div>
-            </div>
           </div>
         </div>
       </div>
