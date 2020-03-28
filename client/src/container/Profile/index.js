@@ -98,34 +98,44 @@ const Profile = () => {
                 <p className="type">{user.type}</p>
                 <ul className="follow">
                   <li>
-                    <p
-                      onClick={() => {
-                        if (user.followers !== 0) {
-                          openFollow({ id: user._id, type: "followers" });
-                          const dialog = new MDCDialog(
-                            document.querySelector("#follow")
-                          );
-                          dialog.open();
-                        }
-                      }}
+                    <Tooltip
+                      title={`show ${user.followers} people followers`}
+                      placement="top"
                     >
-                      <span>{user.followers}</span> followers
-                    </p>
+                      <p
+                        onClick={() => {
+                          if (user.followers !== 0) {
+                            openFollow({ id: user._id, type: "followers" });
+                            const dialog = new MDCDialog(
+                              document.querySelector("#follow")
+                            );
+                            dialog.open();
+                          }
+                        }}
+                      >
+                        <span>{user.followers}</span> followers
+                      </p>
+                    </Tooltip>
                   </li>
                   <li>
-                    <p
-                      onClick={() => {
-                        if (user.following !== 0) {
-                          openFollow({ id: user._id, type: "following" });
-                          const dialog = new MDCDialog(
-                            document.querySelector("#follow")
-                          );
-                          dialog.open();
-                        }
-                      }}
+                    <Tooltip
+                      title={`show ${user.following} people following`}
+                      placement="top"
                     >
-                      <span>{user.following}</span> following
-                    </p>
+                      <p
+                        onClick={() => {
+                          if (user.following !== 0) {
+                            openFollow({ id: user._id, type: "following" });
+                            const dialog = new MDCDialog(
+                              document.querySelector("#follow")
+                            );
+                            dialog.open();
+                          }
+                        }}
+                      >
+                        <span>{user.following}</span> following
+                      </p>
+                    </Tooltip>
                   </li>
                 </ul>
               </div>

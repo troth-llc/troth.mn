@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { User } from "context/user";
-import { Calendar } from "components";
+import { MDCDialog } from "@material/dialog";
+import { Calendar, FollowDialog } from "components";
 import { NavLink, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Loader } from "components";
@@ -10,6 +11,8 @@ const Find = props => {
   const [following, setFollow] = useState(null);
   const [loading, setLoading] = useState(false);
   const [calendar, setOpen] = useState(false);
+  const [follow, openFollow] = useState(false);
+
   const fetch_user = () => {
     axios.get("/api/user/" + props.match.params.username).then(response => {
       if (response.data.status) {
@@ -143,14 +146,44 @@ const Find = props => {
                 <p className="type">{user.type}</p>
                 <ul className="follow">
                   <li>
-                    <p>
-                      <span>{user.followers}</span> followers
-                    </p>
+                    <Tooltip
+                      title={`show ${user.followers} people followers`}
+                      placement="top"
+                    >
+                      <p
+                        onClick={() => {
+                          if (user.followers !== 0) {
+                            openFollow({ id: user.id, type: "followers" });
+                            const dialog = new MDCDialog(
+                              document.querySelector("#follow")
+                            );
+                            dialog.open();
+                          }
+                        }}
+                      >
+                        <span>{user.followers}</span> followers
+                      </p>
+                    </Tooltip>
                   </li>
                   <li>
-                    <p>
-                      <span>{user.following}</span> following
-                    </p>
+                    <Tooltip
+                      title={`show ${user.following} people following`}
+                      placement="top"
+                    >
+                      <p
+                        onClick={() => {
+                          if (user.following !== 0) {
+                            openFollow({ id: user.id, type: "following" });
+                            const dialog = new MDCDialog(
+                              document.querySelector("#follow")
+                            );
+                            dialog.open();
+                          }
+                        }}
+                      >
+                        <span>{user.following}</span> following
+                      </p>
+                    </Tooltip>
                   </li>
                 </ul>
               </div>
@@ -179,6 +212,7 @@ const Find = props => {
           <i className="material-icons">error</i>Error 404 page not found
         </div>
       )}
+      <FollowDialog data={follow} />
     </>
   );
 };

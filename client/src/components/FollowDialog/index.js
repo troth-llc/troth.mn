@@ -5,25 +5,32 @@ import "./style.scss";
 const FollowDialog = props => {
   const { id, type } = props.data;
   const [sliced, setFollow] = useState({ start: 0, end: 1 });
-  const [data, setData] = useState(null);
-  const follow = (start, end) => {
-    axios.get(`/api/user/${type}/${id}?start=${start}&end=${end}`).then(res => {
-      console.log(res.data);
-      if (res.data.status) {
-        setData(res.data.follow);
-        setFollow({
-          start: parseInt(res.data.start) + 1,
-          end: parseInt(res.data.end) + 1
+  const [data, setData] = useState([]);
+  const [last, setLast] = useState(false);
+  const follow = (start, end, scroll) => {
+    scroll === false && setData([]);
+    if (last === false) {
+      axios
+        .get(`/api/user/${type}/${id}?start=${start}&end=${end}`)
+        .then(res => {
+          if (res.data.status) {
+            setLast(res.data.last);
+            console.log(res.data.last);
+            scroll
+              ? setData([...data, ...res.data.follow])
+              : setData(res.data.follow);
+            setFollow({
+              start: parseInt(res.data.end),
+              end: parseInt(res.data.end) + 20
+            });
+          } else console.log("failed to fetch data");
         });
-      } else console.log("failed to fetch data");
-    });
+    }
   };
   useEffect(() => {
     if (id) {
-      setData(null);
-      setFollow({ start: 0, end: 1 });
-      console.log(sliced);
-      follow(sliced.start, sliced.end);
+      setLast(false);
+      follow(0, 20, false);
     }
   }, [props]);
   return (
@@ -48,12 +55,12 @@ const FollowDialog = props => {
                   e.currentTarget.clientHeight <=
                 0
               ) {
-                follow(sliced.start, sliced.end);
+                follow(sliced.start, sliced.end, true);
               }
             }}
           >
             <ul className="follow-container" id="follow-scroll">
-              {data !== null ? (
+              {data.length > 0 ? (
                 data.map((data, index) => {
                   return (
                     <li className="people" key={index}>

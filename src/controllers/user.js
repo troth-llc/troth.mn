@@ -112,6 +112,9 @@ exports.unfollow = function(req, res) {
 exports.followers = (req, res) => {
   const { id } = req.params;
   const { start, end } = req.query;
+  if (parseInt(end) - parseInt(start) > 100) {
+    return res.json({ status: false, msg: "too many requests" });
+  }
   // const token = req.header("x-auth-token");
   // var data = false;
   // if (token) {
@@ -122,7 +125,7 @@ exports.followers = (req, res) => {
   // }
   User.findOne(
     { _id: id },
-    { following: { $slice: [parseInt(start), parseInt(end)] } }
+    { followers: { $slice: [parseInt(start), parseInt(end)] } }
   )
     .select("-following")
     .then(user => {
@@ -135,19 +138,24 @@ exports.followers = (req, res) => {
           });
       });
       Promise.all(promises).then(follow => {
-        res.json({
-          status: true,
-          start,
-          end,
-          data,
-          follow
-        });
+        if (follow.length > 0) {
+          res.json({
+            status: true,
+            last: false,
+            start,
+            end,
+            follow
+          });
+        } else res.json({ status: false, last: true });
       });
     });
 };
 exports.following = (req, res) => {
   const { id } = req.params;
   const { start, end } = req.query;
+  if (parseInt(end) - parseInt(start) > 100) {
+    return res.json({ status: false, msg: "too many requests" });
+  }
   // const token = req.header("x-auth-token");
   // var data = false;
   // if (token) {
@@ -171,13 +179,15 @@ exports.following = (req, res) => {
           });
       });
       Promise.all(promises).then(follow => {
-        res.json({
-          status: true,
-          start,
-          end,
-          data,
-          follow
-        });
+        if (follow.length > 0) {
+          res.json({
+            status: true,
+            last: false,
+            start,
+            end,
+            follow
+          });
+        } else res.json({ status: false, last: true });
       });
     });
 };
