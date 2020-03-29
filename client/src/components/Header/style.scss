@@ -1,17 +1,37 @@
 #header {
-  background-color: rgba(0, 0, 0, 0.89);
+  background-color: #292a2d;
   .mdc-top-app-bar__row {
     height: 56px;
   }
   top: 0;
-  @media (min-width: 1025px) {
-    display: none;
+  .mdc-top-app-bar__title {
+    height: 56px;
+    padding-left: 0;
+    img {
+      height: 47px;
+      margin: 5px 0px;
+    }
   }
 }
 #drawer {
   width: 300px;
   z-index: 12;
+  #drawer-btn {
+    display: none;
+  }
+  @media (min-width: 1025px) {
+    #drawer-btn {
+      display: none;
+    }
+    top: 56px;
+  }
 }
+#drawer-btn {
+  @media (min-width: 1025px) {
+    display: none;
+  }
+}
+
 .mdc-drawer-scrim {
   z-index: 11 !important;
 }
@@ -126,5 +146,78 @@
     &:focus {
       outline: none;
     }
+  }
+}
+.nav-middle {
+  display: flex;
+  padding: 4px;
+  flex: 1 1 0;
+  justify-content: center;
+}
+// search
+.search-outline {
+  &.open-search {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+    background-color: #000;
+    margin: 3px 20px;
+    left: 0;
+  }
+  margin: 3px 0;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 2px;
+  cursor: text;
+  padding-inline-end: 0;
+  align-items: center;
+  display: flex;
+  height: 40px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    width 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  .search {
+    flex: 1;
+    line-height: 185%;
+    margin-inline-end: 2px;
+    margin-inline-start: 2px;
+    position: relative;
+    #prompt {
+      opacity: 1;
+      transition: opacity 200ms;
+      font-size: 13px;
+      font-family: "Roboto";
+      bottom: 0;
+      cursor: text;
+      left: 0;
+      overflow: hidden;
+      position: absolute;
+      right: 0;
+      top: 0;
+      white-space: nowrap;
+    }
+    input {
+      margin-left: 15px;
+      background: transparent;
+      border: none;
+      color: white;
+      font: inherit;
+      outline: none;
+      padding: 0;
+      position: relative;
+      width: 100%;
+    }
+  }
+}
+@media (min-width: 1025px) {
+  .search-outline {
+    width: 680px;
+  }
+  #search-button {
+    display: none;
+  }
+}
+@media (max-width: 1025px) {
+  .search-outline {
+    display: none;
   }
 }

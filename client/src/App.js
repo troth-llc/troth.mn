@@ -53,7 +53,7 @@ export default function App() {
         <AppContainer>
           <div className="app">
             <Header />
-            <Sidebar />
+            {/* <Sidebar /> */}
             <div className="main">
               <Switch>
                 <Route exact path="/">

@@ -77,9 +77,9 @@ const FollowDialog = props => {
                           </div>
                           <div className="text">
                             <div className="text-username flex">
-                              <Link title="ochrooo" to={`/${data.username}`}>
+                              <a title="ochrooo" href={`/${data.username}`}>
                                 {data.username}
-                              </Link>
+                              </a>
                             </div>
                             <div className="text-name flex">{data.name}</div>
                           </div>

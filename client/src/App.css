@@ -28,7 +28,7 @@ ul {
 @media (min-width: 1025px) {
   .main {
     margin-top: 0;
-    margin-left: 70px;
+    margin-left: 300px;
   }
   .drawer-closed .main {
     margin-left: 0;
@@ -56,4 +56,10 @@ ul {
     right: unset;
     width: 100%;
   }
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none;
 }

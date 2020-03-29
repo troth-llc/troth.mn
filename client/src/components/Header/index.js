@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { MDCTopAppBar } from "@material/top-app-bar";
 import { MDCDrawer } from "@material/drawer";
 import { MDCList } from "@material/list";
@@ -46,37 +46,37 @@ const routes = [
 ];
 const auth_routes = [
   {
-    to: "/user/calendar",
+    to: "/calendar",
     exact: false,
     src: require("assets/icons/calendar.svg"),
     title: "Calendar"
   },
   {
-    to: "/user/candidate",
+    to: "/candidate",
     exact: false,
     src: require("assets/icons/candidate.svg"),
     title: "Candidate Action Status"
   },
   {
-    to: "/user/group",
+    to: "/group",
     exact: false,
     src: require("assets/icons/group.svg"),
     title: "Group Polls"
   },
   {
-    to: "/user/survey",
+    to: "/survey",
     exact: false,
     src: require("assets/icons/survey.svg"),
     title: "Surveys"
   },
   {
-    to: "/user/stream",
+    to: "/stream",
     exact: false,
     src: require("assets/icons/stream.svg"),
     title: "Live Streams"
   },
   {
-    to: "/user/return",
+    to: "/return",
     exact: false,
     src: require("assets/icons/return.svg"),
     title: "Return On Investment"
@@ -102,6 +102,7 @@ const auth_routes = [
   }
 ];
 const Header = () => {
+  const [mobileSearch, setMobileSearch] = useState(false);
   // Instantiation
   useEffect(() => {
     // header
@@ -112,12 +113,49 @@ const Header = () => {
     const listElement = document.querySelector(".mdc-list");
     const list = new MDCList(listElement);
     list.wrapFocus = true;
-    listElement.addEventListener("click", () => (drawer.open = false));
-    const drawer = MDCDrawer.attachTo(drawerElement);
+    // Initialize either modal or dismissable
+    const initModalDrawer = () => {
+      drawerElement.classList.remove("mdc-drawer--dismissible");
+      drawerElement.classList.add("mdc-drawer--modal");
+      const drawer = MDCDrawer.attachTo(drawerElement);
+      drawer.open = false;
+      return drawer;
+    };
+
+    const initDismissableDrawer = () => {
+      drawerElement.classList.remove("mdc-drawer--modal");
+      drawerElement.classList.add(
+        "mdc-drawer--dismissible",
+        "mdc-drawer--open"
+      );
+      const drawer = MDCDrawer.attachTo(drawerElement);
+      drawer.open = true;
+      return drawer;
+    };
+
+    let drawer = window.matchMedia("(max-width: 900px)").matches
+      ? initModalDrawer()
+      : initDismissableDrawer();
+    listElement.addEventListener("click", () => {
+      if (drawerElement.classList.contains("mdc-drawer--modal"))
+        drawer.open = false;
+      else drawer.open = true;
+    });
     // drawer trigger
     drawer_btn.addEventListener("click", () => {
       drawer.open = !drawer.open;
     });
+    const resizeHandler = () => {
+      if (window.matchMedia("(max-width: 1024px)").matches) {
+        drawer.destroy();
+        drawer = initModalDrawer();
+      } else if (window.matchMedia("(min-width: 1024px)").matches) {
+        drawer.destroy();
+        drawer = initDismissableDrawer();
+      }
+    };
+    resizeHandler();
+    window.addEventListener("resize", resizeHandler);
   }, []);
   const { user } = useContext(User);
   return (
@@ -131,16 +169,40 @@ const Header = () => {
             >
               menu
             </button>
-            <span className="mdc-top-app-bar__title">Troth</span>
+            <Link to="/" className="mdc-top-app-bar__title">
+              <img src={require("../../assets/img/navlogo.png")} />
+            </Link>
+          </section>
+          <section className="nav-middle">
+            <div
+              className={`search-outline ${mobileSearch ? "open-search" : ""}`}
+            >
+              <div className="search">
+                <input
+                  id="searchInput"
+                  aria-labelledby="prompt"
+                  type="search"
+                  placeholder="Search"
+                  onBlur={() => {
+                    document.getElementById("searchInput").focus();
+                    setMobileSearch(false);
+                  }}
+                />
+              </div>
+            </div>
           </section>
           <section
             className="mdc-top-app-bar__section mdc-top-app-bar__section--align-end"
             role="toolbar"
           >
-            <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button">
+            <button
+              className="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+              id="search-button"
+              onClick={() => setMobileSearch(true)}
+            >
               search
             </button>
-            {user === null && (
+            {user === null ? (
               <button
                 className="material-icons mdc-top-app-bar__action-item mdc-icon-button"
                 onClick={() => {
@@ -151,6 +213,10 @@ const Header = () => {
               >
                 account_circle
               </button>
+            ) : (
+              <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button">
+                notifications
+              </button>
             )}
           </section>
         </div>
@@ -159,41 +225,8 @@ const Header = () => {
       <aside className="mdc-drawer mdc-drawer--modal" id="drawer">
         <div className="mdc-drawer__content">
           <nav className="mdc-list">
-            {/* if user logged in render this element */}
-            {user !== null ? (
-              <>
-                <div className="drawer-header">
-                  <div className="avatar-image">
-                    {user.avatar !== null ? (
-                      <img
-                        src="https://cdn.discordapp.com/avatars/525589602900377610/7b10cb16b93c5aefa7adcadadbc4a598.png?size=512"
-                        alt="sup"
-                        className="avatar-img"
-                        tabIndex={0}
-                      ></img>
-                    ) : (
-                      <div className="temp-avatar" tabIndex={0}>
-                        {user.username.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <div className="user-info">
-                      <Link to="/profile" className="name-container">
-                        <span className="name">{user.name}</span>
-                      </Link>
-                      <p
-                        className="type"
-                        style={{ textTransform: "capitalize" }}
-                      >
-                        {user.type}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <hr className="list-divider"></hr>
-              </>
-            ) : (
-              <div tabIndex={0}></div>
-            )}
+            <div tabIndex={0}></div>
+
             {/* home */}
             <NavLink
               to="/"
@@ -213,7 +246,7 @@ const Header = () => {
             {user === null
               ? routes.map((route, index) => {
                   if (route.type === "divider")
-                    return <hr className="list-divider" key={index}></hr>;
+                    return <hr className="mdc-list-divider" key={index} />;
                   return (
                     <NavLink
                       className="mdc-list-item"
@@ -238,7 +271,7 @@ const Header = () => {
                 })
               : auth_routes.map((route, index) => {
                   if (route.type === "divider")
-                    return <hr className="list-divider" key={index}></hr>;
+                    return <hr className="mdc-list-divider" key={index} />;
                   return (
                     <NavLink
                       className="mdc-list-item"
