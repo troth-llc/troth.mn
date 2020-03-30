@@ -162,8 +162,10 @@
     width: 100%;
     z-index: 3;
     background-color: #000;
-    margin: 3px 20px;
     left: 0;
+    height: 56px;
+    margin: 0;
+    top: 0;
   }
   margin: 3px 0;
   background: rgba(0, 0, 0, 0.22);
@@ -173,8 +175,6 @@
   align-items: center;
   display: flex;
   height: 40px;
-  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
-    width 150ms cubic-bezier(0.4, 0, 0.2, 1);
   .search {
     flex: 1;
     line-height: 185%;
@@ -215,9 +215,74 @@
   #search-button {
     display: none;
   }
+  .cancel-search {
+    display: none;
+  }
 }
 @media (max-width: 1025px) {
   .search-outline {
     display: none;
   }
+}
+// user
+.user--username {
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  height: 32px;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  cursor: pointer;
+  color: #fff;
+  padding: 2px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.015em;
+  text-transform: none;
+  i {
+    margin-left: 4px;
+  }
+  span {
+    margin-left: 8px;
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 110px;
+    pointer-events: none;
+  }
+  @media (max-width: 500px) {
+    span {
+      display: none;
+    }
+    i {
+      margin-right: 4px;
+    }
+    i.i-dropdown {
+      display: none;
+    }
+  }
+}
+#account {
+  top: 30px !important;
+  right: 0;
+  a.mdc-list-item,
+  li.mdc-list-item {
+    height: 36px;
+  }
+  .mdc-list-divider {
+    margin: 4px 0;
+  }
+}
+.cancel-search {
+  height: 36px !important;
+  width: 36px !important;
+  padding: 6px !important;
+  margin-right: 8px;
+  font-size: 18px !important;
 }

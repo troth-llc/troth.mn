@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { MDCTopAppBar } from "@material/top-app-bar";
 import { MDCDrawer } from "@material/drawer";
 import { MDCList } from "@material/list";
+import { MDCMenuSurface } from "@material/menu-surface";
 import { MDCDialog } from "@material/dialog";
 import { Link, NavLink } from "react-router-dom";
 import { User } from "context/user";
@@ -88,21 +89,11 @@ const auth_routes = [
     auth: true,
     src: require("assets/icons/settings.svg"),
     title: "Settings"
-  },
-  {
-    to: "/logout",
-    exact: false,
-    src: require("assets/icons/logout.svg"),
-    title: "Log out",
-    action: e => {
-      e.preventDefault();
-      localStorage.removeItem("token");
-      window.location.reload();
-    }
   }
 ];
 const Header = () => {
   const [mobileSearch, setMobileSearch] = useState(false);
+  const [search, setSearch] = useState("");
   // Instantiation
   useEffect(() => {
     // header
@@ -183,12 +174,19 @@ const Header = () => {
                   aria-labelledby="prompt"
                   type="search"
                   placeholder="Search"
-                  onBlur={() => {
-                    document.getElementById("searchInput").focus();
-                    setMobileSearch(false);
-                  }}
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
                 />
               </div>
+              <button
+                className="material-icons mdc-top-app-bar__action-item mdc-icon-button cancel-search"
+                onClick={() => {
+                  setSearch("");
+                  setMobileSearch(false);
+                }}
+              >
+                close
+              </button>
             </div>
           </section>
           <section
@@ -198,7 +196,13 @@ const Header = () => {
             <button
               className="material-icons mdc-top-app-bar__action-item mdc-icon-button"
               id="search-button"
-              onClick={() => setMobileSearch(true)}
+              onClick={e => {
+                setMobileSearch(true);
+                var el = document.querySelector("#searchInput");
+                setTimeout(() => {
+                  el.focus();
+                }, 100);
+              }}
             >
               search
             </button>
@@ -214,9 +218,57 @@ const Header = () => {
                 account_circle
               </button>
             ) : (
-              <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button">
-                notifications
-              </button>
+              <>
+                <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button">
+                  notifications
+                </button>
+                <div className="toolbar mdc-menu-surface--anchor">
+                  <button
+                    className="user--username"
+                    onClick={() => {
+                      const menu = new MDCMenuSurface(
+                        document.querySelector("#account")
+                      );
+                      document
+                        .querySelector("#account")
+                        .addEventListener("click", () => menu.close());
+                      menu.open();
+                    }}
+                  >
+                    <i className="material-icons">account_circle</i>
+                    <span>{user.username}</span>
+                    <i className="material-icons i-dropdown">arrow_drop_down</i>
+                  </button>
+                  <div className="mdc-menu-surface" id="account">
+                    <ul
+                      className="mdc-list"
+                      role="menu"
+                      aria-hidden="true"
+                      aria-orientation="vertical"
+                      tabIndex="-1"
+                    >
+                      <Link
+                        to="/profile"
+                        className="mdc-list-item"
+                        role="menuitem"
+                      >
+                        <span className="mdc-list-item__text">Profile</span>
+                      </Link>
+                      <li className="mdc-list-divider" role="separator"></li>
+                      <li
+                        className="mdc-list-item"
+                        role="menuitem"
+                        onClick={() => {
+                          localStorage.removeItem("token");
+                          window.location.reload();
+                        }}
+                      >
+                        <span className="mdc-list-item__text">Logout</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </>
             )}
           </section>
         </div>
