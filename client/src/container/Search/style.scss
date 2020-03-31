@@ -1,0 +1,23 @@
+.search-content {
+  border-radius: 4px;
+  //   display: flex;
+  flex: none;
+  margin: 6px auto;
+  min-height: 103px;
+  position: relative;
+  width: 500px;
+  @media (max-width: 1024px) {
+    width: auto;
+  }
+  border: 1px rgba(224, 224, 224, 1) solid;
+  padding: 16px;
+  .placeholder {
+    flex-direction: column;
+    .line {
+      margin: 7px 0;
+    }
+  }
+}
+.search {
+  padding: 10px;
+}

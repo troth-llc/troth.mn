@@ -6,4 +6,5 @@ router.get("/", function(req, res) {
 });
 router.use("/auth", require("./auth.js"));
 router.use("/user", require("./user.js"));
+router.use("/search", require("./search.js"));
 module.exports = router;

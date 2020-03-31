@@ -27,7 +27,7 @@ ul {
 }
 @media (min-width: 1025px) {
   .main {
-    margin-top: 0;
+    margin-top: 56px;
     margin-left: 300px;
   }
   .drawer-closed .main {

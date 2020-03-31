@@ -1,10 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
-require("dotenv").config();
 const app = express();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+require("dotenv").config();
 const PORT = process.env.PORT;
 const mongodb = process.env.MONGO;
 app.use(express.json());
+// socket.io
+io.on("connection", function(socket) {
+  console.log("a user connected");
+});
 // call routes
 app.use("/api", require("./src/routes"));
 app.listen(PORT, () => {

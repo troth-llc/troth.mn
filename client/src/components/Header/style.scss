@@ -205,6 +205,8 @@
       padding: 0;
       position: relative;
       width: 100%;
+      -webkit-text-fill-color: #fff;
+      background-clip: text;
     }
   }
 }
@@ -226,6 +228,7 @@
 }
 // user
 .user--username {
+  margin-left: 8px;
   &:hover {
     background-color: rgba(0, 0, 0, 0.3);
   }
@@ -257,6 +260,7 @@
     pointer-events: none;
   }
   @media (max-width: 500px) {
+    margin-left: 0;
     span {
       display: none;
     }
@@ -285,4 +289,8 @@
   padding: 6px !important;
   margin-right: 8px;
   font-size: 18px !important;
+  color: #898989 !important;
+  &:hover {
+    color: white !important;
+  }
 }

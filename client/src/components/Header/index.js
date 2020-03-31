@@ -91,7 +91,7 @@ const auth_routes = [
     title: "Settings"
   }
 ];
-const Header = () => {
+const Header = props => {
   const [mobileSearch, setMobileSearch] = useState(false);
   const [search, setSearch] = useState("");
   // Instantiation
@@ -106,7 +106,10 @@ const Header = () => {
     list.wrapFocus = true;
     // Initialize either modal or dismissable
     const initModalDrawer = () => {
-      drawerElement.classList.remove("mdc-drawer--dismissible");
+      drawerElement.classList.remove(
+        "mdc-drawer--dismissible",
+        "mdc-drawer--open"
+      );
       drawerElement.classList.add("mdc-drawer--modal");
       const drawer = MDCDrawer.attachTo(drawerElement);
       drawer.open = false;
@@ -169,19 +172,32 @@ const Header = () => {
               className={`search-outline ${mobileSearch ? "open-search" : ""}`}
             >
               <div className="search">
-                <input
-                  id="searchInput"
-                  aria-labelledby="prompt"
-                  type="search"
-                  placeholder="Search"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                />
+                <form
+                  onSubmit={e => {
+                    if (document.getElementById("searchInput").value) {
+                      window.location.replace(
+                        "/search/" + encodeURIComponent(search)
+                      );
+                    }
+                    e.preventDefault();
+                  }}
+                >
+                  <input
+                    id="searchInput"
+                    aria-labelledby="prompt"
+                    type="search"
+                    placeholder="Search"
+                    name="q"
+                    autoComplete="off"
+                    onChange={e => setSearch(e.target.value)}
+                  />
+                </form>
               </div>
               <button
                 className="material-icons mdc-top-app-bar__action-item mdc-icon-button cancel-search"
                 onClick={() => {
                   setSearch("");
+                  document.getElementById("searchInput").value = "";
                   setMobileSearch(false);
                 }}
               >
@@ -278,13 +294,15 @@ const Header = () => {
         <div className="mdc-drawer__content">
           <nav className="mdc-list">
             <div tabIndex={0}></div>
-
             {/* home */}
             <NavLink
               to="/"
               exact
               className="mdc-list-item"
-              activeClassName="mdc-list-item--selected"
+              activeClassName=""
+              activeStyle={{
+                backgroundColor: "rgba(0,0,0,0.07)"
+              }}
             >
               <i
                 className="material-icons mdc-list-item__graphic"
@@ -329,7 +347,11 @@ const Header = () => {
                       className="mdc-list-item"
                       to={route.to}
                       key={index}
-                      activeClassName="mdc-list-item--selected"
+                      activeClassName=""
+                      activeStyle={{
+                        backgroundColor: "rgba(0,0,0,0.07)"
+                      }}
+                      exact={route.exact}
                       onClick={route.action}
                     >
                       <i
