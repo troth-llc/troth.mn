@@ -16,6 +16,10 @@
 @import url("~@material/layout-grid/dist/mdc.layout-grid.min.css");
 @import url("~@material/select/dist/mdc.select.min.css");
 @import url("~@material/linear-progress/dist/mdc.linear-progress.min.css");
+@import url("~@material/tab-bar/dist/mdc.tab-bar.min.css");
+@import url("~@material/tab-scroller/dist/mdc.tab-scroller.css");
+@import url("~@material/tab-indicator/dist/mdc.tab-indicator.css");
+@import url("~@material/tab/dist/mdc.tab.css");
 @import "assets/fonts/stylesheet.css";
 ol,
 ul {

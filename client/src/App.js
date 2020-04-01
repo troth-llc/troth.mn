@@ -3,7 +3,7 @@ import axios from "axios";
 // React Router
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // Container
-import { Profile, Find, Search } from "container";
+import { Profile, Find, Search, Settings } from "container";
 // Components
 import { AuthDialog, Header } from "components";
 // App container
@@ -60,6 +60,7 @@ export default function App() {
                   <Home />
                 </Route>
                 <PrivateRoute path="/profile" component={Profile} />
+                <PrivateRoute path="/settings" component={Settings} />
                 <Route path="/search/:search" component={Search} />
                 <Route path="/:username" component={Find} />
                 <Route path="*">
