@@ -88,7 +88,7 @@ const Profile = () => {
                     </Tooltip>
                   )}
                   <Link
-                    to="/settings/profile"
+                    to="/settings/info"
                     className="mdc-button mdc-button--outlined"
                   >
                     <div className="mdc-button__ripple"></div>
