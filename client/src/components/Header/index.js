@@ -93,7 +93,6 @@ const auth_routes = [
 ];
 const Header = props => {
   const [mobileSearch, setMobileSearch] = useState(false);
-  const [search, setSearch] = useState("");
   // Instantiation
   useEffect(() => {
     // header
@@ -176,7 +175,10 @@ const Header = props => {
                   onSubmit={e => {
                     if (document.getElementById("searchInput").value) {
                       window.location.replace(
-                        "/search/" + encodeURIComponent(search)
+                        "/search/" +
+                          encodeURIComponent(
+                            document.getElementById("searchInput").value
+                          )
                       );
                     }
                     e.preventDefault();
@@ -189,14 +191,12 @@ const Header = props => {
                     placeholder="Search"
                     name="q"
                     autoComplete="off"
-                    onChange={e => setSearch(e.target.value)}
                   />
                 </form>
               </div>
               <button
                 className="material-icons mdc-top-app-bar__action-item mdc-icon-button cancel-search"
                 onClick={() => {
-                  setSearch("");
                   document.getElementById("searchInput").value = "";
                   setMobileSearch(false);
                 }}
