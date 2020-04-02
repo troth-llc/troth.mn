@@ -62,7 +62,7 @@ const Profile = () => {
                   </div>
                 )}
               </div>
-              <div>
+              <div id="cal">
                 <Calendar />
                 <div className="flex center">
                   <button

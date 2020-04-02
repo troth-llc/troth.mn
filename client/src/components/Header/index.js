@@ -322,7 +322,10 @@ const Header = props => {
                       className="mdc-list-item"
                       to={route.to}
                       key={index}
-                      activeClassName="mdc-list-item--selected"
+                      activeClassName=""
+                      activeStyle={{
+                        backgroundColor: "rgba(0,0,0,0.07)"
+                      }}
                       onClick={route.action}
                     >
                       <i

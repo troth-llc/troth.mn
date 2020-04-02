@@ -1,6 +1,7 @@
 .settings-container {
   padding: 10px;
-  #settings-tab {
+  #settings-tab,
+  #settings-container {
     max-width: 680px;
     margin: 0 auto;
     .mdc-tab__text-label {
@@ -13,6 +14,66 @@
       &:focus {
         text-decoration: none;
       }
+    }
+  }
+  .notice {
+    font-size: 14px;
+    color: #898989;
+    margin: 20px 0;
+    display: flex;
+  }
+}
+#settings-container {
+  .input-container {
+    padding: 0 80px;
+    .mdc-text-field--textarea {
+      margin: 15px auto 10px auto;
+    }
+  }
+  .action {
+    padding: 0 80px;
+    div {
+      display: flex;
+      justify-content: flex-end;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+  }
+}
+@media (max-width: 1024px) {
+  #settings-container .input-container {
+    padding: 0;
+    .mdc-text-field,
+    .mdc-text-field-helper-text {
+      max-width: unset;
+      width: unset;
+    }
+  }
+  #settings-container {
+    .action {
+      padding: 0;
+      div {
+        max-width: unset;
+        margin: unset;
+      }
+    }
+  }
+  .settings-container {
+    padding: 10px 20px;
+  }
+  .mdc-select:not(.mdc-select--disabled) .mdc-select__anchor {
+    max-width: unset !important;
+  }
+}
+#gender-select-info {
+  .mdc-menu-surface--open {
+    left: unset !important;
+    left: 20% !important;
+    @media (min-width: 360px) {
+      width: 280px;
+    }
+    @media (max-width: 1024px) {
+      left: 5% !important;
     }
   }
 }

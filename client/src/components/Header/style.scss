@@ -15,7 +15,7 @@
 }
 #drawer {
   width: 300px;
-  z-index: 12;
+  z-index: 10;
   #drawer-btn {
     display: none;
   }
@@ -33,7 +33,7 @@
 }
 
 .mdc-drawer-scrim {
-  z-index: 11 !important;
+  z-index: 9 !important;
 }
 .mdc-drawer--modal + .mdc-drawer-scrim {
   background-color: rgba(0, 0, 0, 0.72) !important;

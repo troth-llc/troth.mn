@@ -219,7 +219,8 @@ $base-color: #c3b59b;
     font-weight: 400;
   }
 }
-.register-container {
+.register-container,
+.settings-container {
   .mdc-text-field,
   .mdc-select:not(.mdc-select--disabled) .mdc-select__anchor {
     max-width: 90%;

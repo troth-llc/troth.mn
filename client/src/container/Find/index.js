@@ -12,7 +12,6 @@ const Find = props => {
   const [loading, setLoading] = useState(false);
   const [calendar, setOpen] = useState(false);
   const [follow, openFollow] = useState(false);
-
   const fetch_user = () => {
     axios.get("/api/user/" + props.match.params.username).then(response => {
       if (response.data.status) {
@@ -107,7 +106,7 @@ const Find = props => {
                   {current !== null ? (
                     current._id === user.id ? (
                       <Link
-                        to="/profile/edit"
+                        to="/settings/info"
                         className="mdc-button mdc-button--outlined"
                       >
                         <div className="mdc-button__ripple"></div>
