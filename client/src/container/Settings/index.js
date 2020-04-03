@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { MDCTabBar } from "@material/tab-bar";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import Info from "./info";
+import Password from "./password";
 import "./style.scss";
 const Search = () => {
   const path = window.location.pathname.split("/");
@@ -89,12 +90,8 @@ const Search = () => {
         <Switch>
           {/* information */}
           <Route exact path="/settings/info" component={Info} />
-          <Route exact path="/settings/email">
-            <h5 className="text-center">tab item 2</h5>
-          </Route>
-          <Route exact path="/settings/password">
-            <h5 className="text-center">tab item 3</h5>
-          </Route>
+          <Route exact path="/settings/email"></Route>
+          <Route exact path="/settings/password" component={Password} />
           <Redirect from="/settings" to="/settings/info" />
         </Switch>
       </div>

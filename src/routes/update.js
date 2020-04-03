@@ -11,4 +11,5 @@ const token = require("../middleware/token");
  *       200:
  */
 router.post("/info", validate.info, token, update.info);
+router.post("/password", validate.password, token, update.password);
 module.exports = router;

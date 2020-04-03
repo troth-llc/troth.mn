@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const { validationResult } = require("express-validator");
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   const errors = validationResult(req);
   const { name, username, email, password, gender, id } = req.body;
   if (!errors.isEmpty()) {
@@ -11,9 +11,9 @@ exports.create = function(req, res) {
     User.findOne()
       .or([
         { email: email.toLowerCase() },
-        { username: username.toLowerCase() }
+        { username: username.toLowerCase() },
       ])
-      .then(user => {
+      .then((user) => {
         if (user === null) {
           User.create(
             {
@@ -22,9 +22,9 @@ exports.create = function(req, res) {
               email: email.toLowerCase(),
               password,
               gender,
-              id
+              id,
             },
-            err => {
+            (err) => {
               if (err) throw err;
               console.log(username + " user registered " + new Date());
               return res.status(200).json({ status: true, username });
@@ -32,21 +32,21 @@ exports.create = function(req, res) {
           );
         } else if (user.email.toLowerCase() == email.toLowerCase())
           return res.status(200).json({
-            errors: [{ param: "email", msg: "Email is already registered" }]
+            errors: [{ param: "email", msg: "Email is already registered" }],
           });
         else if (user.username.toLowerCase() == username.toLowerCase())
           return res.status(200).json({
             errors: [
               {
                 param: "username",
-                msg: "Username is already registered"
-              }
-            ]
+                msg: "Username is already registered",
+              },
+            ],
           });
       });
   }
 };
-exports.login = function(req, res) {
+exports.login = function (req, res) {
   const errors = validationResult(req);
   const { username: email, password } = req.body;
   if (!errors.isEmpty()) {
@@ -55,23 +55,23 @@ exports.login = function(req, res) {
   User.findOne()
     .or([
       { email: email.toLowerCase() },
-      { username: new RegExp(`^${email}$`, "i") }
+      { username: new RegExp(`^${email}$`, "i") },
     ])
-    .then(user => {
+    .then((user) => {
       if (!user)
         return res.status(200).json({
-          errors: [{ param: "username", msg: "User does not exist" }]
+          errors: [{ param: "username", msg: "User does not exist" }],
         });
-      bcrypt.compare(password, user.password).then(isMatch => {
+      bcrypt.compare(password, user.password).then((isMatch) => {
         if (!isMatch)
           return res.status(200).json({
-            errors: [{ param: "password", msg: "Password does not match" }]
+            errors: [{ param: "password", msg: "Password does not match" }],
           });
         jwt.sign(
           { id: user.id },
           process.env.JWTSECRET,
           {
-            expiresIn: 36000 // 10 hours
+            expiresIn: 36000, // 10 hours
           },
           (err, token) => {
             if (err) throw err;
@@ -82,13 +82,13 @@ exports.login = function(req, res) {
       });
     });
 };
-exports.profile = function(req, res) {
+exports.profile = function (req, res) {
   const token = req.header("x-auth-token");
-  jwt.verify(token, process.env.JWTSECRET, function(err, user) {
+  jwt.verify(token, process.env.JWTSECRET, function (err, user) {
     if (user) {
       User.findById(user.id)
         .select("-password")
-        .then(user => {
+        .then((user) => {
           res.json({
             user: {
               _id: user._id,
@@ -107,9 +107,10 @@ exports.profile = function(req, res) {
               about: user.about,
               created: user.created,
               updated: user.updated,
+              password_updated: user.password_updated,
               following: user.following.length,
-              followers: user.followers.length
-            }
+              followers: user.followers.length,
+            },
           });
         });
     } else {

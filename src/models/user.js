@@ -5,88 +5,92 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   username: {
     type: String,
     required: true,
     default: null,
-    unique: true
+    unique: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   gender: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   avatar: {
     type: String,
-    default: null
+    default: null,
   },
   verified: {
     type: Boolean,
-    default: false
+    default: false,
   },
   type: {
     type: String,
-    default: "member"
+    default: "member",
   },
   badges: {
     type: Array,
-    default: []
+    default: [],
   },
   following: [
     {
       user: {
         type: Schema.ObjectId,
-        ref: "User"
+        ref: "User",
       },
-      date: { type: Date, default: new Date() }
-    }
+      date: { type: Date, default: new Date() },
+    },
   ],
   followers: [
     {
       user: {
         type: Schema.ObjectId,
-        ref: "User"
+        ref: "User",
       },
-      date: { type: Date, default: new Date() }
-    }
+      date: { type: Date, default: new Date() },
+    },
   ],
   projects: {
     type: Array,
-    default: []
+    default: [],
   },
   created: {
     type: Date,
-    default: new Date()
+    default: new Date(),
   },
   about: {
     type: String,
-    default: ""
+    default: "",
   },
   website: {
     type: String,
-    default: ""
+    default: "",
   },
   email_verified_at: {
     type: Date,
-    default: null
+    default: null,
+  },
+  password_updated: {
+    type: Date,
+    default: new Date(),
   },
   updated: {
     type: Date,
-    default: new Date()
-  }
+    default: new Date(),
+  },
 });
 // hash user password before saving into database
-userSchema.pre("save", function(next) {
+userSchema.pre("save", function (next) {
   const user = this;
   if (!user.isModified("password")) return next();
   this.password = bcrypt.hashSync(this.password, 10);
