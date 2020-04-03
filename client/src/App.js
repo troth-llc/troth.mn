@@ -60,7 +60,7 @@ export default function App() {
                   <Home />
                 </Route>
                 <PrivateRoute path="/profile" component={Profile} />
-                <PrivateRoute path="/settings" component={Settings} />
+                <PrivateRoute path="/settings*" component={Settings} />
                 <Route path="/search/:search" component={Search} />
                 <Route path="/:username" component={Find} />
                 <Route path="*">

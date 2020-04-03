@@ -92,6 +92,7 @@ exports.profile = function(req, res) {
           res.json({
             user: {
               _id: user._id,
+              email: user.email,
               email_verified_at: user.email_verified_at,
               password_updated_at: user.password_updated_at,
               username: user.username,
@@ -102,6 +103,10 @@ exports.profile = function(req, res) {
               projects: user.projects,
               name: user.name,
               gender: user.gender,
+              website: user.website,
+              about: user.about,
+              created: user.created,
+              updated: user.updated,
               following: user.following.length,
               followers: user.followers.length
             }

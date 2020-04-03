@@ -163,7 +163,7 @@ const Header = props => {
               menu
             </button>
             <Link to="/" className="mdc-top-app-bar__title">
-              <img src={require("../../assets/img/navlogo.png")} />
+              <img src={require("../../assets/img/navlogo.png")} alt="" />
             </Link>
           </section>
           <section className="nav-middle">

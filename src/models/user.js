@@ -64,15 +64,23 @@ const userSchema = new Schema({
     type: Array,
     default: []
   },
-  created_at: {
+  created: {
     type: Date,
     default: new Date()
+  },
+  about: {
+    type: String,
+    default: ""
+  },
+  website: {
+    type: String,
+    default: ""
   },
   email_verified_at: {
     type: Date,
     default: null
   },
-  password_updated_at: {
+  updated: {
     type: Date,
     default: new Date()
   }

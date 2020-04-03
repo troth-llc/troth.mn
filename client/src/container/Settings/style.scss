@@ -34,9 +34,13 @@
     padding: 0 80px;
     div {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       max-width: 90%;
       margin: 0 auto;
+      span {
+        line-height: 36px;
+        font-size: 14px;
+      }
     }
   }
 }
@@ -75,5 +79,10 @@
     @media (max-width: 1024px) {
       left: 5% !important;
     }
+  }
+}
+.mdc-text-field--textarea {
+  .mdc-floating-label {
+    margin-left: 3px;
   }
 }
