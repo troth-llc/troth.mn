@@ -260,6 +260,10 @@
     pointer-events: none;
   }
   @media (max-width: 500px) {
+    background-color: transparent;
+    &:hover {
+      background-color: transparent;
+    }
     margin-left: 0;
     span {
       display: none;
@@ -292,5 +296,17 @@
   color: #898989 !important;
   &:hover {
     color: white !important;
+  }
+}
+.mini-avatar {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  margin-left: 4px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  @media (max-width: 500px) {
+    margin-right: 4px;
   }
 }

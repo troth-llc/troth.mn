@@ -12,75 +12,75 @@ const routes = [
     to: "/user/calendar",
     exact: false,
     src: require("assets/icons/calendar.svg"),
-    title: "Calendar"
+    title: "Calendar",
   },
   {
     to: "/user/candidate",
     exact: false,
     src: require("assets/icons/candidate.svg"),
-    title: "Candidate Action Status"
+    title: "Candidate Action Status",
   },
   {
     to: "/user/group",
     exact: false,
     src: require("assets/icons/group.svg"),
-    title: "Group Polls"
+    title: "Group Polls",
   },
   {
     to: "/user/survey",
     exact: false,
     src: require("assets/icons/survey.svg"),
-    title: "Surveys"
+    title: "Surveys",
   },
   {
     to: "/user/stream",
     exact: false,
     src: require("assets/icons/stream.svg"),
-    title: "Live Streams"
+    title: "Live Streams",
   },
   {
     to: "/user/return",
     exact: false,
     src: require("assets/icons/return.svg"),
-    title: "Return On Investment"
-  }
+    title: "Return On Investment",
+  },
 ];
 const auth_routes = [
   {
     to: "/calendar",
     exact: false,
     src: require("assets/icons/calendar.svg"),
-    title: "Calendar"
+    title: "Calendar",
   },
   {
     to: "/candidate",
     exact: false,
     src: require("assets/icons/candidate.svg"),
-    title: "Candidate Action Status"
+    title: "Candidate Action Status",
   },
   {
     to: "/group",
     exact: false,
     src: require("assets/icons/group.svg"),
-    title: "Group Polls"
+    title: "Group Polls",
   },
   {
     to: "/survey",
     exact: false,
     src: require("assets/icons/survey.svg"),
-    title: "Surveys"
+    title: "Surveys",
   },
   {
     to: "/stream",
     exact: false,
     src: require("assets/icons/stream.svg"),
-    title: "Live Streams"
+    title: "Live Streams",
   },
   {
     to: "/return",
     exact: false,
     src: require("assets/icons/return.svg"),
-    title: "Return On Investment"
+    title: "Return On Investment",
   },
   { type: "divider" },
   {
@@ -88,10 +88,10 @@ const auth_routes = [
     exact: false,
     auth: true,
     src: require("assets/icons/settings.svg"),
-    title: "Settings"
-  }
+    title: "Settings",
+  },
 ];
-const Header = props => {
+const Header = (props) => {
   const [mobileSearch, setMobileSearch] = useState(false);
   // Instantiation
   useEffect(() => {
@@ -172,7 +172,7 @@ const Header = props => {
             >
               <div className="search">
                 <form
-                  onSubmit={e => {
+                  onSubmit={(e) => {
                     if (document.getElementById("searchInput").value) {
                       window.location.replace(
                         "/search/" +
@@ -212,7 +212,7 @@ const Header = props => {
             <button
               className="material-icons mdc-top-app-bar__action-item mdc-icon-button"
               id="search-button"
-              onClick={e => {
+              onClick={(e) => {
                 setMobileSearch(true);
                 var el = document.querySelector("#searchInput");
                 setTimeout(() => {
@@ -251,7 +251,16 @@ const Header = props => {
                       menu.open();
                     }}
                   >
-                    <i className="material-icons">account_circle</i>
+                    {user.avatar !== null ? (
+                      <div
+                        className="mini-avatar"
+                        style={{
+                          backgroundImage: `url(${"/uploads/" + user.avatar})`,
+                        }}
+                      />
+                    ) : (
+                      <i className="material-icons">account_circle</i>
+                    )}
                     <span>{user.username}</span>
                     <i className="material-icons i-dropdown">arrow_drop_down</i>
                   </button>
@@ -301,7 +310,7 @@ const Header = props => {
               className="mdc-list-item"
               activeClassName=""
               activeStyle={{
-                backgroundColor: "rgba(0,0,0,0.07)"
+                backgroundColor: "rgba(0,0,0,0.07)",
               }}
             >
               <i
@@ -324,7 +333,7 @@ const Header = props => {
                       key={index}
                       activeClassName=""
                       activeStyle={{
-                        backgroundColor: "rgba(0,0,0,0.07)"
+                        backgroundColor: "rgba(0,0,0,0.07)",
                       }}
                       onClick={route.action}
                     >
@@ -352,7 +361,7 @@ const Header = props => {
                       key={index}
                       activeClassName=""
                       activeStyle={{
-                        backgroundColor: "rgba(0,0,0,0.07)"
+                        backgroundColor: "rgba(0,0,0,0.07)",
                       }}
                       exact={route.exact}
                       onClick={route.action}

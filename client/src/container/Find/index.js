@@ -6,14 +6,14 @@ import { NavLink, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Loader } from "components";
 import axios from "axios";
-const Find = props => {
+const Find = (props) => {
   const [user, setUser] = useState(null);
   const [following, setFollow] = useState(null);
   const [loading, setLoading] = useState(false);
   const [calendar, setOpen] = useState(false);
   const [follow, openFollow] = useState(false);
   const fetch_user = () => {
-    axios.get("/api/user/" + props.match.params.username).then(response => {
+    axios.get("/api/user/" + props.match.params.username).then((response) => {
       if (response.data.status) {
         setUser(response.data.user);
         document.title = `${response.data.user.name} (@${response.data.user.username}) • Troth`;
@@ -26,7 +26,7 @@ const Find = props => {
   }, []);
   useEffect(() => {
     const element = document.querySelectorAll(".Calendar__weekRow");
-    element.forEach(el => {
+    element.forEach((el) => {
       for (var i = 0; i < el.childNodes.length; i++) {
         if (el.childNodes[i].classList.contains("-today")) {
           el.classList.add("row-mobile");
@@ -67,9 +67,10 @@ const Find = props => {
             >
               <div className="profile-image">
                 {user.avatar !== null ? (
-                  <img
-                    src="https://cdn.discordapp.com/avatars/525589602900377610/7b10cb16b93c5aefa7adcadadbc4a598.png?size=512"
-                    alt="sup"
+                  <div
+                    style={{
+                      backgroundImage: `url(${"/uploads/" + user.avatar})`,
+                    }}
                     className="avatar-img"
                   />
                 ) : (
@@ -123,7 +124,7 @@ const Find = props => {
                                 following ? "unfollow" : "follow"
                               }/` + user.id
                             )
-                            .then(response => {
+                            .then((response) => {
                               if (response.data.status) {
                                 fetch_user();
                                 setLoading(false);

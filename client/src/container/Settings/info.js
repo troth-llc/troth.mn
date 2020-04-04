@@ -9,7 +9,8 @@ const Info = () => {
     username: "",
     website: "",
     gender: "",
-    about: ""
+    phone: "",
+    about: "",
   });
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState({
@@ -17,7 +18,8 @@ const Info = () => {
     username: "",
     website: "",
     gender: "",
-    about: ""
+    phone: "",
+    about: "",
   });
   const [gender, setGender] = useState("");
   const { user } = useContext(User);
@@ -31,7 +33,8 @@ const Info = () => {
         username: user.username,
         website: user.website,
         about: user.about,
-        disabled: true
+        phone: user.phone,
+        disabled: true,
       });
       select.value = user.gender;
       setGender(user.gender);
@@ -43,9 +46,9 @@ const Info = () => {
   }, [user]);
   return user !== null ? (
     <form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
-        const { name, username, website, about } = update;
+        const { name, username, website, about, phone } = update;
         setDisabled(true);
         axios
           .post("/api/update/info", {
@@ -53,21 +56,23 @@ const Info = () => {
             username,
             website,
             about,
-            gender
+            phone,
+            gender,
           })
-          .then(response => {
+          .then((response) => {
             if (response.data.status) window.location.reload();
             else {
               let errors = response.data.errors;
-              errors.map(error => setError({ [error.param]: error.msg }));
+              errors.map((error) => setError({ [error.param]: error.msg }));
               setDisabled(false);
             }
           });
       }}
     >
+      <h5 className="notice center font-reset">Personal Information</h5>
       <span className="notice">
-        Personal Information Provide your personal information. Some info may be
-        visible to other people using Troth.
+        Provide your personal information. Some info may be visible to other
+        people using Troth.
       </span>
       <div className="input-container">
         <div className="mdc-text-field">
@@ -76,11 +81,11 @@ const Info = () => {
             required
             autoComplete="off"
             value={update.name}
-            onChange={e => {
+            onChange={(e) => {
               setDisabled(false);
               setUpdate({
                 ...update,
-                [e.target.name]: e.target.value
+                [e.target.name]: e.target.value,
               });
             }}
             name="name"
@@ -105,12 +110,12 @@ const Info = () => {
             required
             autoComplete="off"
             value={update.username}
-            onChange={e => {
+            onChange={(e) => {
               setDisabled(false);
               setUpdate({
                 ...update,
                 [e.target.name]: e.target.value,
-                disabled: false
+                disabled: false,
               });
             }}
             name="username"
@@ -136,12 +141,12 @@ const Info = () => {
             autoComplete="off"
             value={update.website}
             name="website"
-            onChange={e => {
+            onChange={(e) => {
               setDisabled(false);
               setUpdate({
                 ...update,
                 [e.target.name]: e.target.value,
-                disabled: false
+                disabled: false,
               });
             }}
           />
@@ -156,6 +161,35 @@ const Info = () => {
         </div>
         <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">
           {error.website}
+        </p>
+      </div>
+      <div className="input-container">
+        <div className="mdc-text-field">
+          <input
+            className="mdc-text-field__input"
+            autoComplete="off"
+            value={update.phone}
+            name="phone"
+            onChange={(e) => {
+              setDisabled(false);
+              setUpdate({
+                ...update,
+                [e.target.name]: e.target.value,
+                disabled: false,
+              });
+            }}
+          />
+          <div className="mdc-line-ripple"></div>
+          <label
+            className={`mdc-floating-label ${
+              user.phone ? "mdc-floating-label--float-above" : ""
+            }`}
+          >
+            Phone number
+          </label>
+        </div>
+        <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">
+          {error.phone}
         </p>
       </div>
       <div className="input-container">
@@ -199,11 +233,11 @@ const Info = () => {
             cols="15"
             name="about"
             value={update.about}
-            onChange={e => {
+            onChange={(e) => {
               setDisabled(false);
               setUpdate({
                 ...update,
-                [e.target.name]: e.target.value
+                [e.target.name]: e.target.value,
               });
             }}
           ></textarea>

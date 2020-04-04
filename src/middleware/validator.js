@@ -87,13 +87,19 @@ exports.info = [
   check("gender")
     .isIn(["male", "female", "custom"])
     .withMessage("Invalid gender"),
-  check("website")
+  check("website").optional({ checkFalsy: true }).isLength({
+    min: 10,
+    max: 128,
+  }),
+  check("phone")
     .optional({ checkFalsy: true })
     .isLength({
-      min: 10,
-      max: 128,
+      min: 6,
+      max: 32,
     })
-    .withMessage("Must be between 10 and 128 in length"),
+    .withMessage("Must be between 6 and 32 in length")
+    .matches(/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/i)
+    .withMessage("Invalid phone number"),
   check("about")
     .optional({ checkFalsy: true })
     .isLength({

@@ -76,6 +76,10 @@
       overflow: hidden;
       position: relative;
       display: block;
+      border-radius: 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
       &::after {
         border: 1px solid rgba(0, 0, 0, 0.0975);
         border-radius: 50%;

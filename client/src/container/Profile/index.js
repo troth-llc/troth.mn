@@ -4,15 +4,20 @@ import { Calendar, FollowDialog } from "components";
 import { NavLink, Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import { User } from "context/user";
+import axios from "axios";
 import "./style.scss";
 const Profile = () => {
   const [calendar, setOpen] = useState(false);
   const [follow, openFollow] = useState(false);
+  const [avatar, setAvatar] = useState({
+    error: false,
+    message: "Edit image",
+  });
   const { user } = useContext(User);
   useEffect(() => {
     if (user) document.title = `${user.name} (@${user.username}) • Troth`;
     const element = document.querySelectorAll(".Calendar__weekRow");
-    element.forEach(el => {
+    element.forEach((el) => {
       for (var i = 0; i < el.childNodes.length; i++) {
         if (el.childNodes[i].classList.contains("-today")) {
           el.classList.add("row-mobile");
@@ -51,14 +56,38 @@ const Profile = () => {
             >
               <div className="profile-image">
                 {user.avatar !== null ? (
-                  <img
-                    src="https://cdn.discordapp.com/avatars/525589602900377610/7b10cb16b93c5aefa7adcadadbc4a598.png?size=512"
-                    alt="sup"
+                  <div
+                    style={{
+                      backgroundImage: `url(${"/uploads/" + user.avatar})`,
+                    }}
                     className="avatar-img"
-                  />
+                  >
+                    <div
+                      className={`edit-image ${
+                        avatar.error ? "edit-image-error" : ""
+                      } ${avatar.error === "loading" ? "loading" : ""}`}
+                      onClick={() => {
+                        if (avatar.error !== "loading")
+                          document.getElementById("profile-edit").click();
+                      }}
+                    >
+                      {avatar.message}
+                    </div>
+                  </div>
                 ) : (
                   <div className="emp-avatar">
                     {user.username.charAt(0).toUpperCase()}
+                    <div
+                      className={`edit-image ${
+                        avatar.error ? "edit-image-error" : ""
+                      } ${avatar.error === "loading" ? "loading" : ""}`}
+                      onClick={() => {
+                        if (avatar.error !== "loading")
+                          document.getElementById("profile-edit").click();
+                      }}
+                    >
+                      {avatar.message}
+                    </div>
                   </div>
                 )}
               </div>
@@ -165,6 +194,56 @@ const Profile = () => {
           </div>
         </div>
       )}
+      {/* avatar hidden input */}
+      <input
+        type="file"
+        id="profile-edit"
+        accept="image/x-png,image/jpeg"
+        onChange={(e) => {
+          let file = e.target.files[0];
+          if (file.name) {
+            if (["jpg", "png", "jpeg"].includes(/[^.]+$/.exec(file.name)[0])) {
+              var url = window.URL || window.webkitURL;
+              var image = new Image();
+              image.onload = function () {
+                setAvatar({
+                  message: "loading....",
+                  error: "loading",
+                });
+                const upload = new FormData();
+                upload.append("avatar", file);
+
+                axios({
+                  method: "post",
+                  url: "/api/update/avatar",
+                  data: upload,
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                })
+                  .then((response) => {
+                    if (response.data.status) window.location.reload();
+                  })
+                  .catch((response) => {
+                    console.log(response);
+                  });
+              };
+              image.onerror = () => {
+                setAvatar({
+                  message: "Invalid image",
+                  error: true,
+                });
+              };
+              image.src = url.createObjectURL(file);
+            }
+          } else {
+            setAvatar({
+              message: "Invalid image",
+              error: true,
+            });
+          }
+        }}
+      />
       <FollowDialog data={follow} />
     </>
   );

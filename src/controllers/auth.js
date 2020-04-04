@@ -107,6 +107,7 @@ exports.profile = function (req, res) {
               about: user.about,
               created: user.created,
               updated: user.updated,
+              phone: user.phone,
               password_updated: user.password_updated,
               following: user.following.length,
               followers: user.followers.length,

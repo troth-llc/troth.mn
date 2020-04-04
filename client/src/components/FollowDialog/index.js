@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./style.scss";
-const FollowDialog = props => {
+const FollowDialog = (props) => {
   const { id, type } = props.data;
   const [sliced, setFollow] = useState({ start: 0, end: 1 });
   const [data, setData] = useState([]);
@@ -11,7 +11,7 @@ const FollowDialog = props => {
     if (last === false) {
       axios
         .get(`/api/user/${type}/${id}?start=${start}&end=${end}`)
-        .then(res => {
+        .then((res) => {
           if (res.data.status) {
             setLast(res.data.last);
             console.log(res.data.last);
@@ -20,7 +20,7 @@ const FollowDialog = props => {
               : setData(res.data.follow);
             setFollow({
               start: parseInt(res.data.end),
-              end: parseInt(res.data.end) + 20
+              end: parseInt(res.data.end) + 20,
             });
           } else console.log("failed to fetch data");
         });
@@ -47,7 +47,7 @@ const FollowDialog = props => {
           </div>
           <div
             className="mdc-dialog__content"
-            onScroll={e => {
+            onScroll={(e) => {
               if (
                 e.currentTarget.scrollHeight -
                   e.currentTarget.scrollTop -
@@ -67,7 +67,14 @@ const FollowDialog = props => {
                         <div className="people-info flex">
                           <div className="follow-avatar">
                             {data.avatar !== null ? (
-                              <span className="avatar-picture"></span>
+                              <span
+                                className="avatar-picture"
+                                style={{
+                                  backgroundImage: `url(${
+                                    "/uploads/" + data.avatar
+                                  })`,
+                                }}
+                              ></span>
                             ) : (
                               <span className="avatar-picture null-avatar">
                                 {data.username.charAt(0).toUpperCase()}
@@ -76,9 +83,7 @@ const FollowDialog = props => {
                           </div>
                           <div className="text">
                             <div className="text-username flex">
-                              <a title="ochrooo" href={`/${data.username}`}>
-                                {data.username}
-                              </a>
+                              <a href={`/${data.username}`}>{data.username}</a>
                             </div>
                             <div className="text-name flex">{data.name}</div>
                           </div>

@@ -3,6 +3,7 @@ const router = express.Router();
 const update = require("../controllers/update");
 const validate = require("../middleware/validator");
 const token = require("../middleware/token");
+const upload = require("../middleware/multer");
 /**
  * /api/update/:
  *   post:
@@ -12,4 +13,6 @@ const token = require("../middleware/token");
  */
 router.post("/info", validate.info, token, update.info);
 router.post("/password", validate.password, token, update.password);
+router.post("/avatar", upload.avatar, token, update.avatar);
+router.post("/cover", token, update.cover);
 module.exports = router;
