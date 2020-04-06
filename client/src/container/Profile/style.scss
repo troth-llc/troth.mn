@@ -129,6 +129,11 @@
         border-radius: 50%;
         z-index: 1;
         margin: 0 auto;
+        width: 100px;
+        height: 100px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
       }
       .avatar-placeholder {
         min-width: 100px;

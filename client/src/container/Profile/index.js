@@ -34,9 +34,10 @@ const Profile = () => {
             <div className="profile-cover">
               <div className="cover-profile center">
                 {user.avatar !== null ? (
-                  <img
-                    src="https://cdn.discordapp.com/avatars/525589602900377610/7b10cb16b93c5aefa7adcadadbc4a598.png?size=512"
-                    alt="sup"
+                  <div
+                    style={{
+                      backgroundImage: `url(${"/uploads/" + user.avatar})`,
+                    }}
                     className="avatar-img"
                   />
                 ) : (

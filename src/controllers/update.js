@@ -23,7 +23,7 @@ exports.info = function (req, res) {
           (user) => {
             if (user === null || user.username === data.username) {
               data.name = name;
-              data.username = username;
+              data.username = username.toLowerCase();
               data.website = website;
               data.gender = gender;
               data.about = about;
