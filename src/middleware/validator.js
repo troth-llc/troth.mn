@@ -128,3 +128,11 @@ exports.password = [
     })
     .withMessage("Must be between 6 and 128 in length"),
 ];
+exports.forgot = [
+  check("username")
+    .isLength({
+      min: 4,
+      max: 128,
+    })
+    .withMessage("Must be between 4 and 128 in length"),
+];

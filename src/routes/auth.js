@@ -14,4 +14,5 @@ const validate = require("../middleware/validator");
 router.get("/", token, auth.profile);
 router.post("/", validate.login, auth.login);
 router.post("/register", validate.create, auth.create);
+router.post("/forgot", validate.forgot, auth.forgot);
 module.exports = router;

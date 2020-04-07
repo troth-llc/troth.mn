@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
+const nodemailer = require("nodemailer");
 const { validationResult } = require("express-validator");
 exports.create = function (req, res) {
   const errors = validationResult(req);
@@ -118,4 +119,52 @@ exports.profile = function (req, res) {
       res.json({ err });
     }
   });
+};
+exports.forgot = function (req, res) {
+  const errors = validationResult(req);
+  const { username: email } = req.body;
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ errors: errors.array() });
+  } else {
+    User.findOne()
+      .or([
+        { email: email.toLowerCase() },
+        { username: new RegExp(`^${email}$`, "i") },
+      ])
+      .then((user) => {
+        if (!user)
+          return res.status(200).json({
+            errors: [{ param: "username", msg: "User does not exist" }],
+          });
+        else {
+          var transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: process.env.MAIL,
+              pass: process.env.MAIL_PASSWORD,
+              type: "login",
+            },
+          });
+          const mailOptions = {
+            from: process.env.MAIL, // sender address
+            to: user.email, // receiver
+            subject: "Reset your password?", // Subject line
+            html: `<p>if you requested a password reset for @${user.username}, click the button below. If you didn't make this request, ignore this email.</p>
+            <a href="http://localhost:3000/auth/reset_password?token=${user.username}"></>
+            `, // plain text body
+          };
+
+          transporter.sendMail(mailOptions, function (err, info) {
+            if (err) console.log(err);
+            else {
+              if (info.accepted.length > 0) {
+                res.json({ status: true });
+              } else {
+                res.json({ status: false });
+              }
+            }
+          });
+        }
+      });
+  }
 };

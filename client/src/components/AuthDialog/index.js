@@ -5,28 +5,29 @@ import { MDCSelect } from "@material/select";
 import { MDCDialog } from "@material/dialog";
 import axios from "axios";
 import "./style.scss";
-const AuthDialog = props => {
+const AuthDialog = (props) => {
   const [login, setLogin] = useState({ username: "", password: "" });
   const [show, setShow] = useState(false);
-  const submit = e => {
+  const submit = (e) => {
     e.preventDefault();
     setLoginError({
       username: "",
-      password: ""
+      password: "",
     });
     const { username, password } = login;
     axios
       .post("/api/auth", {
         username,
-        password
+        password,
       })
-      .then(response => {
+      .then((response) => {
         let errors = response.data.errors;
         let { status, token } = response.data;
         if (status) {
           localStorage.setItem("token", token);
           window.location.reload();
-        } else errors.map(error => setLoginError({ [error.param]: error.msg }));
+        } else
+          errors.map((error) => setLoginError({ [error.param]: error.msg }));
       });
   };
   // register
@@ -35,21 +36,21 @@ const AuthDialog = props => {
     name: "",
     username: "",
     email: "",
-    password: ""
+    password: "",
   });
   const [register_error, seterror] = useState({
     name: "",
     username: "",
     email: "",
     password: "",
-    gender: ""
+    gender: "",
   });
   const [login_error, setLoginError] = useState({
     username: "",
-    password: ""
+    password: "",
   });
   const [gender, setGender] = useState("");
-  const update_gender = data => {
+  const update_gender = (data) => {
     setGender(data);
   };
 
@@ -65,7 +66,7 @@ const AuthDialog = props => {
       update_gender(select.value);
     });
   }, [props.open]);
-  const submit_register = e => {
+  const submit_register = (e) => {
     e.preventDefault();
     if (gender === "") {
       seterror({ ...register_error, gender: "Select valid gender" });
@@ -79,9 +80,9 @@ const AuthDialog = props => {
           email,
           password,
           id,
-          gender
+          gender,
         })
-        .then(response => {
+        .then((response) => {
           var status = response.data.status;
           const labels = document.querySelectorAll(".mdc-floating-label");
           if (status) {
@@ -90,11 +91,11 @@ const AuthDialog = props => {
               username: "",
               email: "",
               password: "",
-              id: ""
+              id: "",
             });
             setShow(false);
             labels.forEach(
-              label =>
+              (label) =>
                 label.classList.contains("mdc-floating-label--float-above") &&
                 label.classList.remove("mdc-floating-label--float-above")
             );
@@ -103,10 +104,10 @@ const AuthDialog = props => {
               "none";
           } else {
             let errors = response.data.errors;
-            errors.map(error => seterror({ [error.param]: error.msg }));
+            errors.map((error) => seterror({ [error.param]: error.msg }));
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
 
@@ -146,7 +147,7 @@ const AuthDialog = props => {
                   autoFocus={true}
                   autoComplete="off"
                   tabIndex={0}
-                  onChange={e =>
+                  onChange={(e) =>
                     setLogin({ ...login, [e.target.name]: e.target.value })
                   }
                 />
@@ -164,7 +165,7 @@ const AuthDialog = props => {
                   placeholder="Password"
                   name="password"
                   value={login.password}
-                  onChange={e =>
+                  onChange={(e) =>
                     setLogin({ ...login, [e.target.name]: e.target.value })
                   }
                 />
@@ -176,9 +177,40 @@ const AuthDialog = props => {
                 </p>
               </div>
               <div className="action-container">
-                <Link to="/auth/forgot" className="forgot">
+                <a
+                  href="/auth/forgot"
+                  className="forgot"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setLoginError({
+                      username: "",
+                    });
+                    if (login.username.length < 5)
+                      setLoginError({
+                        username: "enter your username or email",
+                      });
+                    else {
+                      axios
+                        .post("/api/auth/forgot", {
+                          username: login.username,
+                        })
+                        .then((response) => {
+                          let errors = response.data.errors;
+                          let { status } = response.data;
+                          if (status) {
+                            setLoginError({
+                              username: "please check your email",
+                            });
+                          } else
+                            errors.map((error) =>
+                              setLoginError({ [error.param]: error.msg })
+                            );
+                        });
+                    }
+                  }}
+                >
                   Forgot Password
-                </Link>
+                </a>
                 <button type="submit" className="submit btn">
                   Sign in
                 </button>
@@ -207,7 +239,7 @@ const AuthDialog = props => {
                       Don't have an account?{" "}
                       <a
                         href="/"
-                        onClick={e => {
+                        onClick={(e) => {
                           e.preventDefault();
                           document.getElementById(
                             "login-container"
@@ -240,7 +272,7 @@ const AuthDialog = props => {
                   data-mdc-dialog-action="no"
                   style={{
                     display: props.open === true ? "none" : "flex",
-                    top: "4px"
+                    top: "4px",
                   }}
                 >
                   close
@@ -255,7 +287,7 @@ const AuthDialog = props => {
                 top: "56px",
                 left: 0,
                 zIndex: "2",
-                display: loading ? "block" : "none"
+                display: loading ? "block" : "none",
               }}
             >
               <div className="mdc-linear-progress__buffer">
@@ -284,10 +316,10 @@ const AuthDialog = props => {
                     name="name"
                     autoComplete="off"
                     value={data_register.name}
-                    onChange={e =>
+                    onChange={(e) =>
                       setData_register({
                         ...data_register,
-                        [e.target.name]: e.target.value
+                        [e.target.name]: e.target.value,
                       })
                     }
                   />
@@ -307,10 +339,10 @@ const AuthDialog = props => {
                     autoComplete="off"
                     name="username"
                     value={data_register.username}
-                    onChange={e =>
+                    onChange={(e) =>
                       setData_register({
                         ...data_register,
-                        [e.target.name]: e.target.value
+                        [e.target.name]: e.target.value,
                       })
                     }
                   />
@@ -330,10 +362,10 @@ const AuthDialog = props => {
                     name="email"
                     value={data_register.email}
                     autoComplete="off"
-                    onChange={e =>
+                    onChange={(e) =>
                       setData_register({
                         ...data_register,
-                        [e.target.name]: e.target.value
+                        [e.target.name]: e.target.value,
                       })
                     }
                   />
@@ -360,10 +392,10 @@ const AuthDialog = props => {
                     required
                     name="password"
                     value={data_register.password}
-                    onChange={e =>
+                    onChange={(e) =>
                       setData_register({
                         ...data_register,
-                        [e.target.name]: e.target.value
+                        [e.target.name]: e.target.value,
                       })
                     }
                   />
@@ -433,7 +465,7 @@ const AuthDialog = props => {
                     Already have an account?{" "}
                     <a
                       href="/"
-                      onClick={e => {
+                      onClick={(e) => {
                         e.preventDefault();
                         document.getElementById(
                           "login-container"
