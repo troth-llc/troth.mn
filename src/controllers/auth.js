@@ -199,6 +199,7 @@ exports.reset_password = function (req, res) {
       if (!err && user) {
         if (password === confirm_password) {
           user.password = password;
+          user.password_updated = new Date();
           user.reset_password_token = null;
           user.reset_password_expires = null;
           user.save(function (err) {
