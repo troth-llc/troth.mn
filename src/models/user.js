@@ -92,6 +92,14 @@ const userSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  reset_password_token: {
+    type: String,
+    default: null,
+  },
+  reset_password_expires: {
+    type: Date,
+    default: null,
+  },
 });
 // hash user password before saving into database
 userSchema.pre("save", function (next) {

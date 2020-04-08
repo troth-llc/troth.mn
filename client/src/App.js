@@ -3,7 +3,7 @@ import axios from "axios";
 // React Router
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // Container
-import { Profile, Find, Search, Settings } from "container";
+import { Profile, Find, Search, Settings, Forgot } from "container";
 // Components
 import { AuthDialog, Header } from "components";
 // App container
@@ -17,7 +17,7 @@ export default function App() {
   const login = () => {
     axios
       .get("/api/auth")
-      .then(response => {
+      .then((response) => {
         const { user } = response.data;
         if (user === null) {
           localStorage.removeItem("token");
@@ -25,7 +25,7 @@ export default function App() {
         }
         setUser(user);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error) {
           localStorage.removeItem("token");
         }
@@ -38,7 +38,7 @@ export default function App() {
   const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
       {...rest}
-      render={props =>
+      render={(props) =>
         localStorage.token ? (
           <Component {...props} />
         ) : (
@@ -61,6 +61,7 @@ export default function App() {
                 </Route>
                 <PrivateRoute path="/profile" component={Profile} />
                 <PrivateRoute path="/settings*" component={Settings} />
+                <Route path="/auth/reset_password" component={Forgot} />
                 <Route path="/search/:search" component={Search} />
                 <Route path="/:username" component={Find} />
                 <Route path="*">

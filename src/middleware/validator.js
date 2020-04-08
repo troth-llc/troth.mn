@@ -136,3 +136,23 @@ exports.forgot = [
     })
     .withMessage("Must be between 4 and 128 in length"),
 ];
+exports.reset_password = [
+  check("password")
+    .isLength({
+      min: 6,
+      max: 128,
+    })
+    .withMessage("Must be between 6 and 128 in length"),
+  check("confirm_password")
+    .isLength({
+      min: 6,
+      max: 128,
+    })
+    .withMessage("Must be between 6 and 128 in length"),
+  check("token")
+    .isLength({
+      min: 20,
+      max: 128,
+    })
+    .withMessage("invalid token"),
+];

@@ -8,6 +8,7 @@ import "./style.scss";
 const AuthDialog = (props) => {
   const [login, setLogin] = useState({ username: "", password: "" });
   const [show, setShow] = useState(false);
+  const [reset, setReset] = useState(false);
   const submit = (e) => {
     e.preventDefault();
     setLoginError({
@@ -189,7 +190,12 @@ const AuthDialog = (props) => {
                       setLoginError({
                         username: "enter your username or email",
                       });
+                    else if (reset)
+                      setLoginError({
+                        username: "Please wait",
+                      });
                     else {
+                      setReset(true);
                       axios
                         .post("/api/auth/forgot", {
                           username: login.username,
@@ -201,15 +207,18 @@ const AuthDialog = (props) => {
                             setLoginError({
                               username: "please check your email",
                             });
-                          } else
+                            setReset(false);
+                          } else {
+                            setReset(false);
                             errors.map((error) =>
                               setLoginError({ [error.param]: error.msg })
                             );
+                          }
                         });
                     }
                   }}
                 >
-                  Forgot Password
+                  {reset ? "Please wait" : "Forgot Password"}
                 </a>
                 <button type="submit" className="submit btn">
                   Sign in

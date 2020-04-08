@@ -23,7 +23,8 @@
     display: flex;
   }
 }
-#settings-container {
+#settings-container,
+.reset-password {
   .input-container {
     padding: 0 80px;
     .mdc-text-field--textarea {
