@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
+import { Link } from "react-router-dom";
 import { MDCSelect } from "@material/select";
 import { MDCDialog } from "@material/dialog";
 import axios from "axios";
@@ -32,7 +32,7 @@ const AuthDialog = (props) => {
       });
   };
   // register
-  const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
   const [data_register, setData_register] = useState({
     name: "",
     username: "",
@@ -72,7 +72,7 @@ const AuthDialog = (props) => {
     if (gender === "") {
       seterror({ ...register_error, gender: "Select valid gender" });
     } else {
-      setLoading(true);
+      setLoad(true);
       const { name, username, email, password, id } = data_register;
       axios
         .post("/api/auth/register", {
@@ -87,6 +87,7 @@ const AuthDialog = (props) => {
           var status = response.data.status;
           const labels = document.querySelectorAll(".mdc-floating-label");
           if (status) {
+            setLoad(false);
             setData_register({
               name: "",
               username: "",
@@ -106,13 +107,13 @@ const AuthDialog = (props) => {
           } else {
             let errors = response.data.errors;
             errors.map((error) => seterror({ [error.param]: error.msg }));
+            setLoad(false);
           }
         })
         .catch((error) => {
           console.log(error);
+          setLoad(false);
         });
-
-      setLoading(false);
     }
   };
   return (
@@ -296,7 +297,7 @@ const AuthDialog = (props) => {
                 top: "56px",
                 left: 0,
                 zIndex: "2",
-                display: loading ? "block" : "none",
+                display: load ? "block" : "none",
               }}
             >
               <div className="mdc-linear-progress__buffer">
@@ -312,7 +313,7 @@ const AuthDialog = (props) => {
             </div>
             <div
               className="register-scrim"
-              style={{ display: loading ? "block" : "none" }}
+              style={{ display: load ? "block" : "none" }}
             ></div>
             <div className="header-label">Create your account</div>
             <div className="register-container">
@@ -455,8 +456,13 @@ const AuthDialog = (props) => {
               <div>
                 <p className="terms-text">
                   By clicking "Continue", you agree to the{" "}
-                  <a href="/terms">Terms</a> and{" "}
-                  <a href="/privacy">Privacy Policy</a>
+                  <Link to="/terms" data-mdc-dialog-action="no">
+                    Terms
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/privacy" data-mdc-dialog-action="no">
+                    Privacy Policy
+                  </Link>
                 </p>
               </div>
               <div className="register-input">
@@ -464,7 +470,7 @@ const AuthDialog = (props) => {
                   <button
                     className="mdc-button mdc-button--raised"
                     style={{ width: "100%" }}
-                    disabled={loading}
+                    disabled={load}
                   >
                     <span className="mdc-button__ripple"></span>Continue
                   </button>

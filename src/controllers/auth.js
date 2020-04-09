@@ -4,6 +4,15 @@ const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const { validationResult } = require("express-validator");
 const crypto = require("crypto");
+// email config
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL,
+    pass: process.env.MAIL_PASSWORD,
+    type: "login",
+  },
+});
 exports.create = function (req, res) {
   const errors = validationResult(req);
   const { name, username, email, password, gender, id } = req.body;
@@ -28,8 +37,35 @@ exports.create = function (req, res) {
             },
             (err) => {
               if (err) throw err;
-              console.log(username + " user registered " + new Date());
-              return res.status(200).json({ status: true, username });
+              crypto.randomBytes(20, function (err, buffer) {
+                var token = buffer.toString("hex");
+                User.findOneAndUpdate(
+                  { username },
+                  {
+                    email_token: token,
+                  },
+                  { upsert: true, new: true }
+                ).exec(async (err, user) => {
+                  if (err) console.log(err);
+                  transporter.sendMail(
+                    {
+                      from: `Troth LLC ${process.env.MAIL}`,
+                      to: user.email,
+                      subject: "Verify Your Email Address",
+                      html: `<p>Dear <b>${user.name}</b> <br/> This message has been sent to you because you entered your email on a registration form, 
+                      click the button below to verify your email. If you didn't make this request, ignore this email.</p>
+                      <a href="http://localhost:3000/auth/email?token=${token}">Click here to verify your email</>`,
+                    },
+                    (err, info) => {
+                      if (err) console.log(err);
+                      res.json({
+                        status: info.accepted.length > 0 ? true : false,
+                        username: user.username,
+                      });
+                    }
+                  );
+                });
+              });
             }
           );
         } else if (user.email.toLowerCase() == email.toLowerCase())
@@ -138,14 +174,6 @@ exports.forgot = function (req, res) {
             errors: [{ param: "username", msg: "User does not exist" }],
           });
         else {
-          var transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              user: process.env.MAIL,
-              pass: process.env.MAIL_PASSWORD,
-              type: "login",
-            },
-          });
           crypto.randomBytes(20, function (err, buffer) {
             var token = buffer.toString("hex");
             User.findByIdAndUpdate(
@@ -155,31 +183,23 @@ exports.forgot = function (req, res) {
                 reset_password_expires: Date.now() + 86400000,
               },
               { upsert: true, new: true }
-            ).exec(function (err, new_user) {
+            ).exec(async (err, new_user) => {
               if (err) console.log(err);
-              send(err, token);
+              transporter.sendMail(
+                {
+                  from: process.env.MAIL,
+                  to: new_user.email,
+                  subject: "Reset your password?",
+                  html: `<p>if you requested a password reset for <b>@${new_user.username}</b>, click the button below. If you didn't make this request, ignore this email.</p>
+                <a href="http://localhost:3000/auth/reset_password?token=${token}">Click here to reset password</>`,
+                },
+                (err, info) => {
+                  if (err) console.log(err);
+                  res.json({ status: info.accepted.length > 0 ? true : false });
+                }
+              );
             });
           });
-          const send = (err, token) => {
-            const mailOptions = {
-              from: process.env.MAIL, // sender address
-              to: user.email, // receiver
-              subject: "Reset your password?", // Subject line
-              html: `<p>if you requested a password reset for <b>@${user.username}</b>, click the button below. If you didn't make this request, ignore this email.</p>
-              <a href="http://localhost:3000/auth/reset_password?token=${token}">Click here to reset password</>
-              `, // plain text body
-            };
-            transporter.sendMail(mailOptions, function (err, info) {
-              if (err) console.log(err);
-              else {
-                if (info.accepted.length > 0) {
-                  res.json({ status: true });
-                } else {
-                  res.json({ status: false });
-                }
-              }
-            });
-          };
         }
       });
   }
@@ -225,7 +245,7 @@ exports.reset_password = function (req, res) {
         } else {
           return res.status(200).json({
             errors: [
-              { param: "confirm_password", msg: "Passwords do not match" },
+              { param: "confirm_password", msg: "Passwords does not match" },
             ],
           });
         }

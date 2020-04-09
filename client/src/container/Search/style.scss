@@ -28,6 +28,16 @@
     color: #3e3a3a;
     font-size: 14px;
   }
+  @media (max-width: 1024px) {
+    line-height: 30px;
+  }
+  @media (max-width: 470px) {
+    font-size: 12px;
+    font-weight: 500;
+    span {
+      font-weight: 400;
+    }
+  }
 }
 .search-avatar {
   height: 60px;

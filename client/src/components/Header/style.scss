@@ -10,6 +10,10 @@
     img {
       height: 47px;
       margin: 5px 0px;
+      @media (max-width: 340px) {
+        height: 40px;
+        margin: 7px 0px;
+      }
     }
   }
 }

@@ -80,6 +80,10 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
+  email_token: {
+    type: String,
+    default: null,
+  },
   email_verified_at: {
     type: Date,
     default: null,
