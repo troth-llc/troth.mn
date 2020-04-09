@@ -156,3 +156,20 @@ exports.reset_password = [
     })
     .withMessage("invalid token"),
 ];
+exports.update_email = [
+  check("email").isEmail(),
+  check("password")
+    .isLength({
+      min: 6,
+      max: 128,
+    })
+    .withMessage("Must be between 6 and 128 in length"),
+];
+exports.code = [
+  check("code")
+    .isLength({
+      min: 6,
+      max: 6,
+    })
+    .withMessage("Must be 6 digits"),
+];

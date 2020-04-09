@@ -16,4 +16,5 @@ router.post("/", validate.login, auth.login);
 router.post("/register", validate.create, auth.create);
 router.post("/forgot", validate.forgot, auth.forgot);
 router.post("/reset_password", validate.reset_password, auth.reset_password);
+router.get("/email", token, auth.email);
 module.exports = router;

@@ -15,6 +15,7 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
+    lowercase: true,
     required: true,
     unique: true,
   },
@@ -84,6 +85,18 @@ const userSchema = new Schema({
     type: String,
     default: null,
   },
+  email_update: [
+    {
+      email: {
+        type: String,
+        default: null,
+      },
+      code: {
+        type: Number,
+        default: null,
+      },
+    },
+  ],
   email_verified_at: {
     type: Date,
     default: null,

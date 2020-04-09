@@ -3,6 +3,7 @@ import { MDCTabBar } from "@material/tab-bar";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import Info from "./info";
 import Password from "./password";
+import Email from "./email";
 import "./style.scss";
 const Search = () => {
   const path = window.location.pathname.split("/");
@@ -90,7 +91,7 @@ const Search = () => {
         <Switch>
           {/* information */}
           <Route exact path="/settings/info" component={Info} />
-          <Route exact path="/settings/email"></Route>
+          <Route exact path="/settings/email" component={Email} />
           <Route exact path="/settings/password" component={Password} />
           <Redirect from="/settings" to="/settings/info" />
         </Switch>

@@ -30,10 +30,9 @@ exports.create = function (req, res) {
             {
               name,
               username: username.toLowerCase(),
-              email: email.toLowerCase(),
+              email,
               password,
               gender,
-              id,
             },
             (err) => {
               if (err) throw err;
@@ -54,7 +53,7 @@ exports.create = function (req, res) {
                       subject: "Verify Your Email Address",
                       html: `<p>Dear <b>${user.name}</b> <br/> This message has been sent to you because you entered your email on a registration form, 
                       click the button below to verify your email. If you didn't make this request, ignore this email.</p>
-                      <a href="http://localhost:3000/auth/email?token=${token}">Click here to verify your email</>`,
+                      <a href="http://localhost:3000/auth/verify_email?token=${token}">Click here to verify your email</>`,
                     },
                     (err, info) => {
                       if (err) console.log(err);
@@ -261,4 +260,40 @@ exports.reset_password = function (req, res) {
       }
     });
   }
+};
+exports.email = function (req, res) {
+  const token = req.header("x-auth-token");
+  jwt.verify(token, process.env.JWTSECRET, function (err, user) {
+    if (user) {
+      User.findById(user.id).then((user) => {
+        crypto.randomBytes(20, function (err, buffer) {
+          var token = buffer.toString("hex");
+          transporter.sendMail(
+            {
+              from: `Troth LLC ${process.env.MAIL}`,
+              to: user.email,
+              subject: "Verify Your Email Address",
+              html: `<p>Dear <b>${user.name}</b> <br/> 
+              Click the button below to verify your email. If you didn't make this request, ignore this email.</p>
+              <a href="http://localhost:3000/auth/verify_email?token=${
+                user.email_token ? user.email_token : token
+              }">Click here to verify your email</>`,
+            },
+            (err, info) => {
+              if (err) console.log(err);
+              res.json({
+                status: info.accepted.length > 0 ? true : false,
+              });
+            }
+          );
+          if (!user.email_token) {
+            user.email_token = token;
+            user.save();
+          }
+        });
+      });
+    } else {
+      res.json({ status: false });
+    }
+  });
 };

@@ -92,3 +92,12 @@
   font-size: 16px !important;
   color: black !important;
 }
+.email-action {
+  flex-direction: column;
+  justify-content: unset !important;
+  margin: 0 !important;
+  span.email-resend-status {
+    line-height: normal !important;
+    padding-left: 8px;
+  }
+}

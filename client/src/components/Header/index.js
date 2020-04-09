@@ -173,11 +173,11 @@ const Header = (props) => {
               <div className="search">
                 <form
                   onSubmit={(e) => {
-                    if (document.getElementById("searchInput").value) {
+                    if (document.getElementById("searchInput").value.trim()) {
                       window.location.replace(
                         "/search/" +
                           encodeURIComponent(
-                            document.getElementById("searchInput").value
+                            document.getElementById("searchInput").value.trim()
                           )
                       );
                     }

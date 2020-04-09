@@ -3,4 +3,5 @@ import Find from "./Find";
 import Search from "./Search";
 import Settings from "./Settings";
 import Forgot from "./Forgot";
-export { Profile, Find, Search, Settings, Forgot };
+import Email from "./Email";
+export { Profile, Find, Search, Settings, Forgot, Email };

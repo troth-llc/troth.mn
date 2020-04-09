@@ -2,6 +2,16 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const { validationResult } = require("express-validator");
+const nodemailer = require("nodemailer");
+// email
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.MAIL,
+    pass: process.env.MAIL_PASSWORD,
+    type: "login",
+  },
+});
 // file
 var path = require("path");
 const fs = require("fs");
@@ -95,4 +105,75 @@ exports.avatar = function (req, res) {
 };
 exports.cover = function (req, res) {
   res.json({ status: "undermaintence" });
+};
+exports.email = function (req, res) {
+  // findout email address is taken
+  // then check the password
+  // send an 6 digit number res.json({status:true})
+  const { email, password } = req.body;
+  const token = req.header("x-auth-token");
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ errors: errors.array(), status: false });
+  }
+  User.find({ email: email.toLowerCase() }).then((user) => {
+    if (user.length > 0)
+      return res.json({
+        status: false,
+        errors: [{ msg: "Email already in use", param: "email" }],
+      });
+    else
+      jwt.verify(token, process.env.JWTSECRET, function (err, user) {
+        User.findById(user.id).then((data) => {
+          bcrypt.compare(password, data.password).then((isMatch) => {
+            if (!isMatch)
+              return res.json({
+                status: false,
+                errors: [{ msg: "Password does not match", param: "password" }],
+              });
+            else {
+              var code = Math.floor(100000 + Math.random() * 900000);
+              data.email_update = [{ email, code }];
+              data.save();
+              transporter.sendMail(
+                {
+                  from: process.env.MAIL,
+                  to: email,
+                  subject: "Update Email",
+                  html: `<p>Your verification code is <b>${code}</b>. If you didn't make this request, ignore this email.</p>`,
+                },
+                (err, info) => {
+                  if (err) console.log(err);
+                  res.json({
+                    status: info.accepted.length > 0 ? true : false,
+                  });
+                }
+              );
+            }
+          });
+        });
+      });
+  });
+};
+exports.code = function (req, res) {
+  const token = req.header("x-auth-token");
+  const { code } = req.body;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ errors: errors.array(), status: false });
+  }
+  jwt.verify(token, process.env.JWTSECRET, function (err, user) {
+    User.findById(user.id).then((data) => {
+      if (data.email_update[0].code === parseInt(code)) {
+        data.email = data.email_update[0].email;
+        data.email_verified_at = new Date();
+        data.email_update = [];
+        data.save();
+        res.json({ status: true });
+      } else {
+        res.json({ status: false, errors: [{ msg: "Invalid code" }] });
+      }
+    });
+  });
 };
