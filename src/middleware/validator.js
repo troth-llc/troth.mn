@@ -173,3 +173,11 @@ exports.code = [
     })
     .withMessage("Must be 6 digits"),
 ];
+exports.verify_email = [
+  check("token")
+    .isLength({
+      min: 20,
+      max: 128,
+    })
+    .withMessage("invalid token"),
+];

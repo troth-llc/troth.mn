@@ -159,7 +159,6 @@ exports.code = function (req, res) {
   const token = req.header("x-auth-token");
   const { code } = req.body;
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
     return res.status(200).json({ errors: errors.array(), status: false });
   }
@@ -168,6 +167,7 @@ exports.code = function (req, res) {
       if (data.email_update[0].code === parseInt(code)) {
         data.email = data.email_update[0].email;
         data.email_verified_at = new Date();
+        data.email_token = null;
         data.email_update = [];
         data.save();
         res.json({ status: true });

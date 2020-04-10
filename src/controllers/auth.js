@@ -122,37 +122,39 @@ exports.login = function (req, res) {
 exports.profile = function (req, res) {
   const token = req.header("x-auth-token");
   jwt.verify(token, process.env.JWTSECRET, function (err, user) {
-    if (user) {
+    if (!user) res.json({ msg: "some thing went wrong" });
+    else {
       User.findById(user.id)
         .select("-password")
         .then((user) => {
-          res.json({
-            user: {
-              _id: user._id,
-              email: user.email,
-              email_verified_at: user.email_verified_at,
-              password_updated_at: user.password_updated_at,
-              username: user.username,
-              avatar: user.avatar,
-              verified: user.verified,
-              type: user.type,
-              badges: user.badges,
-              projects: user.projects,
-              name: user.name,
-              gender: user.gender,
-              website: user.website,
-              about: user.about,
-              created: user.created,
-              updated: user.updated,
-              phone: user.phone,
-              password_updated: user.password_updated,
-              following: user.following.length,
-              followers: user.followers.length,
-            },
-          });
+          if (!user) res.json({ msg: "some thing went wrong" });
+          else {
+            res.json({
+              user: {
+                _id: user._id,
+                email: user.email,
+                email_verified_at: user.email_verified_at,
+                password_updated_at: user.password_updated_at,
+                username: user.username,
+                avatar: user.avatar,
+                verified: user.verified,
+                type: user.type,
+                badges: user.badges,
+                projects: user.projects,
+                name: user.name,
+                gender: user.gender,
+                website: user.website,
+                about: user.about,
+                created: user.created,
+                updated: user.updated,
+                phone: user.phone,
+                password_updated: user.password_updated,
+                following: user.following.length,
+                followers: user.followers.length,
+              },
+            });
+          }
         });
-    } else {
-      res.json({ err });
     }
   });
 };
@@ -294,6 +296,19 @@ exports.email = function (req, res) {
       });
     } else {
       res.json({ status: false });
+    }
+  });
+};
+exports.verify_email = function (req, res) {
+  const { token: email_token } = req.body;
+  User.findOne({ email_token }).then((user) => {
+    if (!user) res.json({ status: false });
+    else {
+      user.email_token = null;
+      user.email_verified_at = new Date();
+      user.email_update = [];
+      user.save();
+      res.json({ status: true });
     }
   });
 };
