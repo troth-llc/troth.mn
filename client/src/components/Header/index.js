@@ -223,16 +223,12 @@ const Header = (props) => {
               search
             </button>
             {user === null ? (
-              <button
+              <Link
                 className="material-icons mdc-top-app-bar__action-item mdc-icon-button"
-                onClick={() => {
-                  const dialog = new MDCDialog(document.querySelector("#auth"));
-                  dialog.open();
-                  dialog.scrimClickAction = "";
-                }}
+                to="/auth"
               >
                 account_circle
-              </button>
+              </Link>
             ) : (
               <>
                 <button className="material-icons mdc-top-app-bar__action-item mdc-icon-button">

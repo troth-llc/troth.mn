@@ -14,6 +14,7 @@ const Profile = () => {
     message: "Edit image",
   });
   const { user } = useContext(User);
+  // const { setToast } = useContext(User);
   useEffect(() => {
     if (user) document.title = `${user.name} (@${user.username}) • Troth`;
     const element = document.querySelectorAll(".Calendar__weekRow");

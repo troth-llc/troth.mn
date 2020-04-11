@@ -1,19 +1,27 @@
 import React, { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 // React Router
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 // Container
 import { Profile, Find, Search, Settings, Forgot, Email } from "container";
 // Components
-import { AuthDialog, Header } from "components";
+import { AuthDialog, Header, Toast } from "components";
 // App container
 import AppContainer from "AppContainer";
 // user context
 import { User } from "context/user";
+import { Snackbar } from "context/notification-toast";
 import "./App.css";
 export default function App() {
   // user context
   const [user, setUser] = useState(null);
+  const [toast, setToast] = useState(null);
+
   const login = () => {
     axios
       .get("/api/auth")
@@ -22,6 +30,18 @@ export default function App() {
         if (user === null) {
           localStorage.removeItem("token");
           document.location.reload();
+        }
+        if (!user.verified) {
+          setToast({
+            msg: "Please verify your account",
+            timeout: 8000,
+            action: {
+              title: "Verify",
+              event: () => {
+                window.location.replace("/settings/verify");
+              },
+            },
+          });
         }
         setUser(user);
       })
@@ -35,44 +55,46 @@ export default function App() {
     login();
   }, []);
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+  const toast_value = useMemo(() => ({ toast, setToast }), [toast, setToast]);
   const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
       {...rest}
       render={(props) =>
-        localStorage.token ? (
-          <Component {...props} />
-        ) : (
-          <AuthDialog open={true} />
-        )
+        localStorage.token ? <Component {...props} /> : <Redirect to="/auth" />
       }
     />
   );
   return (
     <Router>
       <User.Provider value={value}>
-        <AppContainer>
-          <div className="app">
-            <Header />
-            {/* <Sidebar /> */}
-            <div className="main">
-              <Switch>
-                <Route exact path="/">
-                  <Home />
-                </Route>
-                <PrivateRoute path="/profile" component={Profile} />
-                <PrivateRoute path="/settings*" component={Settings} />
-                <Route path="/auth/reset_password" component={Forgot} />
-                <Route path="/auth/verify_email" component={Email} />
-                <Route path="/search/:search" component={Search} />
-                <Route path="/:username" component={Find} />
-                <Route path="*">
-                  <Notfound />
-                </Route>
-              </Switch>
+        <Snackbar.Provider value={toast_value}>
+          <AppContainer>
+            <div className="app">
+              <Header />
+              {/* <Sidebar /> */}
+              <div className="main">
+                <Switch>
+                  <Route exact path="/">
+                    <Home />
+                  </Route>
+                  <PrivateRoute path="/profile" component={Profile} />
+                  <PrivateRoute path="/settings*" component={Settings} />
+                  <Route path="/auth" exact>
+                    <AuthDialog open={true} />
+                  </Route>
+                  <Route path="/auth/reset_password" component={Forgot} />
+                  <Route path="/auth/verify_email" component={Email} />
+                  <Route path="/search/:search" component={Search} />
+                  <Route path="/:username" component={Find} />
+                  <Route path="*">
+                    <Notfound />
+                  </Route>
+                </Switch>
+              </div>
             </div>
-          </div>
-          <AuthDialog />
-        </AppContainer>
+            <Toast />
+          </AppContainer>
+        </Snackbar.Provider>
       </User.Provider>
     </Router>
   );

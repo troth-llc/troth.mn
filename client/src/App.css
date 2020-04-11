@@ -76,3 +76,13 @@ input::-webkit-inner-spin-button {
 .mdc-dialog {
   z-index: 10;
 }
+.mdc-snackbar__action:not(:disabled) {
+  color: #c3b59b;
+}
+.mdc-snackbar {
+  z-index: 12;
+}
+a.material-icons:focus,
+a.material-icons:hover {
+  text-decoration: none;
+}

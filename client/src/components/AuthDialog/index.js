@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
-import Tooltip from "@material-ui/core/Tooltip";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { MDCSelect } from "@material/select";
 import { MDCDialog } from "@material/dialog";
 import axios from "axios";
+import { Snackbar } from "context/notification-toast";
+
 import "./style.scss";
 const AuthDialog = (props) => {
+  const { setToast } = useContext(Snackbar);
+
   const [login, setLogin] = useState({ username: "", password: "" });
   const [show, setShow] = useState(false);
   const [reset, setReset] = useState(false);
@@ -27,8 +30,9 @@ const AuthDialog = (props) => {
         if (status) {
           localStorage.setItem("token", token);
           window.location.reload();
-        } else
+        } else {
           errors.map((error) => setLoginError({ [error.param]: error.msg }));
+        }
       });
   };
   // register
@@ -54,7 +58,6 @@ const AuthDialog = (props) => {
   const update_gender = (data) => {
     setGender(data);
   };
-
   useEffect(() => {
     if (props.open === true) {
       const dialog = new MDCDialog(document.querySelector("#auth"));
@@ -123,19 +126,18 @@ const AuthDialog = (props) => {
           className="mdc-dialog__surface"
           role="alertdialog"
           aria-modal="true"
+          tabIndex={0}
         >
           <form onSubmit={submit} className="login" id="login-container">
             <div className="login-container">
-              <Tooltip title="Press Esc to close" placement="bottom">
-                <button
-                  type="button"
-                  className="mdc-icon-button material-icons close-auth-dialog"
-                  data-mdc-dialog-action="no"
-                  style={{ display: props.open === true ? "none" : "flex" }}
-                >
-                  close
-                </button>
-              </Tooltip>
+              <Link
+                to="/"
+                type="button"
+                className="mdc-icon-button material-icons close-auth-dialog"
+                data-mdc-dialog-action="no"
+              >
+                close
+              </Link>
               <div className="logo">
                 <img src={require("assets/img/logo.png")} alt="logo" />
               </div>
@@ -205,8 +207,9 @@ const AuthDialog = (props) => {
                           let errors = response.data.errors;
                           let { status } = response.data;
                           if (status) {
-                            setLoginError({
-                              username: "please check your email",
+                            setToast({
+                              msg: "Please check your inbox",
+                              timeout: 8000,
                             });
                             setReset(false);
                           } else {
@@ -275,19 +278,18 @@ const AuthDialog = (props) => {
           >
             <header className="register-header">
               <span>Troth</span>
-              <Tooltip title="Press Esc to close" placement="bottom">
-                <button
-                  type="button"
-                  className="mdc-icon-button material-icons close-auth-dialog"
-                  data-mdc-dialog-action="no"
-                  style={{
-                    display: props.open === true ? "none" : "flex",
-                    top: "4px",
-                  }}
-                >
-                  close
-                </button>
-              </Tooltip>
+
+              <Link
+                to="/"
+                type="button"
+                className="mdc-icon-button material-icons close-auth-dialog"
+                data-mdc-dialog-action="no"
+                style={{
+                  top: "4px",
+                }}
+              >
+                close
+              </Link>
             </header>
             <div
               role="progressbar"
