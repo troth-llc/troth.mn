@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { MDCSelect } from "@material/select";
 import { MDCDialog } from "@material/dialog";
 import axios from "axios";
@@ -8,7 +8,6 @@ import { Snackbar } from "context/notification-toast";
 import "./style.scss";
 const AuthDialog = (props) => {
   const { setToast } = useContext(Snackbar);
-
   const [login, setLogin] = useState({ username: "", password: "" });
   const [show, setShow] = useState(false);
   const [reset, setReset] = useState(false);
@@ -29,7 +28,7 @@ const AuthDialog = (props) => {
         let { status, token } = response.data;
         if (status) {
           localStorage.setItem("token", token);
-          window.location.reload();
+          window.location.href = "/";
         } else {
           errors.map((error) => setLoginError({ [error.param]: error.msg }));
         }
@@ -59,6 +58,7 @@ const AuthDialog = (props) => {
     setGender(data);
   };
   useEffect(() => {
+    localStorage.getItem("token") && window.location.replace("/");
     if (props.open === true) {
       const dialog = new MDCDialog(document.querySelector("#auth"));
       dialog.open();
@@ -90,6 +90,11 @@ const AuthDialog = (props) => {
           var status = response.data.status;
           const labels = document.querySelectorAll(".mdc-floating-label");
           if (status) {
+            setToast({
+              msg: "Welcome, " + response.data.username,
+              timeout: 8000,
+            });
+
             setLoad(false);
             setData_register({
               name: "",
