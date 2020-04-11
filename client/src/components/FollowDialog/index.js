@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./style.scss";
 const FollowDialog = (props) => {
+  const history = useHistory();
   const { id, type } = props.data;
   const [sliced, setFollow] = useState({ start: 0, end: 1 });
   const [data, setData] = useState([]);
@@ -31,7 +34,7 @@ const FollowDialog = (props) => {
       setLast(false);
       follow(0, 20, false);
     }
-  }, [props]);
+  }, [props.data]);
   return (
     <div className="mdc-dialog" id="follow">
       <div className="mdc-dialog__container">
@@ -83,7 +86,21 @@ const FollowDialog = (props) => {
                           </div>
                           <div className="text">
                             <div className="text-username flex">
-                              <a href={`/${data.username}`}>{data.username}</a>
+                              <Link
+                                to={`/${data.username}`}
+                                data-mdc-dialog-action="yes"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  history.push(`/${data.username}`);
+                                }}
+                              >
+                                {data.username}
+                                {data.verified ? (
+                                  <i className="material-icons verified">
+                                    verified_user
+                                  </i>
+                                ) : null}
+                              </Link>
                             </div>
                             <div className="text-name flex">{data.name}</div>
                           </div>

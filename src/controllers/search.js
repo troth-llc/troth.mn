@@ -25,7 +25,7 @@ exports.find = function (req, res) {
       ],
     };
   }
-  User.find(query, "name username avatar", (err, user) => {
+  User.find(query, "name username avatar verified", (err, user) => {
     res.json({ status: true, user });
   });
 };

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import "./style.scss";
 const Search = (props) => {
   const [search, setSearch] = useState(null);
   const searchValue = props.match.params.search;
   useEffect(() => {
+    setSearch(null);
     document.getElementById("searchInput").value = decodeURIComponent(
       searchValue
     );
@@ -18,7 +20,7 @@ const Search = (props) => {
           setSearch(false);
         }
       });
-  }, []);
+  }, [searchValue]);
   return (
     <div className="search">
       <p className="text-center">
@@ -46,7 +48,13 @@ const Search = (props) => {
               <div className="flex">
                 <Link className="search-name" to={`/${user.username}`}>
                   {`${user.name}`}
-                  <span>{`  (@${user.username})`}</span>
+                  {user.verified ? (
+                    <Tooltip title="Verified" placement="bottom">
+                      <span className="material-icons verified">
+                        verified_user
+                      </span>
+                    </Tooltip>
+                  ) : null}
                 </Link>
               </div>
             </div>

@@ -111,11 +111,7 @@ const Profile = () => {
                   {user.name}{" "}
                   {user.verified && (
                     <Tooltip title="Verified" placement="bottom">
-                      <img
-                        src={require("assets/icons/badge-verified.svg")}
-                        alt=""
-                        className="badge"
-                      ></img>
+                      <i className="material-icons badge">verified_user</i>
                     </Tooltip>
                   )}
                   <Link
@@ -204,7 +200,11 @@ const Profile = () => {
         onChange={(e) => {
           let file = e.target.files[0];
           if (file.name) {
-            if (["jpg", "png", "jpeg"].includes(/[^.]+$/.exec(file.name)[0])) {
+            if (
+              ["jpg", "png", "jpeg"].includes(
+                /[^.]+$/.exec(file.name.toLowerCase())[0]
+              )
+            ) {
               var url = window.URL || window.webkitURL;
               var image = new Image();
               image.onload = function () {

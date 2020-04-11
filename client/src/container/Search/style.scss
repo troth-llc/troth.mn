@@ -1,4 +1,5 @@
 .search-content {
+  font-family: Roboto;
   border-radius: 4px;
   flex: none;
   margin: 6px auto;
@@ -25,18 +26,10 @@
   line-height: 60px;
   font-size: 15px;
   span {
-    color: #3e3a3a;
     font-size: 14px;
-  }
-  @media (max-width: 1024px) {
-    line-height: 30px;
-  }
-  @media (max-width: 470px) {
-    font-size: 12px;
-    font-weight: 500;
-    span {
-      font-weight: 400;
-    }
+    vertical-align: middle;
+    margin-left: 5px;
+    padding-bottom: 3px;
   }
 }
 .search-avatar {
@@ -47,7 +40,7 @@
   margin-right: 15px;
   text-align: center;
   line-height: 60px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 18px;
 }
 .search-avatar-img {

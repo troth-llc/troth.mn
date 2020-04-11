@@ -3,7 +3,7 @@ import { MDCTopAppBar } from "@material/top-app-bar";
 import { MDCDrawer } from "@material/drawer";
 import { MDCList } from "@material/list";
 import { MDCMenuSurface } from "@material/menu-surface";
-import { MDCDialog } from "@material/dialog";
+import { useHistory } from "react-router-dom";
 import { Link, NavLink } from "react-router-dom";
 import { User } from "context/user";
 import "./style.scss";
@@ -92,6 +92,7 @@ const auth_routes = [
   },
 ];
 const Header = (props) => {
+  const history = useHistory();
   const [mobileSearch, setMobileSearch] = useState(false);
   // Instantiation
   useEffect(() => {
@@ -174,7 +175,7 @@ const Header = (props) => {
                 <form
                   onSubmit={(e) => {
                     if (document.getElementById("searchInput").value.trim()) {
-                      window.location.replace(
+                      history.push(
                         "/search/" +
                           encodeURIComponent(
                             document.getElementById("searchInput").value.trim()

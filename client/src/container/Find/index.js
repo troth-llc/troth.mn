@@ -13,6 +13,7 @@ const Find = (props) => {
   const [calendar, setOpen] = useState(false);
   const [follow, openFollow] = useState(false);
   const fetch_user = () => {
+    setUser(null);
     axios.get("/api/user/" + props.match.params.username).then((response) => {
       if (response.data.status) {
         setUser(response.data.user);
@@ -23,7 +24,7 @@ const Find = (props) => {
   };
   useEffect(() => {
     fetch_user();
-  }, []);
+  }, [props.match.params.username]);
   useEffect(() => {
     const element = document.querySelectorAll(".Calendar__weekRow");
     element.forEach((el) => {
@@ -97,11 +98,7 @@ const Find = (props) => {
                   {user.name}{" "}
                   {user.verified && (
                     <Tooltip title="Verified" placement="bottom">
-                      <img
-                        src={require("assets/icons/badge-verified.svg")}
-                        alt=""
-                        className="badge"
-                      ></img>
+                      <i className="material-icons badge">verified_user</i>
                     </Tooltip>
                   )}
                   {current !== null ? (

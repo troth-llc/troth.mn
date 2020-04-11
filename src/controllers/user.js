@@ -132,7 +132,7 @@ exports.followers = (req, res) => {
     .then((user) => {
       let promises = user.followers.map((results) => {
         return User.findOne({ _id: results.user })
-          .select("name username avatar")
+          .select("name username avatar verified")
           .exec()
           .then((res) => {
             return res;
@@ -173,7 +173,7 @@ exports.following = (req, res) => {
     .then((user) => {
       let promises = user.following.map((results) => {
         return User.findOne({ _id: results.user })
-          .select("name username avatar")
+          .select("name username avatar verified")
           .exec()
           .then((res) => {
             return res;

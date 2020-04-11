@@ -4,9 +4,11 @@ import { MDCSelect } from "@material/select";
 import { MDCDialog } from "@material/dialog";
 import axios from "axios";
 import { Snackbar } from "context/notification-toast";
-
+import { useHistory } from "react-router-dom";
 import "./style.scss";
 const AuthDialog = (props) => {
+  const history = useHistory();
+  localStorage.getItem("token") && history.push("/");
   const { setToast } = useContext(Snackbar);
   const [login, setLogin] = useState({ username: "", password: "" });
   const [show, setShow] = useState(false);
@@ -58,7 +60,6 @@ const AuthDialog = (props) => {
     setGender(data);
   };
   useEffect(() => {
-    localStorage.getItem("token") && window.location.replace("/");
     if (props.open === true) {
       const dialog = new MDCDialog(document.querySelector("#auth"));
       dialog.open();

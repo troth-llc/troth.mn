@@ -86,3 +86,7 @@ a.material-icons:focus,
 a.material-icons:hover {
   text-decoration: none;
 }
+
+.verified {
+  color: #1990ef !important;
+}
