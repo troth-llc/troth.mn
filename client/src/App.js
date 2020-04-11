@@ -17,11 +17,10 @@ import AppContainer from "AppContainer";
 import { User } from "context/user";
 import { Snackbar } from "context/notification-toast";
 import "./App.css";
-export default function App() {
+const App = (props) => {
   // user context
   const [user, setUser] = useState(null);
   const [toast, setToast] = useState(null);
-
   const login = () => {
     axios
       .get("/api/auth")
@@ -31,24 +30,10 @@ export default function App() {
           localStorage.removeItem("token");
           document.location.reload();
         }
-        if (!user.verified) {
-          setToast({
-            msg: "Please verify your account",
-            timeout: 8000,
-            action: {
-              title: "Verify",
-              event: () => {
-                window.location.replace("/settings/verify");
-              },
-            },
-          });
-        }
         setUser(user);
       })
       .catch((error) => {
-        if (error) {
-          localStorage.removeItem("token");
-        }
+        if (error) localStorage.removeItem("token");
       });
   };
   useEffect(() => {
@@ -98,10 +83,11 @@ export default function App() {
       </User.Provider>
     </Router>
   );
-}
+};
 function Home() {
   return <h1> </h1>;
 }
 function Notfound() {
   return <h2>404 not found</h2>;
 }
+export default App;

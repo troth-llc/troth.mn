@@ -13,7 +13,7 @@ const Email = () => {
             ? (window.location.href = "/")
             : seterror("invalid token")
         );
-  }, []);
+  }, [token]);
   return token ? (
     error
   ) : (

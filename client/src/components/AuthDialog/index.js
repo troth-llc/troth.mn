@@ -4,11 +4,8 @@ import { MDCSelect } from "@material/select";
 import { MDCDialog } from "@material/dialog";
 import axios from "axios";
 import { Snackbar } from "context/notification-toast";
-import { useHistory } from "react-router-dom";
 import "./style.scss";
 const AuthDialog = (props) => {
-  const history = useHistory();
-  localStorage.getItem("token") && history.push("/");
   const { setToast } = useContext(Snackbar);
   const [login, setLogin] = useState({ username: "", password: "" });
   const [show, setShow] = useState(false);
@@ -60,16 +57,17 @@ const AuthDialog = (props) => {
     setGender(data);
   };
   useEffect(() => {
-    if (props.open === true) {
+    if (props.open === true && !localStorage.getItem("token")) {
       const dialog = new MDCDialog(document.querySelector("#auth"));
       dialog.open();
       dialog.escapeKeyAction = "";
       dialog.scrimClickAction = "";
+
+      const select = new MDCSelect(document.querySelector("#gender-select"));
+      select.listen("MDCSelect:change", () => {
+        update_gender(select.value);
+      });
     }
-    const select = new MDCSelect(document.querySelector("#gender-select"));
-    select.listen("MDCSelect:change", () => {
-      update_gender(select.value);
-    });
   }, [props.open]);
   const submit_register = (e) => {
     e.preventDefault();
@@ -125,7 +123,9 @@ const AuthDialog = (props) => {
         });
     }
   };
-  return (
+  return localStorage.getItem("token") ? (
+    <Redirect to="/" />
+  ) : (
     <div className="mdc-dialog" id="auth">
       <div className="mdc-dialog__container">
         <div
