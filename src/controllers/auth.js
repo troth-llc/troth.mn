@@ -151,6 +151,7 @@ exports.profile = function (req, res) {
                 password_updated: user.password_updated,
                 following: user.following.length,
                 followers: user.followers.length,
+                verification_status: user.verification_status,
               },
             });
           }

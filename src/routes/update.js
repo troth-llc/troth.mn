@@ -17,4 +17,5 @@ router.post("/avatar", upload.avatar, token, update.avatar);
 router.post("/cover", token, update.cover);
 router.post("/email", validate.update_email, token, update.email);
 router.post("/code", validate.code, token, update.code);
+router.post("/verify", upload.verify, token, update.verify);
 module.exports = router;

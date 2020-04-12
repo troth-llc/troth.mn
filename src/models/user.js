@@ -39,6 +39,10 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  verification_status: {
+    type: String,
+    default: null,
+  },
   type: {
     type: String,
     default: "member",

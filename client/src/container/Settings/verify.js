@@ -37,136 +37,151 @@ const Verify = () => {
     }
   };
   return user !== null ? (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (back_input.current.files[0] && front_input.current.files[0]) {
-          const upload = new FormData();
-          upload.append("front", front_input.current.files[0]);
-          upload.append("back", back_input.current.files[0]);
-          setDisabled(true);
-          axios({
-            method: "post",
-            url: "/api/update/verify",
-            data: upload,
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }).then((response) => {
-            if (response.data.status) window.location.reload();
-            else {
-              let errors = response.data.errors;
-              errors.map((error) => setError({ [error.param]: error.msg }));
-              setDisabled(false);
-            }
-          });
-        }
-      }}
-      className="verify-form"
-    >
-      <h5 className="notice center font-reset">Identity Verification</h5>
-      <span className="notice center">
-        Identity verification helps to ensure that there is a real person behind
-        every project on Troth.
-        <br />
-        Your documents will not be shared with other members, Please upload
-        (png, jpg) files,max allowed size 5mb per document.
-        <br />
-        The name on the ID should match the name that you provide on Troth
-        account
-      </span>
-      <div className="mdc-layout-grid">
-        <div className="mdc-layout-grid__inner">
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 text-center">
-            {state.front ? (
-              <button
-                type="button"
-                className="mdc-icon-button material-icons clear-input"
-                onClick={() => {
-                  front_input.current.value = "";
-                  setstate({ ...state, front: null });
-                  if (
-                    !back_input.current.files[0] ||
-                    !front_input.current.files[0]
-                  )
-                    setDisabled(true);
+    user.verification_status !== "pending" ? (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (back_input.current.files[0] && front_input.current.files[0]) {
+            const upload = new FormData();
+            upload.append("front", front_input.current.files[0]);
+            upload.append("back", back_input.current.files[0]);
+            setDisabled(true);
+            axios({
+              method: "post",
+              url: "/api/update/verify",
+              data: upload,
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }).then((response) => {
+              if (response.data.status) window.location.reload();
+              else {
+                let errors = response.data.errors;
+                errors.map((error) => setError({ [error.param]: error.msg }));
+                setDisabled(false);
+              }
+            });
+          }
+        }}
+        className="verify-form"
+      >
+        <h5 className="notice center font-reset">Identity Verification</h5>
+        <span className="notice center">
+          Identity verification helps to ensure that there is a real person
+          behind every project on Troth.
+          <br />
+          Your documents will not be shared with other members, Please upload
+          (png, jpg) files,max allowed size 5mb per document.
+          <br />
+          The name on the ID should match the name that you provide on Troth
+          account
+        </span>
+        <div className="mdc-layout-grid">
+          <div className="mdc-layout-grid__inner">
+            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 text-center">
+              {state.front ? (
+                <button
+                  type="button"
+                  className="mdc-icon-button material-icons clear-input"
+                  onClick={() => {
+                    front_input.current.value = "";
+                    setstate({ ...state, front: null });
+                    if (
+                      !back_input.current.files[0] ||
+                      !front_input.current.files[0]
+                    )
+                      setDisabled(true);
+                  }}
+                >
+                  close
+                </button>
+              ) : null}
+              <label
+                className="id-verify flex center"
+                htmlFor="front"
+                style={{
+                  backgroundImage: state.front ? `url(${state.front})` : null,
                 }}
               >
-                close
-              </button>
-            ) : null}
-            <label
-              className="id-verify flex center"
-              htmlFor="front"
-              style={{
-                backgroundImage: state.front ? `url(${state.front})` : null,
-              }}
-            >
-              {!state.front ? "ID Frontside" : null}
-            </label>
-            <input
-              type="file"
-              className="hidden"
-              name="front"
-              id="front"
-              accept="image/png, image/jpeg"
-              onChange={update}
-              ref={front_input}
-            />
-            <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">
-              {error.front}
-            </p>
-          </div>
-          <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 text-center">
-            {state.back ? (
-              <button
-                type="button"
-                className="mdc-icon-button material-icons clear-input"
-                onClick={() => {
-                  back_input.current.value = "";
-                  setstate({ ...state, back: null });
-                  if (
-                    !back_input.current.files[0] ||
-                    !front_input.current.files[0]
-                  )
-                    setDisabled(true);
+                {!state.front ? "ID Frontside" : null}
+              </label>
+              <input
+                type="file"
+                className="hidden"
+                name="front"
+                id="front"
+                accept="image/png, image/jpeg"
+                onChange={update}
+                ref={front_input}
+              />
+              <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">
+                {error.front}
+              </p>
+            </div>
+            <div className="mdc-layout-grid__cell mdc-layout-grid__cell--span-6 text-center">
+              {state.back ? (
+                <button
+                  type="button"
+                  className="mdc-icon-button material-icons clear-input"
+                  onClick={() => {
+                    back_input.current.value = "";
+                    setstate({ ...state, back: null });
+                    if (
+                      !back_input.current.files[0] ||
+                      !front_input.current.files[0]
+                    )
+                      setDisabled(true);
+                  }}
+                >
+                  close
+                </button>
+              ) : null}
+              <label
+                className="id-verify flex center"
+                htmlFor="back"
+                style={{
+                  backgroundImage: state.back ? `url(${state.back})` : null,
                 }}
               >
-                close
-              </button>
-            ) : null}
-            <label
-              className="id-verify flex center"
-              htmlFor="back"
-              style={{
-                backgroundImage: state.back ? `url(${state.back})` : null,
-              }}
-            >
-              {!state.back ? "ID Backside" : null}
-            </label>
-            <input
-              type="file"
-              className="hidden"
-              name="back"
-              id="back"
-              accept="image/png, image/jpeg"
-              onChange={update}
-              ref={back_input}
-            />
-            <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">
-              {error.back}
-            </p>
+                {!state.back ? "ID Backside" : null}
+              </label>
+              <input
+                type="file"
+                className="hidden"
+                name="back"
+                id="back"
+                accept="image/png, image/jpeg"
+                onChange={update}
+                ref={back_input}
+              />
+              <p className="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg">
+                {error.back}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="action">
-        <div>
-          <button className="mdc-button mdc-button--raised" disabled={disabled}>
-            <span className="mdc-button__ripple"></span>Save
-          </button>
+        <div className="action">
+          <div>
+            <button
+              className="mdc-button mdc-button--raised"
+              disabled={disabled}
+            >
+              <span className="mdc-button__ripple"></span>Save
+            </button>
+          </div>
         </div>
+      </form>
+    ) : (
+      <div className="flex center verification-status">
+        <span className="material-icons">insert_emoticon</span>
+        <br />
+        <span>
+          We would like to inform you that your documents have been uploaded
+          successfully and will be evaluated by the relevant department within
+          24 business hours.
+        </span>
       </div>
-    </form>
+    )
   ) : (
     <div className="placeholder settings-container">
       <div className="line"></div>

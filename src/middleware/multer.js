@@ -26,6 +26,15 @@ exports.avatar = multer({
   storage,
   limits: { fileSize: 10485760, files: 1 }, // limit 10mb
 }).fields([{ name: "avatar", maxCount: 1 }]);
+// id upload
+exports.verify = multer({
+  storage,
+  limits: { fileSize: 10485760, files: 2 }, // limit 10mb
+}).fields([
+  { name: "front", maxCount: 1 },
+  { name: "back", maxCount: 1 },
+]);
+
 /* 
     todo:
 -fix error handling 

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
+const Document = require("../models/document");
 const { validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
 // email
@@ -174,6 +175,30 @@ exports.code = function (req, res) {
       } else {
         res.json({ status: false, errors: [{ msg: "Invalid code" }] });
       }
+    });
+  });
+};
+exports.verify = function (req, res) {
+  const token = req.header("x-auth-token");
+  const front = req.files.front[0].filename;
+  const back = req.files.back[0].filename;
+  jwt.verify(token, process.env.JWTSECRET, function (err, user) {
+    User.findById(user.id).then((data) => {
+      Document.find({ user: data._id }).then((user) => {
+        if (user.length > 0)
+          return res.json({ status: false, msg: "Your request is pending" });
+        else {
+          Document.create(
+            { user: data._id, files: [{ front, back }] },
+            (err, doc) => {
+              if (err) console.log(err);
+              data.verification_status = "pending";
+              data.save();
+              res.json({ status: true });
+            }
+          );
+        }
+      });
     });
   });
 };

@@ -135,3 +135,11 @@
     position: relative;
   }
 }
+.verification-status {
+  flex-direction: column;
+  span.material-icons {
+    text-align: center;
+    font-size: 36px;
+    color: #4caf50;
+  }
+}
