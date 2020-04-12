@@ -90,3 +90,6 @@ a.material-icons:hover {
 .verified {
   color: #1990ef !important;
 }
+.hidden {
+  display: none !important;
+}

@@ -4,6 +4,7 @@ import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import Info from "./info";
 import Password from "./password";
 import Email from "./email";
+import Verify from "./verify";
 import "./style.scss";
 const Search = () => {
   const path = window.location.pathname.split("/");
@@ -83,6 +84,26 @@ const Search = () => {
                 </span>
                 <span className="mdc-tab__ripple"></span>
               </NavLink>
+              <NavLink
+                to="/settings/verify"
+                activeClassName="mdc-tab--active"
+                className="mdc-tab"
+                role="tab"
+              >
+                <span className="mdc-tab__content">
+                  <span
+                    className="mdc-tab__icon material-icons"
+                    aria-hidden="true"
+                  >
+                    verified_user
+                  </span>
+                  <span className="mdc-tab__text-label">Verify</span>
+                </span>
+                <span className="mdc-tab-indicator" tab="verify">
+                  <span className="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                </span>
+                <span className="mdc-tab__ripple"></span>
+              </NavLink>
             </div>
           </div>
         </div>
@@ -93,6 +114,7 @@ const Search = () => {
           <Route exact path="/settings/info" component={Info} />
           <Route exact path="/settings/email" component={Email} />
           <Route exact path="/settings/password" component={Password} />
+          <Route exact path="/settings/verify" component={Verify} />
           <Redirect from="/settings" to="/settings/info" />
         </Switch>
       </div>

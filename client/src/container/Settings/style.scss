@@ -101,3 +101,37 @@
     padding-left: 8px;
   }
 }
+// id verify
+.id-verify {
+  height: 150px;
+  border-radius: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  line-height: 150px;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+.verify-form {
+  .action {
+    padding: 24px !important;
+    div {
+      max-width: unset !important;
+      margin: unset !important;
+      justify-content: flex-end !important;
+    }
+  }
+  button.clear-input {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: 36px;
+    width: 36px;
+    font-size: 20px;
+    padding: 8px;
+    z-index: 1;
+  }
+  .mdc-layout-grid__cell {
+    position: relative;
+  }
+}
