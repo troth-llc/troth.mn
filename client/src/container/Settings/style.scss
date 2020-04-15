@@ -143,3 +143,7 @@
     color: #4caf50;
   }
 }
+#settings-container .input-container .mdc-text-field-helper-text {
+  max-width: unset;
+  width: 90%;
+}

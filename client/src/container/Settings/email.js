@@ -3,6 +3,8 @@ import { MDCDialog } from "@material/dialog";
 import { User } from "context/user";
 import axios from "axios";
 import moment from "moment";
+import { Snackbar } from "context/notification-toast";
+
 const Email = () => {
   const [state, setState] = useState({ email: "", password: "" });
   const [error, setError] = useState({ email: "", password: "" });
@@ -11,6 +13,8 @@ const Email = () => {
   const [loading, setLoading] = useState(false);
   const [errorResend, seterrorResend] = useState("");
   const { user } = useContext(User);
+  const { setToast } = useContext(Snackbar);
+
   const [code, setcode] = useState("");
   const [errorCode, seterrorCode] = useState("");
   useEffect(() => {
@@ -129,13 +133,17 @@ const Email = () => {
                   type="button"
                   onClick={() => {
                     setResend(true);
-                    axios
-                      .get("/api/auth/email")
-                      .then((response) =>
-                        response.data.status
-                          ? seterrorResend("Check your inbox")
-                          : seterrorResend("some thing went wrong.")
-                      );
+                    axios.get("/api/auth/email").then((response) =>
+                      response.data.status
+                        ? setToast({
+                            msg: "Link has been send to your email address",
+                            timeout: 4000,
+                          })
+                        : setToast({
+                            msg: "Some thing went wrong",
+                            timeout: 8000,
+                          })
+                    );
                   }}
                 >
                   <span className="mdc-button__ripple"></span>

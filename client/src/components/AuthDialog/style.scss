@@ -223,7 +223,7 @@ $base-color: #c3b59b;
 .settings-container {
   .mdc-text-field,
   .mdc-select:not(.mdc-select--disabled) .mdc-select__anchor {
-    max-width: 90%;
+    max-width: 90% !important;
     margin: 0 auto;
     display: flex;
   }

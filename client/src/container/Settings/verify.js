@@ -176,9 +176,8 @@ const Verify = () => {
         <span className="material-icons">insert_emoticon</span>
         <br />
         <span>
-          We would like to inform you that your documents have been uploaded
-          successfully and will be evaluated by the relevant department within
-          24 business hours.
+          Your documents have been uploaded successfully and will be evaluated
+          by the relevant department within 24 business hours.
         </span>
       </div>
     )

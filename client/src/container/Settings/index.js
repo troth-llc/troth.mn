@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { MDCTabBar } from "@material/tab-bar";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
 import Info from "./info";
 import Password from "./password";
 import Email from "./email";
 import Verify from "./verify";
+import { User } from "context/user";
 import "./style.scss";
 const Search = () => {
+  const { user } = useContext(User);
   const path = window.location.pathname.split("/");
   useEffect(() => {
     new MDCTabBar(document.querySelector("#settings-tab"));
@@ -17,7 +19,7 @@ const Search = () => {
     } catch (err) {
       console.log("🤔");
     }
-  }, [path]);
+  }, [path, user]);
   return (
     <div className="settings-container">
       <div className="mdc-tab-bar" role="tablist" id="settings-tab">
@@ -84,26 +86,28 @@ const Search = () => {
                 </span>
                 <span className="mdc-tab__ripple"></span>
               </NavLink>
-              <NavLink
-                to="/settings/verify"
-                activeClassName="mdc-tab--active"
-                className="mdc-tab"
-                role="tab"
-              >
-                <span className="mdc-tab__content">
-                  <span
-                    className="mdc-tab__icon material-icons"
-                    aria-hidden="true"
-                  >
-                    verified_user
+              {user && !user.verified ? (
+                <NavLink
+                  to="/settings/verify"
+                  activeClassName="mdc-tab--active"
+                  className="mdc-tab"
+                  role="tab"
+                >
+                  <span className="mdc-tab__content">
+                    <span
+                      className="mdc-tab__icon material-icons"
+                      aria-hidden="true"
+                    >
+                      verified_user
+                    </span>
+                    <span className="mdc-tab__text-label">Verify</span>
                   </span>
-                  <span className="mdc-tab__text-label">Verify</span>
-                </span>
-                <span className="mdc-tab-indicator" tab="verify">
-                  <span className="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-                </span>
-                <span className="mdc-tab__ripple"></span>
-              </NavLink>
+                  <span className="mdc-tab-indicator" tab="verify">
+                    <span className="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                  </span>
+                  <span className="mdc-tab__ripple"></span>
+                </NavLink>
+              ) : null}
             </div>
           </div>
         </div>
@@ -114,7 +118,9 @@ const Search = () => {
           <Route exact path="/settings/info" component={Info} />
           <Route exact path="/settings/email" component={Email} />
           <Route exact path="/settings/password" component={Password} />
-          <Route exact path="/settings/verify" component={Verify} />
+          {user && !user.verified ? (
+            <Route exact path="/settings/verify" component={Verify} />
+          ) : null}
           <Redirect from="/settings" to="/settings/info" />
         </Switch>
       </div>

@@ -194,7 +194,21 @@ exports.verify = function (req, res) {
               if (err) console.log(err);
               data.verification_status = "pending";
               data.save();
-              res.json({ status: true });
+              transporter.sendMail(
+                {
+                  from: process.env.MAIL,
+                  to: data.email,
+                  subject: "Documents Uploaded Successfully",
+                  html: `<b>Dear ${data.name}</b><br />
+                  <p>We would like to inform you that your documents have been uploaded successfully and will be evaluated by the relevant department within 24 business hours.</p>`,
+                },
+                (err, info) => {
+                  if (err) console.log(err);
+                  res.json({
+                    status: info.accepted.length > 0 ? true : false,
+                  });
+                }
+              );
             }
           );
         }
