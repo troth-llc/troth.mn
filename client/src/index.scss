@@ -1,85 +1,14 @@
-body {
-  margin: 0;
-  font-family: "Gotham", "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body,
+#root {
+  background-color: #f4f6f8;
 }
 button {
-  font-family: "Roboto", sans-serif;
-}
-p {
-  margin: 0;
-}
-a {
-  text-decoration: none;
-  color: #c3b59b;
-}
-a:focus,
-a:hover {
-  text-decoration: underline;
-}
-button:focus,
-button:hover {
+  background: transparent;
+  border: none;
   outline: none;
-}
-html,
-body {
-  margin: 0px;
-}
-.flex {
-  display: flex;
-}
-.center {
-  justify-content: center;
-}
-/* placeholder */
-.placeholder {
-  display: flex;
-  div {
-    background: #e8e8e8;
-    animation: pulse 1s infinite ease-in-out;
-  }
-  .line {
-    height: 20px;
-    width: 100%;
-    border-radius: 4px;
-  }
-  .avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    margin: 0;
-  }
-}
-@keyframes pulse {
-  0% {
-    background-color: rgba(165, 165, 165, 0.1);
-  }
-  50% {
-    background-color: rgba(165, 165, 165, 0.3);
-  }
-  100% {
-    background-color: rgba(165, 165, 165, 0.1);
-  }
-}
-
-@-webkit-keyframes pulse {
-  0% {
-    background-color: rgba(165, 165, 165, 0.1);
-  }
-  50% {
-    background-color: rgba(165, 165, 165, 0.3);
-  }
-  100% {
-    background-color: rgba(165, 165, 165, 0.1);
-  }
-}
-a.mdc-button {
+  padding: 0;
   &:hover,
   &:focus {
-    text-decoration: none;
+    outline: none;
   }
-}
-.text-center {
-  text-align: center !important;
 }

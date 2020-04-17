@@ -1,7 +1,3 @@
-import AuthDialog from "./AuthDialog";
-import Header from "./Header";
-import Calendar from "./Calendar";
-import Loader from "./Loader";
-import FollowDialog from "./FollowDialog";
-import Toast from "./Toast";
-export { AuthDialog, Header, Calendar, Loader, FollowDialog, Toast };
+import Header from "./header";
+import BottomNav from "./bottomNav";
+export { Header, BottomNav };
