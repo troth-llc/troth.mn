@@ -4,4 +4,26 @@
   width: 100%;
   height: 56px;
   background: #fff;
+  border-top: 1px solid #e4e8eb;
+}
+.bottom-nav-item {
+  display: flex;
+  justify-content: center;
+  height: 56px;
+  position: relative;
+  object {
+    pointer-events: none;
+  }
+  &.active {
+    filter: invert(55%) sepia(67%) saturate(2552%) hue-rotate(329deg)
+      brightness(103%) contrast(96%);
+    &:before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      width: 100%;
+      border-top: 1px solid #fa6c51;
+      display: block;
+    }
+  }
 }

@@ -21,7 +21,8 @@
   img {
     &:hover,
     &:focus {
-      filter: invert(0.5);
+      filter: invert(55%) sepia(67%) saturate(2552%) hue-rotate(329deg)
+        brightness(103%) contrast(96%);
     }
   }
 }

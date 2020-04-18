@@ -1,3 +1,4 @@
 import Header from "./header";
 import BottomNav from "./bottomNav";
-export { Header, BottomNav };
+import Scrollable from "./scrollable";
+export { Header, BottomNav, Scrollable };
