@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Row, Col } from "reactstrap";
+import { Scrollable } from "components";
 import "./style.scss";
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
             <NavLink to="/ending">Ending</NavLink>
           </Col>
         </Row>
+        <Scrollable />
       </div>
     </>
   );
