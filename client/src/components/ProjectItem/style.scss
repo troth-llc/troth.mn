@@ -1,0 +1,45 @@
+.project-item {
+  max-width: 165px;
+  transition: box-shadow 0.1s;
+  &:hover {
+    a {
+      text-decoration: none;
+    }
+    border-radius: 8px;
+    backdrop-filter: blur(30px);
+    box-shadow: 0 30px 70px 0 rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+  .project-header img {
+    min-height: 135px;
+    max-height: 135px;
+    width: 100%;
+  }
+  .project-detail {
+    padding: 15px;
+    border-radius: 0 0 5px 5px;
+    background-color: #ffffff;
+    font-family: Rubik;
+    .project-title {
+      font-size: 14px;
+      text-align: left;
+      color: #424852;
+    }
+  }
+  .status-info {
+    .count {
+      font-size: 14px;
+      line-height: 1.21;
+      color: #424852;
+    }
+    .text {
+      font-size: 10px;
+      line-height: 1.7;
+      color: #a9b0bb;
+    }
+  }
+  .project-divider {
+    margin: 7px 0;
+    width: 20px;
+  }
+}

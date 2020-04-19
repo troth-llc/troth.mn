@@ -20,16 +20,6 @@
       text-align: left;
       color: #424852;
     }
-    .project-progress {
-      margin: 15px 0;
-    }
-    .progress {
-      border-radius: 5px;
-      height: 3px;
-    }
-    .progress-bar {
-      background-color: #fa6c51;
-    }
   }
   .status-container {
     padding: 10px 18px;
@@ -61,4 +51,14 @@
       line-height: 36px;
     }
   }
+}
+.project-progress {
+  margin: 15px 0;
+}
+.progress {
+  border-radius: 5px;
+  height: 3px;
+}
+.progress-bar {
+  background-color: #fa6c51;
 }

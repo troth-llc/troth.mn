@@ -16,7 +16,8 @@
     }
   }
 
-  a {
+  a.home-link,
+  a.action-button {
     font-family: Roboto;
     font-size: 13px;
     font-weight: 500;
@@ -52,6 +53,7 @@
     }
   }
 }
-.home-slider {
+.home-slider,
+.project-container {
   margin-top: 15px;
 }

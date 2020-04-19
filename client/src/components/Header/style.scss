@@ -27,3 +27,10 @@
     }
   }
 }
+.brand-link {
+  &:hover,
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+}
