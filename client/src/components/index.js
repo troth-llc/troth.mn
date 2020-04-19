@@ -1,4 +1,4 @@
-import Header from "./header";
+import Header from "./Header";
 import BottomNav from "./bottomNav";
 import Scrollable from "./scrollable";
 import SliderItem from "./SliderItem";
