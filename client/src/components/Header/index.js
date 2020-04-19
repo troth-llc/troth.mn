@@ -12,9 +12,9 @@ const Header = () => {
         <Link to="/" className="brand-link">
           <h5 className="brand-name m-0">TROTH</h5>
         </Link>
-        <button className="nav-action">
+        <Link to="search" className="nav-action">
           <img src={require("assets/image/search.svg")} alt="menu"></img>
-        </button>
+        </Link>
       </div>
     </Navbar>
   );

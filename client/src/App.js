@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import { Header, BottomNav } from "components";
-import { Home } from "container";
+import { Home, Search } from "container";
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,6 +23,7 @@ const App = () => {
       <div className="app">
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route path="/search" component={Search} />
           <PrivateRoute path="/profile" component={() => <h1>profile</h1>} />
         </Switch>
       </div>

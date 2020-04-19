@@ -23,6 +23,24 @@ const Home = () => {
       progress: 67,
       funded: 977,
     },
+    {
+      title: "Hello world",
+      src: require("assets/image/project/mini.png"),
+      progress: 20,
+      funded: 350,
+    },
+    {
+      title: "Hello Troth",
+      src: require("assets/image/project/mini.png"),
+      progress: 81,
+      funded: 52,
+    },
+    {
+      title: "testing",
+      src: require("assets/image/project/mini.png"),
+      progress: 67,
+      funded: 977,
+    },
   ];
   return (
     <>
@@ -48,7 +66,7 @@ const Home = () => {
         <div className="project-container">
           <Row>
             {projects.map((project, index) => (
-              <Col md={6} key={index}>
+              <Col xs={6} key={index} className="mb-3">
                 <ProjectItem {...project} />
               </Col>
             ))}
