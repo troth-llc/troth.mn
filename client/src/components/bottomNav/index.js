@@ -27,6 +27,16 @@ const BottomNav = () => {
           </NavLink>
         </Col>
         <Col>
+          <NavLink to="/notifications" className="bottom-nav-item">
+            <object
+              type="image/svg+xml"
+              data={require("assets/image/notification.svg")}
+              aria-label="user notification"
+              className="1"
+            />
+          </NavLink>
+        </Col>
+        <Col>
           <NavLink to="/user" className="bottom-nav-item">
             <object
               type="image/svg+xml"

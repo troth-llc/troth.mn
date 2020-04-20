@@ -10,36 +10,42 @@ const Home = () => {
       src: require("assets/image/project/mini.png"),
       progress: 20,
       funded: 350,
+      portrait: true,
     },
     {
       title: "Hello Troth",
       src: require("assets/image/project/mini.png"),
       progress: 81,
       funded: 52,
+      portrait: true,
     },
     {
       title: "testing",
       src: require("assets/image/project/mini.png"),
       progress: 67,
       funded: 977,
+      portrait: true,
     },
     {
       title: "Hello world",
       src: require("assets/image/project/mini.png"),
       progress: 20,
       funded: 350,
+      portrait: true,
     },
     {
       title: "Hello Troth",
       src: require("assets/image/project/mini.png"),
       progress: 81,
       funded: 52,
+      portrait: true,
     },
     {
       title: "testing",
       src: require("assets/image/project/mini.png"),
       progress: 67,
       funded: 977,
+      portrait: true,
     },
   ];
   return (

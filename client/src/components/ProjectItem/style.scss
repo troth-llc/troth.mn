@@ -1,5 +1,5 @@
 .project-item {
-  max-width: 165px;
+  // max-width: 165px;
   transition: box-shadow 0.1s;
   &:hover {
     a {
@@ -41,5 +41,41 @@
   .project-divider {
     margin: 7px 0;
     width: 20px;
+  }
+}
+.project-item-landscape {
+  max-height: 110px;
+  margin-top: 15px;
+
+  .project-photo {
+    img {
+      height: 110px;
+      max-width: 110px;
+      min-width: 110px;
+    }
+  }
+  .project-detail {
+    width: 100%;
+    padding: 15px;
+    border-radius: 0 0 5px 5px;
+    background-color: #f4f6f8;
+    font-family: Rubik;
+    .project-title {
+      font-size: 14px;
+      text-align: left;
+      color: #424852;
+    }
+  }
+  .status-info {
+    line-height: 17px;
+    .count {
+      font-size: 10px;
+      color: #424852;
+    }
+    .text {
+      font-size: 10px;
+      line-height: 1.7;
+      color: #a9b0bb;
+    }
   }
 }
