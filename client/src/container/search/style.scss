@@ -91,3 +91,44 @@
     background-color: #f4f6f8;
   }
 }
+// user
+.search-user {
+  font-family: Rubik;
+  margin-top: 15px;
+  height: 70px;
+  border-radius: 10px;
+  background-color: #f4f6f8;
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  .user-avatar img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+  .user-details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+    padding: 4px 0;
+    .user-name {
+      font-size: 14px;
+      line-height: 16px;
+      color: #636c77;
+    }
+    .user-type {
+      font-size: 12px;
+      line-height: 16px;
+      color: #a9b0bb;
+    }
+  }
+  .user-arrow {
+    line-height: 40px;
+  }
+  .user-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
