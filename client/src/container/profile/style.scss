@@ -1,0 +1,80 @@
+.profile {
+  padding: 1rem 1rem;
+  width: 100%;
+  background: #fff;
+  font-family: Rubik;
+  .d-flex {
+    width: 100%;
+  }
+  .profile-avatar img {
+    height: 58px;
+    width: 58px;
+    border-radius: 50%;
+  }
+  .profile-name {
+    font-size: 14px;
+    line-height: 1.21;
+    color: #636c77;
+  }
+  .profile-type {
+    font-size: 12px;
+    line-height: 1.42;
+    color: #a9b0bb;
+  }
+  .profile-detail {
+    max-height: 30px;
+    line-height: 15px;
+    padding: 10px 10px;
+  }
+  .profile-follow {
+    display: flex;
+    position: absolute;
+    right: 15px;
+    .follow {
+      margin-left: 10px;
+      width: 76px;
+      height: 54px;
+      border-radius: 5px;
+      background-color: #f4f6f8;
+      text-align: center;
+      padding: 13px 5px;
+      .count {
+        font-size: 16px;
+        line-height: 1.06;
+        color: #424852;
+      }
+      .text {
+        font-size: 10px;
+        line-height: 1.7;
+        color: #a9b0bb;
+      }
+    }
+  }
+  .profile-bio {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #636c77;
+  }
+  .profile-action {
+    margin-top: 15px;
+    text-align: center;
+    line-height: 40px;
+    a {
+      font-size: 12px;
+      height: 40px;
+      border-radius: 5px;
+      background-color: #f4f6f8;
+      width: 100%;
+      &:hover {
+        color: #fa6c51;
+        text-decoration: none;
+      }
+    }
+  }
+}
+.profile-project {
+  padding: 0px 1rem;
+  .project-detail {
+    background: #fff;
+  }
+}

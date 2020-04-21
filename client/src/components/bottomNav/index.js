@@ -37,7 +37,7 @@ const BottomNav = () => {
           </NavLink>
         </Col>
         <Col>
-          <NavLink to="/user" className="bottom-nav-item">
+          <NavLink to="/profile" className="bottom-nav-item">
             <object
               type="image/svg+xml"
               data={require("assets/image/user.svg")}

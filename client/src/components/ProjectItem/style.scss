@@ -46,7 +46,9 @@
 .project-item-landscape {
   max-height: 110px;
   margin-top: 15px;
-
+  a:hover {
+    text-decoration: none;
+  }
   .project-photo {
     img {
       height: 110px;
