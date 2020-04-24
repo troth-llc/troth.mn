@@ -85,29 +85,32 @@ const Profile = () => {
           <Link to="/settings/info">Edit profile</Link>
         </div>
       </div>
-      <div className="home-nav m-3" style={{ width: "auto" }}>
-        <Row>
-          <Col>
-            <NavLink to="/profile/calendar" className="home-link">
-              Calendar
-            </NavLink>
-          </Col>
-          <Col className="divider-nav">
-            <NavLink to="/profile" exact className="home-link">
-              Projects
-            </NavLink>
-          </Col>
-          <Col className="divider-nav">
-            <NavLink to="/profile/saved" className="home-link">
-              Saved
-            </NavLink>
-          </Col>
-        </Row>
-      </div>
-      <div className="profile-project">
-        {projects.map((project, index) => (
-          <ProjectItem key={index} {...project} />
-        ))}
+      <div className="p-3">
+        <div className="home-nav">
+          <Row className="m-0">
+            <Col>
+              <NavLink to="/calendar" className="home-link">
+                Calendar
+              </NavLink>
+            </Col>
+            <Col className="divider-nav">
+              <NavLink to="/profile" exact className="home-link">
+                Projects
+              </NavLink>
+            </Col>
+            <Col className="divider-nav">
+              <NavLink to="/profile/saved" className="home-link">
+                Saved
+              </NavLink>
+            </Col>
+          </Row>
+        </div>
+        {/* add react router switch here */}
+        <div className="profile-project">
+          {projects.map((project, index) => (
+            <ProjectItem key={index} {...project} />
+          ))}
+        </div>
       </div>
     </div>
   );

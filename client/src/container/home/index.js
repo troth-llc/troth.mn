@@ -49,7 +49,7 @@ const Home = () => {
     },
   ];
   return (
-    <>
+    <div className="d-flex flex-column">
       <div className="home-nav">
         <Row className="m-0">
           <Col>
@@ -68,18 +68,18 @@ const Home = () => {
             </NavLink>
           </Col>
         </Row>
-        <Scrollable />
-        <div className="project-container">
-          <Row>
-            {projects.map((project, index) => (
-              <Col xs={6} key={index} className="mb-3">
-                <ProjectItem {...project} />
-              </Col>
-            ))}
-          </Row>
-        </div>
       </div>
-    </>
+      <Scrollable />
+      <div className="project-container">
+        <Row>
+          {projects.map((project, index) => (
+            <Col xs={6} key={index} className="mb-3">
+              <ProjectItem {...project} />
+            </Col>
+          ))}
+        </Row>
+      </div>
+    </div>
   );
 };
 export default Home;

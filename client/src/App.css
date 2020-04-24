@@ -1,6 +1,9 @@
 .app {
-  display: flex;
   margin-top: 54px;
   margin-bottom: 60px;
   padding: 1rem 1rem;
+}
+.app .Calendar {
+  margin-left: auto;
+  margin-right: auto;
 }
