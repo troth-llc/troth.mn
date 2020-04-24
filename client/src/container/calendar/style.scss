@@ -16,10 +16,34 @@
   }
 }
 .calendar-item {
+  a {
+    color: unset;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  hr {
+    margin: 3px 0;
+  }
+  font-family: "Rubik";
+  font-weight: 400;
   border-radius: 1em;
   background: #fff;
-  padding: 10px;
+  padding: 1em 1em;
   &:hover {
     box-shadow: 0 1em 4em rgba(0, 0, 0, 0.07);
+  }
+  .item-date,
+  .item-description,
+  .item-location {
+    i.material-icons {
+      font-size: 12px;
+      margin-right: 5px;
+      padding: 2px 0;
+      height: 18px;
+      vertical-align: middle;
+      color: #424852;
+    }
+    font-size: 12px;
   }
 }

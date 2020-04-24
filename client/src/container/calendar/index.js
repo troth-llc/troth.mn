@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
+import { Link } from "react-router-dom";
 import "./style.scss";
 import { Calendar as Cal } from "react-modern-calendar-datepicker";
 const Calendar = (props) => {
@@ -8,7 +9,6 @@ const Calendar = (props) => {
     month: 4,
     day: 23,
   };
-
   const [selectedDay, setSelectedDay] = useState(defaultValue);
   return (
     <div className="d-flex flex-column">
@@ -27,11 +27,20 @@ const Calendar = (props) => {
       <div className="calendar-preview">
         <hr />
         <div className="calendar-item">
-          <div className="item-title">Launch day</div>
-          <div className="item-date">Thursday, 23 April⋅12:30 – 1:30pm</div>
-          <div className="item-description">Keep Calm it's Launch Day</div>
-          <div className="item-location">Ulaanbaatar ,Mongolia</div>
-          <div className="item-action">x x</div>
+          <Link to="/event/eventid">
+            <div className="item-title">Launch day</div>
+            <hr />
+            <div className="item-description mb-2">
+              Keep Calm it's Launch Day
+            </div>
+            <div className="item-date">
+              <i className="material-icons">schedule</i>Thursday, 23 April⋅12:30
+              – 1:30pm
+            </div>
+            <div className="item-location">
+              <i className="material-icons">location_on</i>Ulaanbaatar ,Mongolia
+            </div>
+          </Link>
         </div>
       </div>
     </div>
