@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { Link } from "react-router-dom";
 import "./style.scss";
@@ -10,6 +10,15 @@ const Calendar = (props) => {
     day: 23,
   };
   const [selectedDay, setSelectedDay] = useState(defaultValue);
+  useEffect(() => {
+    var buttons = document.querySelectorAll(".Calendar__monthArrowWrapper");
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setSelectedDay({ day: 29, month: 5, year: 2020 });
+        console.log(selectedDay.month);
+      });
+    });
+  }, [selectedDay]);
   return (
     <div className="d-flex flex-column">
       <Cal
