@@ -53,6 +53,7 @@ const App = () => {
   };
   useEffect(() => {
     login();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
   return (

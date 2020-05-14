@@ -99,8 +99,8 @@ exports.login = function (req, res) {
   }
   User.findOne()
     .or([
-      { email: email.toLowerCase() },
-      { username: new RegExp(`^${email}$`, "i") },
+      { email: email.trim().toLowerCase() },
+      { username: new RegExp(`^${email.trim()}$`, "i") },
     ])
     .then((user) => {
       if (!user)
@@ -128,43 +128,23 @@ exports.login = function (req, res) {
     });
 };
 exports.profile = function (req, res) {
-  const token = req.header("x-auth-token");
-  jwt.verify(token, process.env.JWTSECRET, function (err, user) {
-    if (!user) res.json({ msg: "some thing went wrong" });
-    else {
-      User.findById(user.id)
-        .select("-password")
-        .then((user) => {
-          if (!user) res.json({ msg: "some thing went wrong" });
-          else {
-            res.json({
-              user: {
-                _id: user._id,
-                email: user.email,
-                email_verified_at: user.email_verified_at,
-                password_updated_at: user.password_updated_at,
-                username: user.username,
-                avatar: user.avatar,
-                verified: user.verified,
-                type: user.type,
-                badges: user.badges,
-                projects: user.projects,
-                name: user.name,
-                website: user.website,
-                about: user.about,
-                created: user.created,
-                updated: user.updated,
-                phone: user.phone,
-                password_updated: user.password_updated,
-                following: user.following.length,
-                followers: user.followers.length,
-                verification_status: user.verification_status,
-              },
-            });
-          }
+  User.findById(req.user.id)
+    .select(
+      "-password -reset_password_expires -reset_password_token -reset_password_token -email_token -__v"
+    )
+    .populate({ path: "following", select: "user" })
+    .populate({ path: "followers", select: "user" })
+    .exec((err, user) => {
+      if (err) res.json({ msg: "some thing went wrong" });
+      else {
+        var result = { ...user._doc };
+        result.followers = result.followers.length;
+        result.following = result.following.length;
+        res.json({
+          user: result,
         });
-    }
-  });
+      }
+    });
 };
 exports.forgot = function (req, res) {
   const errors = validationResult(req);

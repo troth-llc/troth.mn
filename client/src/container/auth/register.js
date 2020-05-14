@@ -16,7 +16,7 @@ const Register = () => {
   const [disabled, disable] = useState(false);
   const [cookie, setCookie] = useCookies(["token"]);
   useEffect(() => {
-    cookie.token ? (window.location.href = "/") : console.log("ok");
+    cookie.token && (window.location.href = "/");
   }, [cookie]);
   return (
     <div className="register">
@@ -29,10 +29,8 @@ const Register = () => {
             axios.post("/api/auth/register", { ...data }).then((response) => {
               let errors = response.data.errors;
               let { status, token } = response.data;
-              if (status) {
-                setCookie("token", token, { path: "/" });
-                window.location.href = "/";
-              } else if (status === false) console.log("some thing went wrong");
+              if (status) setCookie("token", token, { path: "/" });
+              else if (status === false) console.log("some thing went wrong");
               else {
                 disable(false);
                 errors.map((error) => setError({ [error.param]: error.msg }));

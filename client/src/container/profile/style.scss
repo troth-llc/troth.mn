@@ -15,11 +15,15 @@
     font-size: 14px;
     line-height: 1.21;
     color: #636c77;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .profile-type {
     font-size: 12px;
     line-height: 1.42;
     color: #a9b0bb;
+    text-transform: capitalize;
   }
   .profile-detail {
     max-height: 30px;

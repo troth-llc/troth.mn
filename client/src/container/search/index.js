@@ -24,10 +24,10 @@ const Search = (props) => {
   ];
   return (
     <div id="search">
-      <Link to="/">
-        <img src={require("assets/image/left-arrow.svg")} alt="back-arrow" />
-      </Link>
-      <div className="mt-3">
+      <div className="search-container">
+        <Link to="/">
+          <img src={require("assets/image/left-arrow.svg")} alt="back-arrow" />
+        </Link>
         <form
           onSubmit={(e) => {
             if (search.trim()) {
@@ -47,7 +47,6 @@ const Search = (props) => {
           />
         </form>
       </div>
-      <hr style={{ marginTop: "10px" }} />
       <div className="category-container">
         <Switch>
           <Route exact path="/search">

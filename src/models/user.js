@@ -47,28 +47,9 @@ const userSchema = new Schema({
     type: Array,
     default: [],
   },
-  following: [
-    {
-      user: {
-        type: Schema.ObjectId,
-        ref: "User",
-      },
-      date: { type: Date, default: new Date() },
-    },
-  ],
-  followers: [
-    {
-      user: {
-        type: Schema.ObjectId,
-        ref: "User",
-      },
-      date: { type: Date, default: new Date() },
-    },
-  ],
-  projects: {
-    type: Array,
-    default: [],
-  },
+  following: [{ type: Schema.Types.ObjectId, ref: "user" }],
+  followers: [{ type: Schema.Types.ObjectId, ref: "user" }],
+  projects: [{ type: Schema.Types.ObjectId, ref: "project" }],
   created: {
     type: Date,
     default: new Date(),

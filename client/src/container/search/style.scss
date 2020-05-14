@@ -1,5 +1,6 @@
 // index
 #search {
+  overflow-x: auto;
   font-family: Rubik;
   position: fixed;
   background: #fff;
@@ -16,16 +17,17 @@
     border: none;
     height: 30px;
     font-size: 24px;
+    line-height: 30px;
     color: #fa6c51;
     &::placeholder {
       font-size: 28px;
       color: #cad0d7;
+      height: 30px;
     }
     &:focus {
       outline: none;
     }
   }
-  overflow-y: scroll;
 }
 .scroll-lock {
   overflow: hidden;
@@ -138,5 +140,20 @@
       color: #fa6c51;
       text-decoration: none;
     }
+  }
+}
+.category-container {
+  margin-top: 80px;
+}
+.search-container {
+  padding-top: 1rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.96);
+  form {
+    margin-top: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
 }
