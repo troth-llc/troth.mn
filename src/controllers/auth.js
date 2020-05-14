@@ -33,12 +33,12 @@ exports.create = function (req, res) {
               email,
               password,
             },
-            (err) => {
+            (err, user) => {
               if (err) throw err;
               crypto.randomBytes(20, function (err, buffer) {
                 var token = buffer.toString("hex");
-                User.findOneAndUpdate(
-                  { username },
+                User.findByIdAndUpdate(
+                  { _id: user._id },
                   {
                     email_token: token,
                   },
@@ -55,11 +55,20 @@ exports.create = function (req, res) {
                       <a href="http://localhost:3000/auth/verify_email?token=${token}">Click here to verify your email</>`,
                     },
                     (err, info) => {
-                      if (err) console.log(err);
-                      res.json({
-                        status: info.accepted.length > 0 ? true : false,
-                        username: user.username,
-                      });
+                      if (err) return res.json({ status: false });
+                      else {
+                        jwt.sign(
+                          { id: user._id },
+                          process.env.JWTSECRET,
+                          {
+                            expiresIn: 36000, // 10 hours
+                          },
+                          (err, token) => {
+                            if (err) throw err;
+                            res.json({ status: true, token });
+                          }
+                        );
+                      }
                     }
                   );
                 });

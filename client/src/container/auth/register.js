@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   FormGroup,
@@ -7,12 +7,17 @@ import {
   Button,
   Label,
 } from "reactstrap";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import axios from "axios";
 const Register = () => {
   const [data, setData] = useState({});
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
+  const [cookie, setCookie] = useCookies(["token"]);
+  useEffect(() => {
+    cookie.token ? (window.location.href = "/") : console.log("ok");
+  }, [cookie]);
   return (
     <div className="register">
       <h5 className="text-center w-100 pt-3 pb-3">Sign up</h5>
@@ -23,10 +28,12 @@ const Register = () => {
             setError({});
             axios.post("/api/auth/register", { ...data }).then((response) => {
               let errors = response.data.errors;
-              let { status } = response.data;
+              let { status, token } = response.data;
               if (status) {
-                console.log("ok");
-              } else {
+                setCookie("token", token, { path: "/" });
+                window.location.href = "/";
+              } else if (status === false) console.log("some thing went wrong");
+              else {
                 disable(false);
                 errors.map((error) => setError({ [error.param]: error.msg }));
               }
