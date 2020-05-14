@@ -23,10 +23,6 @@ const userSchema = new Schema({
     type: String,
     default: "",
   },
-  gender: {
-    type: String,
-    required: true,
-  },
   password: {
     type: String,
     required: true,

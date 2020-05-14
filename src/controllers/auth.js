@@ -15,7 +15,7 @@ var transporter = nodemailer.createTransport({
 });
 exports.create = function (req, res) {
   const errors = validationResult(req);
-  const { name, username, email, password, gender, id } = req.body;
+  const { name, username, email, password } = req.body;
   if (!errors.isEmpty()) {
     return res.status(200).json({ errors: errors.array() });
   } else {
@@ -32,7 +32,6 @@ exports.create = function (req, res) {
               username: username.toLowerCase(),
               email,
               password,
-              gender,
             },
             (err) => {
               if (err) throw err;
@@ -142,7 +141,6 @@ exports.profile = function (req, res) {
                 badges: user.badges,
                 projects: user.projects,
                 name: user.name,
-                gender: user.gender,
                 website: user.website,
                 about: user.about,
                 created: user.created,

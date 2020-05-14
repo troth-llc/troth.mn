@@ -31,9 +31,6 @@ exports.create = [
     .isIn(usernames)
     .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
     .withMessage("Invalid username"),
-  check("gender")
-    .isIn(["male", "female", "custom"])
-    .withMessage("Invalid gender"),
   check("password")
     .isLength({
       min: 6,
@@ -84,9 +81,6 @@ exports.info = [
     .isIn(usernames)
     .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
     .withMessage("Invalid username"),
-  check("gender")
-    .isIn(["male", "female", "custom"])
-    .withMessage("Invalid gender"),
   check("website").optional({ checkFalsy: true }).isLength({
     min: 10,
     max: 128,

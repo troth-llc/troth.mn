@@ -1,7 +1,15 @@
 import React from "react";
 import "./App.css";
 import { Header, BottomNav } from "components";
-import { Home, Search, Profile, Calendar, Event } from "container";
+import {
+  Home,
+  Search,
+  Profile,
+  Calendar,
+  Event,
+  Login,
+  Register,
+} from "container";
 import {
   BrowserRouter as Router,
   Switch,
@@ -27,6 +35,8 @@ const App = () => {
           <Route path="/profile" component={Profile} />
           <Route path="/calendar" component={Calendar} />
           <Route path="/event/:id" component={Event} />
+          <Route exact path="/auth" component={Login} />
+          <Route path="/auth/register" component={Register} />
           <PrivateRoute path="/admin" component={Profile} />
         </Switch>
       </div>

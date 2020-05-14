@@ -1,0 +1,67 @@
+.input-round {
+  min-height: 48px;
+  padding: 8px 16px;
+  font-size: 16px;
+  color: #111;
+  background-color: #fff;
+  border-color: #ddd;
+
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 2px;
+}
+.auth-action {
+  margin-top: 8px;
+  height: auto;
+  a {
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+  }
+  button {
+    border: none;
+    font-weight: 700;
+    min-height: 40px;
+    background-color: #fa6c51;
+    border-radius: 24px;
+    &:focus,
+    &:hover,
+    &:active {
+      border-color: unset !important;
+      background-color: #ea5134 !important;
+    }
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    }
+  }
+}
+.login,
+.register {
+  max-width: 340px;
+  margin: 0 auto;
+  label {
+    color: #575757;
+  }
+  .form-group {
+    margin-bottom: 0;
+    margin-top: 4px;
+  }
+}
+.no-account {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 15px;
+  a {
+    font-size: 14px;
+    margin-left: 4px;
+  }
+}
+.legal {
+  margin-top: 10px;
+  font-size: 13px;
+  text-align: center;
+  color: gray;
+  a {
+    color: gray;
+  }
+}
