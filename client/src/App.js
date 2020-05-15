@@ -11,6 +11,9 @@ import {
   Event,
   Login,
   Register,
+  Forgot,
+  Password,
+  Email,
 } from "container";
 import {
   BrowserRouter as Router,
@@ -67,7 +70,11 @@ const App = () => {
             <PrivateRoute path="/profile" component={Profile} />
             <Route path="/calendar" component={Calendar} />
             <Route path="/event/:id" component={Event} />
+            {/* auth routes */}
             <Route exact path="/auth" component={Login} />
+            <Route exact path="/auth/forgot" component={Forgot} />
+            <Route exact path="/auth/password/:token" component={Password} />
+            <Route exact path="/auth/email/:token" component={Email} />
             <Route path="/auth/register" component={Register} />
           </Switch>
         </div>

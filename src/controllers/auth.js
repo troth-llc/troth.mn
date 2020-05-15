@@ -4,15 +4,38 @@ const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const { validationResult } = require("express-validator");
 const crypto = require("crypto");
+const key = require("../../config.json");
 // email config
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.MAIL,
-    pass: process.env.MAIL_PASSWORD,
-    type: "login",
-  },
-});
+const send = async (to, subject, html) => {
+  return new Promise(async (resolve, reject) => {
+    var transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        type: "OAuth2",
+        user: process.env.MAIL,
+        serviceClient: key.client_id,
+        privateKey: key.private_key,
+      },
+    });
+    try {
+      await transporter.verify();
+      var result = await transporter.sendMail({
+        from: `TROTH LLC ${process.env.MAIL}`,
+        to,
+        subject,
+        html,
+      });
+      if (result.accepted.length > 0) {
+        resolve(true);
+      }
+    } catch (err) {
+      console.log(err);
+      reject(false);
+    }
+  });
+};
 exports.create = function (req, res) {
   const errors = validationResult(req);
   const { name, username, email, password } = req.body;
@@ -45,32 +68,28 @@ exports.create = function (req, res) {
                   { upsert: true, new: true }
                 ).exec(async (err, user) => {
                   if (err) console.log(err);
-                  transporter.sendMail(
-                    {
-                      from: `Troth LLC ${process.env.MAIL}`,
-                      to: user.email,
-                      subject: "Verify Your Email Address",
-                      html: `<p>Dear <b>${user.name}</b> <br/> This message has been sent to you because you entered your email on a registration form, 
-                      click the button below to verify your email. If you didn't make this request, ignore this email.</p>
-                      <a href="http://localhost:3000/auth/verify_email?token=${token}">Click here to verify your email</>`,
-                    },
-                    (err, info) => {
-                      if (err) return res.json({ status: false });
-                      else {
-                        jwt.sign(
-                          { id: user._id },
-                          process.env.JWTSECRET,
-                          {
-                            expiresIn: 36000, // 10 hours
-                          },
-                          (err, token) => {
-                            if (err) throw err;
-                            res.json({ status: true, token });
-                          }
-                        );
-                      }
+                  send(
+                    user.email,
+                    "Verify Your Email Address",
+                    `<p>Dear <b>${user.name}</b> <br/> This message has been sent to you because you entered your email on a registration form, 
+                  click the button below to verify your email. If you didn't make this request, ignore this email.</p>
+                  <a href="http://localhost:3000/auth/email/${token}">Click here to verify your email</>`
+                  ).then((result) => {
+                    if (!result) return res.json({ status: false });
+                    else {
+                      jwt.sign(
+                        { id: user._id },
+                        process.env.JWTSECRET,
+                        {
+                          expiresIn: 36000, // 10 hours
+                        },
+                        (err, token) => {
+                          if (err) throw err;
+                          res.json({ status: true, token });
+                        }
+                      );
                     }
-                  );
+                  });
                 });
               });
             }
@@ -136,6 +155,8 @@ exports.profile = function (req, res) {
     .populate({ path: "followers", select: "user" })
     .exec((err, user) => {
       if (err) res.json({ msg: "some thing went wrong" });
+      else if (user === null)
+        res.json({ msg: "token expired or user not found" });
       else {
         var result = { ...user._doc };
         result.followers = result.followers.length;
@@ -174,19 +195,15 @@ exports.forgot = function (req, res) {
               { upsert: true, new: true }
             ).exec(async (err, new_user) => {
               if (err) console.log(err);
-              transporter.sendMail(
-                {
-                  from: process.env.MAIL,
-                  to: new_user.email,
-                  subject: "Reset your password?",
-                  html: `<p>if you requested a password reset for <b>@${new_user.username}</b>, click the button below. If you didn't make this request, ignore this email.</p>
-                <a href="http://localhost:3000/auth/reset_password?token=${token}">Click here to reset password</>`,
-                },
-                (err, info) => {
-                  if (err) console.log(err);
-                  res.json({ status: info.accepted.length > 0 ? true : false });
-                }
-              );
+              send(
+                new_user.email,
+                "Reset your password?",
+                `<p>if you requested a password reset for <b>@${new_user.username}</b>, click the button below. If you didn't make this request, ignore this email.</p>
+              <a href="http://localhost:3000/auth/password/${token}">Click here to reset password</>`
+              ).then((result) => {
+                if (!result) res.json({ status: false });
+                else res.json({ status: true });
+              });
             });
           });
         }
@@ -258,24 +275,21 @@ exports.email = function (req, res) {
       User.findById(user.id).then((user) => {
         crypto.randomBytes(20, function (err, buffer) {
           var token = buffer.toString("hex");
-          transporter.sendMail(
-            {
-              from: `Troth LLC ${process.env.MAIL}`,
-              to: user.email,
-              subject: "Verify Your Email Address",
-              html: `<p>Dear <b>${user.name}</b> <br/> 
-              Click the button below to verify your email. If you didn't make this request, ignore this email.</p>
-              <a href="http://localhost:3000/auth/verify_email?token=${
-                user.email_token ? user.email_token : token
-              }">Click here to verify your email</>`,
-            },
-            (err, info) => {
-              if (err) console.log(err);
+          send(
+            user.email,
+            "Verify Your Email Address",
+            `<p>Dear <b>${user.name}</b> <br/> 
+          Click the button below to verify your email. If you didn't make this request, ignore this email.</p>
+          <a href="http://localhost:3000/auth/email/${
+            user.email_token ? user.email_token : token
+          }">Click here to verify your email</>`
+          ).then((result) => {
+            if (!result) console.log("email sending failed");
+            else
               res.json({
-                status: info.accepted.length > 0 ? true : false,
+                status: true,
               });
-            }
-          );
+          });
           if (!user.email_token) {
             user.email_token = token;
             user.save();

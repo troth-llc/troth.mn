@@ -5,4 +5,18 @@ import Calendar from "./calendar";
 import Event from "./event";
 import Login from "./auth";
 import Register from "./auth/register";
-export { Home, Search, Profile, Calendar, Event, Login, Register };
+import Forgot from "./auth/forgot";
+import Password from "./auth/password";
+import Email from "./auth/verify";
+export {
+  Home,
+  Search,
+  Profile,
+  Calendar,
+  Event,
+  Login,
+  Register,
+  Forgot,
+  Password,
+  Email,
+};
