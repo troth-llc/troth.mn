@@ -32,7 +32,8 @@ const Forgot = () => {
               let errors = response.data.errors;
               let { status } = response.data;
               if (status) setOpen(true);
-              else if (status === false) console.log("some thing went wrong");
+              else if (status === false)
+                setError({ status: "Server unavailable, Try again later" });
               else {
                 disable(false);
                 errors.map((error) => setError({ [error.param]: error.msg }));
@@ -66,9 +67,10 @@ const Forgot = () => {
           <div className="auth-action">
             <Link to="/auth">Sign in</Link>
             <Button className="mt-2 auth-button" block disabled={disabled}>
-              Next
+              {disabled ? "Loading..." : "Next"}
             </Button>
           </div>
+          <div className="invalid-feedback d-block">{error.status}</div>
         </Form>
       </div>
     </div>

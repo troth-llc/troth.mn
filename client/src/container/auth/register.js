@@ -30,7 +30,8 @@ const Register = () => {
               let errors = response.data.errors;
               let { status, token } = response.data;
               if (status) setCookie("token", token, { path: "/" });
-              else if (status === false) console.log("some thing went wrong");
+              else if (status === false)
+                setError({ status: "Server unavailable, Try again later" });
               else {
                 disable(false);
                 errors.map((error) => setError({ [error.param]: error.msg }));
@@ -108,8 +109,9 @@ const Register = () => {
           </FormGroup>
           <div className="auth-action">
             <Button className="mt-2 auth-button" block disabled={disabled}>
-              Sign up
+              {disabled ? "Loading..." : "Signup"}
             </Button>
+            <div className="invalid-feedback d-block">{error.status}</div>
             <div className="no-account">
               Already a member?
               <Link to="/auth">Sign in</Link>

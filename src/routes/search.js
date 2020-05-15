@@ -10,5 +10,5 @@ const validate = require("../middleware/validator");
  *     responses:
  *       200:
  */
-router.get("/", validate.search, search.find);
+router.post("/users", validate.search, search.user);
 module.exports = router;

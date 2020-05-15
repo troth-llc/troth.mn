@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "./App.css";
+import "@material/react-drawer/dist/drawer.css";
 import { Header, BottomNav } from "components";
 import { useCookies } from "react-cookie";
 import axios from "axios";

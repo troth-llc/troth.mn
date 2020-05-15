@@ -1,7 +1,6 @@
 const { validationResult } = require("express-validator");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const async = require("async");
 exports.find = function (req, res) {
   const errors = validationResult(req);
   const { username } = req.params;

@@ -32,7 +32,7 @@ const send = async (to, subject, html) => {
       }
     } catch (err) {
       console.log(err);
-      reject(false);
+      resolve(false);
     }
   });
 };

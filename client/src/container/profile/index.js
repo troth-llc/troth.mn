@@ -58,10 +58,13 @@ const Profile = () => {
           <div className="profile">
             <div className="d-flex">
               <div className="profile-avatar">
-                <img
-                  src={require("assets/image/user/avatar-profile.png")}
-                  alt="user profile"
-                ></img>
+                {user.avatar ? (
+                  <img src={user.avatar} alt="user profile" />
+                ) : (
+                  <div className="avatar-preview">
+                    {user.username.charAt(0).toUpperCase()}
+                  </div>
+                )}
               </div>
               <div className="profile-detail">
                 <div className="profile-name">{user.name}</div>

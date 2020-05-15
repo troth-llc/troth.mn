@@ -89,9 +89,10 @@ const Password = (props) => {
           ) : null}
           <div className="auth-action">
             <Button className="mt-2 auth-button" block disabled={disabled}>
-              Save
+              {disabled ? "Loading..." : "Save"}
             </Button>
           </div>
+          <div className="invalid-feedback d-block">{error.status}</div>
         </Form>
       </div>
     </div>

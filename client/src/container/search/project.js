@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { ProjectItem } from "components";
 import { Row, Col } from "reactstrap";
-const Project = () => {
+const Project = (props) => {
   const projects = [
     {
       title: "Hello world",
@@ -47,12 +47,18 @@ const Project = () => {
         <div className="home-nav">
           <Row className="m-0">
             <Col>
-              <NavLink to="/search/project/" className="home-link">
+              <NavLink
+                to={"/search/project/" + props.match.params.search}
+                className="home-link"
+              >
                 Projects
               </NavLink>
             </Col>
             <Col className="divider-nav">
-              <NavLink to="/search/user/" className="home-link">
+              <NavLink
+                to={"/search/user/" + props.match.params.search}
+                className="home-link"
+              >
                 Users
               </NavLink>
             </Col>

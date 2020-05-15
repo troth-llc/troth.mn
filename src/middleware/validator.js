@@ -63,7 +63,7 @@ exports.find = [
     .withMessage("Invalid username"),
 ];
 exports.follow = [check("id")];
-exports.search = [check("q")];
+exports.search = [check("search")];
 exports.info = [
   check("name")
     .isLength({

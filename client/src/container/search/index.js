@@ -14,6 +14,10 @@ const Search = (props) => {
       body.classList.remove("scroll-lock");
     };
   }, [props]);
+  var location = new URL(window.location);
+  var value = location.pathname.split("/")[3]
+    ? location.pathname.split("/")[3]
+    : "";
   const categories = [
     { name: "Medical", count: "3'423" },
     { name: "Memorial", count: "3'423" },
@@ -32,7 +36,11 @@ const Search = (props) => {
           onSubmit={(e) => {
             if (search.trim()) {
               history.push(
-                "/search/project/" + encodeURIComponent(search.trim())
+                `/search/${
+                  location.pathname.split("/")[2]
+                    ? location.pathname.split("/")[2]
+                    : "project"
+                }/${encodeURIComponent(search.trim())}`
               );
             }
             e.preventDefault();
@@ -43,6 +51,7 @@ const Search = (props) => {
             placeholder="Search"
             alt="back"
             autoFocus={true}
+            defaultValue={decodeURIComponent(value)}
             onChange={(e) => setSearch(e.target.value)}
           />
         </form>
@@ -92,8 +101,8 @@ const Search = (props) => {
               </div>
             ))}
           </Route>
-          <Route path="/search/project" component={Project} />
-          <Route path="/search/user" component={User} />
+          <Route path="/search/project/:search" component={Project} />
+          <Route path="/search/user/:search" component={User} />
           <Redirect from="/search" to="/search" />
         </Switch>
       </div>
