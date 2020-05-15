@@ -7,7 +7,7 @@ const User = (props) => {
   useEffect(() => {
     setUsers(null);
     axios
-      .post("/api/search/users", { search: props.match.params.search })
+      .post("/api/search/users", { search: props.match.params.search.trim() })
       .then((response) => setUsers(response.data.user));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params.search]);

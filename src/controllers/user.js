@@ -8,6 +8,9 @@ exports.find = function (req, res) {
     return res.status(200).json({ errors: errors.array(), status: false });
   }
   User.findOne({ username })
+    .select(
+      "username avatar verified type badges projects name following followers"
+    )
     .then((user) => {
       if (user) {
         var current;
@@ -17,23 +20,14 @@ exports.find = function (req, res) {
           else current = "";
         });
         var following = user.followers.some((data) => {
-          if (data.user.toString() === current) return true;
+          if (data.toString() === current) return true;
           else return false;
         });
+        var result = { ...user._doc };
+        result.followers = result.followers.length;
+        result.following = result.following.length;
         res.json({
-          user: {
-            id: user._id,
-            username: user.username,
-            avatar: user.avatar,
-            verified: user.verified,
-            type: user.type,
-            badges: user.badges,
-            projects: user.projects,
-            name: user.name,
-            gender: user.gender,
-            following: user.following.length,
-            followers: user.followers.length,
-          },
+          user: result,
           following,
           status: true,
         });
@@ -41,7 +35,7 @@ exports.find = function (req, res) {
     })
     .catch((err) => {
       console.log(err);
-      res.json({ err });
+      res.json({ status: false });
     });
 };
 exports.follow = function (req, res) {
@@ -50,32 +44,26 @@ exports.follow = function (req, res) {
   if (!errors.isEmpty()) {
     return res.status(200).json({ errors: errors.array(), status: false });
   }
-  const token = req.header("x-auth-token");
-  jwt.verify(token, process.env.JWTSECRET, function (err, data) {
-    if (err) {
-      res.json({ status: false, err });
+  var data = req.user;
+  if (data.id === id) {
+    return res.json({ status: false, msg: "You cannot follow yourself" });
+  }
+  User.findById(id).then((user) => {
+    // check if the requested user is already in follower list of other user then
+    if (
+      user.followers.filter((follower) => follower.toString() === data.id)
+        .length > 0
+    ) {
+      return res.json({ msg: "You already followed the user" });
     }
-    if (data.id === id) {
-      return res.json({ status: false, msg: "You cannot follow yourself" });
-    }
-    User.findById(id).then((user) => {
-      // check if the requested user is already in follower list of other user then
-      if (
-        user.followers.filter(
-          (follower) => follower.user.toString() === data.id
-        ).length > 0
-      ) {
-        return res.json({ msg: "You already followed the user" });
-      }
-      user.followers.unshift({ user: data.id });
-      user.save();
-      User.findById(data.id)
-        .then((user) => {
-          user.following.unshift({ user: id });
-          user.save().then((user) => res.json({ status: true }));
-        })
-        .catch((err) => res.json({ status: false }));
-    });
+    user.followers.unshift(data.id);
+    user.save();
+    User.findById(data.id)
+      .then((user) => {
+        user.following.unshift(id);
+        user.save().then(() => res.json({ status: true }));
+      })
+      .catch((err) => res.json({ status: false }));
   });
 };
 exports.unfollow = function (req, res) {
@@ -94,12 +82,12 @@ exports.unfollow = function (req, res) {
     }
     User.findByIdAndUpdate(
       id,
-      { $pull: { followers: { user: data.id } } },
+      { $pull: { followers: data.id } },
       (err, result) => {
         if (result) {
           User.findByIdAndUpdate(
             data.id,
-            { $pull: { following: { user: result._id } } },
+            { $pull: { following: result._id } },
             (err, done) => {
               if (done) res.json({ status: true });
             }

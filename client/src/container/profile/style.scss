@@ -73,6 +73,7 @@
     margin-top: 15px;
     text-align: center;
     line-height: 40px;
+
     a {
       font-size: 12px;
       height: 40px;
@@ -82,6 +83,19 @@
       &:hover {
         color: #fa6c51;
         text-decoration: none;
+      }
+    }
+    span {
+      background-color: #fa6c51;
+      color: white;
+      font-size: 12px;
+      height: 40px;
+      border-radius: 5px;
+      width: 100%;
+      &.unfollow {
+        background-color: #f4f6f8;
+        color: #898989;
+        font-weight: 500;
       }
     }
   }

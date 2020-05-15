@@ -15,6 +15,7 @@ import {
   Forgot,
   Password,
   Email,
+  Find,
 } from "container";
 import {
   BrowserRouter as Router,
@@ -77,6 +78,10 @@ const App = () => {
             <Route exact path="/auth/password/:token" component={Password} />
             <Route exact path="/auth/email/:token" component={Email} />
             <Route path="/auth/register" component={Register} />
+            <Route path="/:username" component={Find} />
+            <Route path="*">
+              <h6 className="text-center mt-4">404 Not Found</h6>
+            </Route>
           </Switch>
         </div>
         <BottomNav />

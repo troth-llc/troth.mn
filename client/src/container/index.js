@@ -8,6 +8,7 @@ import Register from "./auth/register";
 import Forgot from "./auth/forgot";
 import Password from "./auth/password";
 import Email from "./auth/verify";
+import Find from "./profile/find";
 export {
   Home,
   Search,
@@ -19,4 +20,5 @@ export {
   Forgot,
   Password,
   Email,
+  Find,
 };
