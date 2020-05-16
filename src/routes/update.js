@@ -14,7 +14,6 @@ const upload = require("../middleware/multer");
 router.post("/info", validate.info, token, update.info);
 router.post("/password", validate.password, token, update.password);
 router.post("/avatar", upload.avatar, token, update.avatar);
-router.post("/cover", token, update.cover);
 router.post("/email", validate.update_email, token, update.email);
 router.post("/code", validate.code, token, update.code);
 router.post("/verify", upload.verify, token, update.verify);

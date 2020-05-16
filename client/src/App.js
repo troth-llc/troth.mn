@@ -16,6 +16,7 @@ import {
   Password,
   Email,
   Find,
+  Info,
 } from "container";
 import {
   BrowserRouter as Router,
@@ -70,6 +71,7 @@ const App = () => {
             <Route exact path="/" component={Home} />
             <Route path="/search" component={Search} />
             <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/settings" component={Info} />
             <Route path="/calendar" component={Calendar} />
             <Route path="/event/:id" component={Event} />
             {/* auth routes */}
@@ -78,6 +80,7 @@ const App = () => {
             <Route exact path="/auth/password/:token" component={Password} />
             <Route exact path="/auth/email/:token" component={Email} />
             <Route path="/auth/register" component={Register} />
+            {/* Other */}
             <Route path="/:username" component={Find} />
             <Route path="*">
               <h6 className="text-center mt-4">404 Not Found</h6>

@@ -26,6 +26,7 @@ const Find = (props) => {
     var app = document.getElementsByClassName("app")[0];
     app.classList.add("p-0");
     return () => {
+      document.title = "TROTH";
       app.classList.remove("p-0");
     };
   }, [user]);

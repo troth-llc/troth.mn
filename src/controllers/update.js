@@ -4,15 +4,38 @@ const User = require("../models/user");
 const Document = require("../models/document");
 const { validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
-// email
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.MAIL,
-    pass: process.env.MAIL_PASSWORD,
-    type: "login",
-  },
-});
+const key = require("../../config.json");
+// email config
+const send = async (to, subject, html) => {
+  return new Promise(async (resolve, reject) => {
+    var transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        type: "OAuth2",
+        user: process.env.MAIL,
+        serviceClient: key.client_id,
+        privateKey: key.private_key,
+      },
+    });
+    try {
+      await transporter.verify();
+      var result = await transporter.sendMail({
+        from: `TROTH LLC ${process.env.MAIL}`,
+        to,
+        subject,
+        html,
+      });
+      if (result.accepted.length > 0) {
+        resolve(true);
+      }
+    } catch (err) {
+      console.log(err);
+      resolve(false);
+    }
+  });
+};
 // file
 var path = require("path");
 const fs = require("fs");
@@ -104,23 +127,16 @@ exports.avatar = function (req, res) {
     } else return res.json({ status: false });
   });
 };
-exports.cover = function (req, res) {
-  res.json({ status: "undermaintence" });
-};
 exports.email = function (req, res) {
-  // findout email address is taken
-  // then check the password
-  // send an 6 digit number res.json({status:true})
   const { email, password } = req.body;
   const token = req.header("x-auth-token");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(200).json({ errors: errors.array(), status: false });
+    return res.status(200).json({ errors: errors.array() });
   }
   User.find({ email: email.toLowerCase() }).then((user) => {
     if (user.length > 0)
       return res.json({
-        status: false,
         errors: [{ msg: "Email already in use", param: "email" }],
       });
     else
@@ -129,27 +145,17 @@ exports.email = function (req, res) {
           bcrypt.compare(password, data.password).then((isMatch) => {
             if (!isMatch)
               return res.json({
-                status: false,
                 errors: [{ msg: "Password does not match", param: "password" }],
               });
             else {
               var code = Math.floor(100000 + Math.random() * 900000);
               data.email_update = [{ email, code }];
               data.save();
-              transporter.sendMail(
-                {
-                  from: process.env.MAIL,
-                  to: email,
-                  subject: "Update Email",
-                  html: `<p>Your verification code is <b>${code}</b>. If you didn't make this request, ignore this email.</p>`,
-                },
-                (err, info) => {
-                  if (err) console.log(err);
-                  res.json({
-                    status: info.accepted.length > 0 ? true : false,
-                  });
-                }
-              );
+              send(
+                email,
+                "Update Email",
+                `<p>Your verification code is <b>${code}</b>. If you didn't make this request, ignore this email.</p>`
+              ).then((status) => res.json({ status }));
             }
           });
         });

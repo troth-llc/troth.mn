@@ -9,6 +9,7 @@ import Forgot from "./auth/forgot";
 import Password from "./auth/password";
 import Email from "./auth/verify";
 import Find from "./profile/find";
+import Info from "./settings";
 export {
   Home,
   Search,
@@ -21,4 +22,5 @@ export {
   Password,
   Email,
   Find,
+  Info,
 };

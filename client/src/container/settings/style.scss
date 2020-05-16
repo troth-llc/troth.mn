@@ -1,0 +1,27 @@
+.settings {
+  .input-settings {
+    border-radius: 16px;
+    line-height: 38px;
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(130, 236, 144, 0.3);
+      border-color: white;
+    }
+    &.is-invalid {
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.3);
+    }
+  }
+  label {
+    color: #575757;
+    margin-left: 5px;
+    font-size: 13px;
+  }
+  .form-group {
+    margin-bottom: 0;
+    margin-top: 4px;
+  }
+  .send-verf {
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+  }
+}
