@@ -17,6 +17,7 @@ import {
   Email,
   Find,
   Info,
+  Notification,
 } from "container";
 import {
   BrowserRouter as Router,
@@ -70,6 +71,11 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/search" component={Search} />
+            <PrivateRoute
+              path="/notifications"
+              exact
+              component={Notification}
+            />
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/settings" component={Info} />
             <Route path="/calendar" component={Calendar} />

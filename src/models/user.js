@@ -50,6 +50,12 @@ const userSchema = new Schema({
   following: [{ type: Schema.Types.ObjectId, ref: "user" }],
   followers: [{ type: Schema.Types.ObjectId, ref: "user" }],
   projects: [{ type: Schema.Types.ObjectId, ref: "project" }],
+  notifications: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "follow_notification",
+    },
+  ],
   created: {
     type: Date,
     default: new Date(),

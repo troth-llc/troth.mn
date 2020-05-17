@@ -9,6 +9,25 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const { user } = useContext(User);
   const [cookies, , removeCookie] = useCookies("token");
+  const auth_routes = [
+    { name: "Home", to: "/", exact: true },
+    { name: "Settings", to: "/settings/info", exact: false },
+    { name: "About", to: "/about", exact: true },
+    {
+      name: "Logout",
+      to: "/logout",
+      exact: false,
+      action: (e) => {
+        e.preventDefault();
+        removeCookie("token");
+        document.location.reload();
+      },
+    },
+  ];
+  const routes = [
+    { name: "Home", to: "/", exact: true },
+    { name: "About", to: "/about", exact: true },
+  ];
   return (
     <>
       <Navbar light className="header">
@@ -59,20 +78,31 @@ const Header = () => {
               )}
             </div>
             <div className="drawer-link">
-              <NavLink exact to="/">
-                Home
-              </NavLink>
-              <NavLink to="/settings">Settings</NavLink>
-              <NavLink
-                to="/logout"
-                onClick={(e) => {
-                  e.preventDefault();
-                  removeCookie("token");
-                  document.location.reload();
-                }}
-              >
-                Logout
-              </NavLink>
+              {cookies.token
+                ? auth_routes.map((route, index) => {
+                    return (
+                      <NavLink
+                        exact={route.exact}
+                        to={route.to}
+                        key={index}
+                        onClick={route.action}
+                      >
+                        {route.name}
+                      </NavLink>
+                    );
+                  })
+                : routes.map((route, index) => {
+                    return (
+                      <NavLink
+                        exact={route.exact}
+                        to={route.to}
+                        key={index}
+                        onClick={route.action}
+                      >
+                        {route.name}
+                      </NavLink>
+                    );
+                  })}
             </div>
           </div>
         </DrawerAppContent>

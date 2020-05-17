@@ -1,27 +1,38 @@
 import React, { useEffect, useState, useContext } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import { Row, Col, Spinner } from "reactstrap";
 import { ProjectItem } from "components";
 import { User } from "context/user";
 import axios from "axios";
 import "./style.scss";
 const Find = (props) => {
+  const CancelToken = axios.CancelToken;
+  const source = CancelToken.source();
   const projects = [];
   const [user, setUser] = useState(null);
   const { user: you } = useContext(User);
   const [follow, setFollow] = useState(false);
-  const get = () => {
-    setUser(null);
-    axios.get("/api/user/" + props.match.params.username).then((response) => {
-      if (response.data.status) {
-        setUser(response.data.user);
-        setFollow(Boolean(response.data.following));
-        document.title = response.data.user.username;
-      } else setUser(false);
-    });
-  };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => get(), []);
+  useEffect(() => {
+    const get = () => {
+      setUser(null);
+      axios
+        .get("/api/user/" + props.match.params.username, {
+          cancelToken: source.token,
+        })
+        .then((response) => {
+          if (response.data.status) {
+            setUser(response.data.user);
+            setFollow(Boolean(response.data.following));
+            document.title = response.data.user.username;
+          } else setUser(false);
+        });
+    };
+    get();
+    return () => {
+      setUser(null);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useEffect(() => {
     var app = document.getElementsByClassName("app")[0];
     app.classList.add("p-0");
@@ -34,6 +45,7 @@ const Find = (props) => {
     <div>
       {user && you ? (
         <>
+          {you._id === user._id && <Redirect to="/profile" />}
           <div className="profile">
             <div className="d-flex">
               <div className="profile-avatar">
@@ -67,34 +79,28 @@ const Find = (props) => {
                 <hr />
               </>
             ) : null}
-            {you._id === user._id ? (
-              <div className="profile-action d-flex">
-                <Link to="/settings/info">Edit profile</Link>
-              </div>
-            ) : (
-              <div
-                className="profile-action d-flex"
-                onClick={() => {
-                  setFollow(!follow);
-                  axios
-                    .get(
-                      `/api/user/${follow ? "unfollow" : "follow"}/` + user._id
-                    )
-                    .then(() =>
-                      setUser({
-                        ...user,
-                        followers: follow
-                          ? Number(user.followers) - 1
-                          : Number(user.followers) + 1,
-                      })
-                    );
-                }}
-              >
-                <span className={follow ? "unfollow" : null}>
-                  {follow ? "Unfollow" : "Follow"}
-                </span>
-              </div>
-            )}
+            <div
+              className="profile-action d-flex"
+              onClick={() => {
+                setFollow(!follow);
+                axios
+                  .get(
+                    `/api/user/${follow ? "unfollow" : "follow"}/` + user._id
+                  )
+                  .then(() =>
+                    setUser({
+                      ...user,
+                      followers: follow
+                        ? Number(user.followers) - 1
+                        : Number(user.followers) + 1,
+                    })
+                  );
+              }}
+            >
+              <span className={follow ? "unfollow" : null}>
+                {follow ? "Unfollow" : "Follow"}
+              </span>
+            </div>
           </div>
           <div className="p-3">
             <div className="home-nav">
@@ -124,8 +130,10 @@ const Find = (props) => {
             </div>
           </div>
         </>
+      ) : user === false ? (
+        <h6 className="text-center pt-4">404 Not Found</h6>
       ) : (
-        <div className="text-center w-100 mt-5">
+        <div className="text-center w-100 pt-5">
           <Spinner size="sm" color="secondary" />
         </div>
       )}

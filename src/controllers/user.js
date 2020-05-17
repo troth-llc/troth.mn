@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const User = require("../models/user");
+const Notification = require("../models/follow_notification");
 const jwt = require("jsonwebtoken");
 exports.find = function (req, res) {
   const errors = validationResult(req);
@@ -56,14 +57,18 @@ exports.follow = function (req, res) {
     ) {
       return res.json({ msg: "You already followed the user" });
     }
-    user.followers.unshift(data.id);
-    user.save();
-    User.findById(data.id)
-      .then((user) => {
-        user.following.unshift(id);
-        user.save().then(() => res.json({ status: true }));
-      })
-      .catch((err) => res.json({ status: false }));
+    // add prevent spam function
+    Notification.create({ user: data.id }).then((notification) => {
+      user.followers.unshift(data.id);
+      user.notifications.unshift(notification._id);
+      user.save();
+      User.findById(data.id)
+        .then((user) => {
+          user.following.unshift(id);
+          user.save().then(() => res.json({ status: true }));
+        })
+        .catch((err) => res.json({ status: false }));
+    });
   });
 };
 exports.unfollow = function (req, res) {

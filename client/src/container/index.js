@@ -10,6 +10,7 @@ import Password from "./auth/password";
 import Email from "./auth/verify";
 import Find from "./profile/find";
 import Info from "./settings";
+import Notification from "./notification/index";
 export {
   Home,
   Search,
@@ -23,4 +24,5 @@ export {
   Email,
   Find,
   Info,
+  Notification,
 };

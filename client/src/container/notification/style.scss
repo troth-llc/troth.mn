@@ -1,0 +1,15 @@
+.follow-notification {
+  height: 36px;
+  display: flex;
+  flex-direction: row;
+  .user-follow-name {
+    font-size: 13px;
+    span {
+      font-weight: 700;
+    }
+  }
+  .user-follow-date {
+    font-size: 12px;
+    color: #898989;
+  }
+}

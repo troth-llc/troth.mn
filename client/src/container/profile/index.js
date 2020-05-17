@@ -121,7 +121,7 @@ const Profile = () => {
           </div>
         </>
       ) : (
-        <div className="text-center w-100 mt-5">
+        <div className="text-center w-100 pt-5">
           <Spinner size="sm" color="secondary" />
         </div>
       )}
