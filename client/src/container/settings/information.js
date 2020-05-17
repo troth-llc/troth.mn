@@ -112,7 +112,7 @@ const Information = () => {
           type="textarea"
           name="about"
           value={update.about}
-          invalid={error.website ? true : false}
+          invalid={error.about ? true : false}
           className="input-settings"
           onChange={(e) =>
             setUpdate({ ...update, [e.target.name]: e.target.value })
@@ -120,6 +120,7 @@ const Information = () => {
           autoComplete="off"
           disabled={disabled}
         />
+        <FormFeedback>{error.about}</FormFeedback>
       </FormGroup>
       <div className="auth-action">
         <Button block disabled={disabled}>

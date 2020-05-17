@@ -81,10 +81,15 @@ exports.info = [
     .isIn(usernames)
     .matches(/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/)
     .withMessage("Invalid username"),
-  check("website").optional({ checkFalsy: true }).isLength({
-    min: 10,
-    max: 128,
-  }),
+  check("website")
+    .optional({ checkFalsy: true })
+    .isLength({
+      min: 10,
+      max: 128,
+    })
+    .matches(
+      /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+    ),
   check("phone")
     .optional({ checkFalsy: true })
     .isLength({
