@@ -1,15 +1,48 @@
 .follow-notification {
+  border-radius: 8px;
   height: 36px;
   display: flex;
   flex-direction: row;
+  position: relative;
+  &.new {
+    &::after {
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      background-color: #fa6c51;
+      content: "";
+      position: absolute;
+      right: 10px;
+      top: 14px;
+    }
+  }
   .user-follow-name {
     font-size: 13px;
     span {
       font-weight: 700;
     }
   }
+  .user-follow-avatar {
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    border: 1px solid #898989;
+    margin-right: 15px;
+  }
   .user-follow-date {
     font-size: 12px;
     color: #898989;
+  }
+}
+.notification {
+  a {
+    color: unset;
+    &:hover,
+    &:focus {
+      .follow-notification {
+        background: rgba(0, 0, 0, 0.03);
+      }
+      text-decoration: none;
+    }
   }
 }

@@ -11,4 +11,5 @@ const token = require("../middleware/token");
  *       200:
  */
 router.get("/", token, notification.follow);
+router.get("/read_follow/:id", token, notification.read_follow);
 module.exports = router;
