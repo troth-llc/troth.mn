@@ -58,16 +58,29 @@ exports.follow = function (req, res) {
       return res.json({ msg: "You already followed the user" });
     }
     // add prevent spam function
-    Notification.create({ user: data.id }).then((notification) => {
-      user.followers.unshift(data.id);
-      user.notifications.unshift(notification._id);
-      user.save();
-      User.findById(data.id)
-        .then((user) => {
-          user.following.unshift(id);
-          user.save().then(() => res.json({ status: true }));
-        })
-        .catch((err) => res.json({ status: false }));
+    Notification.find({ user: data.id }).then((sent) => {
+      if (sent.length) {
+        user.followers.unshift(data.id);
+        user.save();
+        User.findById(data.id)
+          .then((user) => {
+            user.following.unshift(id);
+            user.save().then(() => res.json({ status: true }));
+          })
+          .catch((err) => res.json({ status: false }));
+      } else {
+        Notification.create({ user: data.id }).then((notification) => {
+          user.followers.unshift(data.id);
+          user.notifications.unshift(notification._id);
+          user.save();
+          User.findById(data.id)
+            .then((user) => {
+              user.following.unshift(id);
+              user.save().then(() => res.json({ status: true }));
+            })
+            .catch((err) => res.json({ status: false }));
+        });
+      }
     });
   });
 };
