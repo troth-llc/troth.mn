@@ -43,9 +43,9 @@ const Find = (props) => {
   }, [user]);
   return (
     <div>
-      {user && you ? (
+      {user ? (
         <>
-          {you._id === user._id && <Redirect to="/profile" />}
+          {you ? you._id === user._id && <Redirect to="/profile" /> : null}
           <div className="profile">
             <div className="d-flex">
               <div className="profile-avatar">
@@ -79,28 +79,30 @@ const Find = (props) => {
                 <hr />
               </>
             ) : null}
-            <div
-              className="profile-action d-flex"
-              onClick={() => {
-                setFollow(!follow);
-                axios
-                  .get(
-                    `/api/user/${follow ? "unfollow" : "follow"}/` + user._id
-                  )
-                  .then(() =>
-                    setUser({
-                      ...user,
-                      followers: follow
-                        ? Number(user.followers) - 1
-                        : Number(user.followers) + 1,
-                    })
-                  );
-              }}
-            >
-              <span className={follow ? "unfollow" : null}>
-                {follow ? "Unfollow" : "Follow"}
-              </span>
-            </div>
+            {you ? (
+              <div
+                className="profile-action d-flex"
+                onClick={() => {
+                  setFollow(!follow);
+                  axios
+                    .get(
+                      `/api/user/${follow ? "unfollow" : "follow"}/` + user._id
+                    )
+                    .then(() =>
+                      setUser({
+                        ...user,
+                        followers: follow
+                          ? Number(user.followers) - 1
+                          : Number(user.followers) + 1,
+                      })
+                    );
+                }}
+              >
+                <span className={follow ? "unfollow" : null}>
+                  {follow ? "Unfollow" : "Follow"}
+                </span>
+              </div>
+            ) : null}
           </div>
           <div className="p-3">
             <div className="home-nav">

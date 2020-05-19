@@ -49,40 +49,41 @@ exports.follow = function (req, res) {
   if (data.id === id) {
     return res.json({ status: false, msg: "You cannot follow yourself" });
   }
-  User.findById(id).then((user) => {
-    // check if the requested user is already in follower list of other user then
-    if (
-      user.followers.filter((follower) => follower.toString() === data.id)
-        .length > 0
-    ) {
-      return res.json({ msg: "You already followed the user" });
-    }
-    // add prevent spam function
-    Notification.find({ user: data.id }).then((sent) => {
-      if (sent.length) {
+  User.findById(id)
+    .select("followers following notifications")
+    .populate({
+      path: "notifications",
+    })
+    .exec((error, user) => {
+      if (
+        user.followers.filter((follower) => follower.toString() === data.id)
+          .length > 0
+      ) {
+        return res.json({ msg: "You already followed the user" });
+      }
+      if (
+        (filter_followed_user =
+          user.notifications.filter(
+            (follow_notifications) =>
+              follow_notifications.user.toString() === data.id
+          ).length > 0)
+      ) {
         user.followers.unshift(data.id);
         user.save();
-        User.findById(data.id)
-          .then((user) => {
-            user.following.unshift(id);
-            user.save().then(() => res.json({ status: true }));
-          })
-          .catch((err) => res.json({ status: false }));
       } else {
         Notification.create({ user: data.id }).then((notification) => {
           user.followers.unshift(data.id);
           user.notifications.unshift(notification._id);
           user.save();
-          User.findById(data.id)
-            .then((user) => {
-              user.following.unshift(id);
-              user.save().then(() => res.json({ status: true }));
-            })
-            .catch((err) => res.json({ status: false }));
         });
       }
+      User.findById(data.id)
+        .then((user) => {
+          user.following.unshift(id);
+          user.save().then(() => res.json({ status: true }));
+        })
+        .catch((err) => res.json({ status: false }));
     });
-  });
 };
 exports.unfollow = function (req, res) {
   const errors = validationResult(req);
