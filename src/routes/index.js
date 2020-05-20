@@ -9,4 +9,5 @@ router.use("/user", require("./user.js"));
 router.use("/search", require("./search.js"));
 router.use("/update", require("./update.js"));
 router.use("/notification", require("./notification.js"));
+router.use("/project", require("./project.js"));
 module.exports = router;
