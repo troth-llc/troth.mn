@@ -1,41 +1,17 @@
-const multer = require("multer");
+const Multer = require("multer");
+const { Storage } = require("@google-cloud/storage");
 const path = require("path");
-const crypto = require("crypto");
-const upload_path =
-  path.dirname(require.main.filename) + "/client/public/uploads/";
-checkExtension = (file) => {
-  var res = "";
-  if (file.mimetype === "image/jpeg") res = ".jpg";
-  if (file.mimetype === "image/png") res = ".png";
-  return res;
-};
-const storage = multer.diskStorage({
-  destination: path.resolve(upload_path),
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      crypto
-        .createHash("sha1")
-        .update(Math.random().toString() + new Date().valueOf().toString())
-        .digest("hex") + checkExtension(file)
-    );
+// Instantiate a storage client
+const storage = new Storage({
+  keyFilename: path.join(__dirname, "../../google-service.json"),
+  projectId: process.env.GCLOUD_ID,
+});
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 50 * 1024 * 1024, // no larger than 50mb
   },
 });
-// avatar change
-exports.avatar = multer({
-  storage,
-  limits: { fileSize: 10485760, files: 1 }, // limit 10mb
-}).fields([{ name: "avatar", maxCount: 1 }]);
-// id upload
-exports.verify = multer({
-  storage,
-  limits: { fileSize: 10485760, files: 2 }, // limit 10mb
-}).fields([
-  { name: "front", maxCount: 1 },
-  { name: "back", maxCount: 1 },
-]);
-
-/* 
-    todo:
--fix error handling 
-*/
+// var config = require();
+const bucket = storage.bucket("troth_bucket");
+module.exports = { multer, bucket };

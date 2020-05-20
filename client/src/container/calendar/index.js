@@ -37,17 +37,15 @@ const Calendar = (props) => {
         <hr />
         <div className="calendar-item">
           <Link to="/event/eventid">
-            <div className="item-title">Launch day</div>
+            <div className="item-title">Test Calendar Event</div>
             <hr />
-            <div className="item-description mb-2">
-              Keep Calm it's Launch Day
-            </div>
+            <div className="item-description mb-2">Test</div>
             <div className="item-date">
-              <i className="material-icons">schedule</i>Thursday, 23 April⋅12:30
-              – 1:30pm
+              <i className="material-icons">schedule</i>
+              {new Date().toISOString()}
             </div>
             <div className="item-location">
-              <i className="material-icons">location_on</i>Ulaanbaatar ,Mongolia
+              <i className="material-icons">location_on</i>Ulaanbaatar, Mongolia
             </div>
           </Link>
         </div>

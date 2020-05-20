@@ -5,6 +5,14 @@ const Document = require("../models/document");
 const { validationResult } = require("express-validator");
 const nodemailer = require("nodemailer");
 const key = require("../../config.json");
+const { bucket } = require("../middleware/multer");
+const crypto = require("crypto");
+const hash = () => {
+  return crypto
+    .createHash("sha1")
+    .update(Math.random().toString() + new Date().valueOf().toString())
+    .digest("hex");
+};
 // email config
 const send = async (to, subject, html) => {
   return new Promise(async (resolve, reject) => {
@@ -113,19 +121,35 @@ exports.password = function (req, res) {
   });
 };
 exports.avatar = function (req, res) {
-  const token = req.header("x-auth-token");
-  jwt.verify(token, process.env.JWTSECRET, function (err, user) {
-    if (user && req.files.avatar) {
-      User.findById(user.id, function (err, user) {
-        if (user.avatar !== null) unlinkAsync(`${upload_path + user.avatar}`);
-        let { filename } = req.files.avatar[0];
-        user.avatar = filename;
+  var { file } = req;
+  if (!file)
+    return res.json({
+      status: false,
+      errors: [{ msg: "No file uploaded.", param: file }],
+    });
+  else {
+    const blob = bucket.file(
+      "avatar/" +
+        hash() +
+        "." +
+        req.file.originalname.split(".").pop().toLowerCase()
+    );
+    const blobStream = blob.createWriteStream();
+    blobStream.on("error", (err) => {
+      console.log(err);
+    });
+    blobStream.on("finish", async () => {
+      // The public URL can be used to directly access the file via HTTP.
+      const avatar = `http://cdn.troth.mn/${blob.name}`;
+      User.findById(req.user.id, (err, user) => {
+        user.avatar = avatar;
         user.save((err) => {
           return res.json({ status: true });
         });
       });
-    } else return res.json({ status: false });
-  });
+    });
+    blobStream.end(req.file.buffer);
+  }
 };
 exports.email = function (req, res) {
   const { email, password } = req.body;

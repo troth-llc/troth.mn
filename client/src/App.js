@@ -78,8 +78,8 @@ const App = () => {
             />
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/settings" component={Info} />
-            <Route path="/calendar" component={Calendar} />
-            <Route path="/event/:id" component={Event} />
+            <PrivateRoute path="/calendar" component={Calendar} />
+            <PrivateRoute path="/event/:id" component={Event} />
             {/* auth routes */}
             <Route exact path="/auth" component={Login} />
             <Route exact path="/auth/forgot" component={Forgot} />

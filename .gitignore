@@ -2,3 +2,4 @@
 .env
 yarn.lock
 config.json
+google-service.json

@@ -1,11 +1,27 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Row, Col, Spinner } from "reactstrap";
+import {
+  Row,
+  Col,
+  Spinner,
+  Modal,
+  ModalBody,
+  FormGroup,
+  Label,
+  Button,
+  FormFeedback,
+} from "reactstrap";
+import axios from "axios";
 import { ProjectItem } from "components";
 import { User } from "context/user";
 import "./style.scss";
 const Profile = () => {
   const { user } = useContext(User);
+  const profileFile = useRef(null);
+  const [modal, setModal] = useState(false);
+  const [error, setError] = useState({});
+  const [disabled, disable] = useState(false);
+  const toggle = () => setModal(!modal);
   const projects = [
     {
       title: "Hello world",
@@ -57,7 +73,7 @@ const Profile = () => {
         <>
           <div className="profile">
             <div className="d-flex">
-              <div className="profile-avatar">
+              <div className="profile-avatar" onClick={toggle}>
                 {user.avatar ? (
                   <img src={user.avatar} alt="user profile" />
                 ) : (
@@ -119,6 +135,70 @@ const Profile = () => {
               ))}
             </div>
           </div>
+          <Modal isOpen={modal} centered>
+            <button
+              className="material-icons btn-link modal-close-btn"
+              disabled={disabled}
+              onClick={toggle}
+            >
+              close
+            </button>
+            <ModalBody>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const { current } = profileFile;
+                  var FileSize = current.files[0].size / 1024 / 1024;
+                  if (FileSize > 10) {
+                    setError({ file: "Submission file must be under 10" });
+                  } else {
+                    disable(true);
+                    const upload = new FormData();
+                    upload.append("file", current.files[0]);
+                    axios({
+                      method: "post",
+                      url: "/api/update/avatar",
+                      headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
+                      data: upload,
+                    }).then((response) => {
+                      if (response.data.status) window.location.reload();
+                      else {
+                        let errors = response.data.errors;
+                        errors.map((error) =>
+                          setError({ [error.param]: error.msg })
+                        );
+                        disable(false);
+                      }
+                      disable(false);
+                    });
+                  }
+                }}
+              >
+                <FormGroup>
+                  <Label>New Profile Picture</Label>
+                  <input
+                    type="file"
+                    name="file"
+                    ref={profileFile}
+                    required={true}
+                    disabled={disabled}
+                    className={`form-control-file ${
+                      error.file ? "is-invalid" : ""
+                    }`}
+                    accept="image/png, image/jpeg"
+                  />
+                  <FormFeedback>{error.file}</FormFeedback>
+                </FormGroup>
+                <div className="auth-action">
+                  <Button color="primary" block disabled={disabled}>
+                    Save
+                  </Button>
+                </div>
+              </form>
+            </ModalBody>
+          </Modal>
         </>
       ) : (
         <div className="text-center w-100 pt-5">
