@@ -20,7 +20,6 @@ const Search = (props) => {
       body.classList.remove("scroll-lock");
     };
   }, [props]);
-  // useEffect(() => {}, [categories]);
   var location = new URL(window.location);
   var value = location.pathname.split("/")[3]
     ? location.pathname.split("/")[3]

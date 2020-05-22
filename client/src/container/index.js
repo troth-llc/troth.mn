@@ -11,6 +11,7 @@ import Email from "./auth/verify";
 import Find from "./profile/find";
 import Info from "./settings";
 import Notification from "./notification/index";
+import ProjectCreate from "./project/create";
 export {
   Home,
   Search,
@@ -25,4 +26,5 @@ export {
   Find,
   Info,
   Notification,
+  ProjectCreate,
 };

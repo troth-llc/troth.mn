@@ -10,3 +10,7 @@
 .spinner-border-sm {
   border-width: 1px;
 }
+.tox-notifications-container,
+.tox-statusbar {
+  display: none !important;
+}

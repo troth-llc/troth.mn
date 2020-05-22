@@ -4,11 +4,13 @@ const project = require("../controllers/project");
 // middleware
 const token = require("../middleware/token");
 /**
- * /api/category:
+ * /api/project:
  *   post:
  *     description:
  *     responses:
  *       200:
  */
+router.post("/", token, project.create);
+router.post("/media", token, project.media);
 router.get("/category", project.category);
 module.exports = router;

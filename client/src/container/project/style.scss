@@ -1,0 +1,129 @@
+.create-project {
+  background: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  .form-group {
+    margin-bottom: 0.625rem;
+  }
+  .project-create-btn {
+    border-radius: 10px;
+    min-height: 48px;
+    font-size: 18px;
+    font-weight: 600;
+    background: #fa6c51;
+    border: none;
+    &:hover,
+    &:focus {
+      background: #fb8772 !important;
+      outline: none;
+      box-shadow: none !important;
+    }
+  }
+  .terms {
+    font-size: 14px;
+    a {
+      color: #fa6c51;
+    }
+  }
+  .project-cover {
+    cursor: pointer;
+    height: 150px;
+    background: #9999;
+    display: flex;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    span.material-icons {
+      font-size: 32px;
+      color: #898989;
+    }
+  }
+}
+// project cover
+.mc-tile {
+  position: relative;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+.mc-tile--16x9:before,
+.mc-tile--widescreen-video:before {
+  display: block;
+  width: 100%;
+  padding-top: 56.25%;
+  content: "";
+}
+.mc-tile__content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+.mc-tile__component {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.mc-tile-image__image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+}
+.mc-background.mc-background--position-y-center
+  .mc-background__background-container,
+.mc-background.mc-background--position-y-center
+  .mc-background__content-container {
+  align-items: center;
+}
+
+.mc-background.mc-background--position-x-center
+  .mc-background__background-container,
+.mc-background.mc-background--position-x-center
+  .mc-background__content-container {
+  justify-content: center;
+}
+.mc-background--fit-container .mc-background__background-container,
+.mc-background--fit-content .mc-background__background-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.mc-background--loaded .mc-background__background-container {
+  visibility: visible;
+}
+.mc-background__background-container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+.mc-background--size-cover .mc-background__background {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+// mce
+.tox-tinymce {
+  border-radius: 10px !important;
+  border-style: solid !important;
+  border-width: 2px !important;
+}
