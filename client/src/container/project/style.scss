@@ -1,7 +1,21 @@
 .create-project {
   background: #fff;
-  padding: 5px 10px;
   border-radius: 10px;
+  box-shadow: 0 0.5rem 1.5rem 0 rgba(0, 0, 0, 0.1);
+  max-width: 72rem;
+  width: 100%;
+  padding-top: 1.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 14px;
+  @media print, screen and (min-width: 48em) {
+    padding-bottom: 1.5rem;
+    width: 58.33333%;
+    margin-left: 8.33333%;
+  }
+  float: left;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
   .form-group {
     margin-bottom: 0.625rem;
   }
@@ -126,4 +140,27 @@
   border-radius: 10px !important;
   border-style: solid !important;
   border-width: 2px !important;
+}
+.project-row {
+  max-width: 72rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+.medium-10 {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  width: 100%;
+  @media print, screen and (min-width: 48em) {
+    width: 83.33333%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+.project-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.625rem;
+  @media print, screen and (min-width: 60em) {
+    font-size: 1.75rem;
+    margin-bottom: 1.625rem;
+  }
 }

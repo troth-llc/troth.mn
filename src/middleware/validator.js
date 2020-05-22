@@ -180,3 +180,13 @@ exports.verify_email = [
     })
     .withMessage("invalid token"),
 ];
+exports.project = [
+  check("amount").isNumeric(),
+  check("title")
+    .isLength({
+      min: 5,
+      max: 50,
+    })
+    .withMessage("Must be between 5 and 100 in length"),
+  check("category"),
+];

@@ -15,6 +15,7 @@ const projectSchema = new Schema({
     default: false,
   },
   category: { type: Schema.Types.ObjectId, ref: "project_category" },
+  owner: { type: Schema.Types.ObjectId, ref: "user" },
   content: {
     type: String,
     required: true,

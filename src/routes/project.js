@@ -3,6 +3,7 @@ const router = express.Router();
 const project = require("../controllers/project");
 // middleware
 const token = require("../middleware/token");
+const { multer } = require("../middleware/multer");
 /**
  * /api/project:
  *   post:
@@ -10,7 +11,7 @@ const token = require("../middleware/token");
  *     responses:
  *       200:
  */
-router.post("/", token, project.create);
-router.post("/media", token, project.media);
+router.post("/create", multer.single("file"), token, project.create);
+router.post("/media", multer.single("file"), token, project.media);
 router.get("/category", project.category);
 module.exports = router;

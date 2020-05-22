@@ -125,7 +125,7 @@ exports.avatar = function (req, res) {
   if (!file)
     return res.json({
       status: false,
-      errors: [{ msg: "No file uploaded.", param: file }],
+      errors: [{ msg: "No file uploaded.", param: "file" }],
     });
   else {
     const blob = bucket.file(
