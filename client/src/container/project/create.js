@@ -15,8 +15,9 @@ const CreateProject = () => {
   useEffect(() => {
     axios.get("/api/project/category").then((res) => {
       setCategory(res.data.result);
-      setData({ ...data, category: res.data.result[0]._id });
+      setData({ ...data, category: res.data.result[0].category._id });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="project-row">
@@ -28,18 +29,26 @@ const CreateProject = () => {
                 <h5 className="text-center pt-2 project-title">New Campaign</h5>
                 <FormGroup>
                   <Input
-                    type="number"
+                    type="text"
                     name="amount"
                     placeholder="Amount"
                     className="input-round"
                     required={true}
-                    onChange={(e) =>
-                      setData({ ...data, [e.target.name]: e.target.value })
-                    }
+                    onKeyUp={(e) => {
+                      setError({ ...data, amount: "" });
+                      if (isNaN(e.target.value)) {
+                        disable(true);
+                        setError({
+                          ...error,
+                          amount:
+                            "Please enter a valid goal amount for your campaign.",
+                        });
+                      } else disable(false);
+                      setData({ ...data, [e.target.name]: e.target.value });
+                    }}
                     autoFocus={true}
                     invalid={error.amount ? true : false}
                     autoComplete="off"
-                    disabled={disabled}
                   />
                   <FormFeedback>{error.amount}</FormFeedback>
                 </FormGroup>
@@ -55,7 +64,6 @@ const CreateProject = () => {
                     }
                     invalid={error.title ? true : false}
                     autoComplete="off"
-                    disabled={disabled}
                   />
                   <FormFeedback>{error.title}</FormFeedback>
                 </FormGroup>
@@ -74,8 +82,11 @@ const CreateProject = () => {
                     {category ? (
                       category.map((cat) => {
                         return (
-                          <option key={cat._id} value={cat._id}>
-                            {cat.name}
+                          <option
+                            key={cat.category._id}
+                            value={cat.category._id}
+                          >
+                            {cat.category.name}
                           </option>
                         );
                       })
@@ -120,26 +131,32 @@ const CreateProject = () => {
                     donation. By continuing, you agree to the TROTH{" "}
                     <Link to="/terms">Terms.</Link>
                   </span>
+                  <p className="terms text-muted">
+                    Тухайн төсөлд анхны хөрөнгө оруулалт хийгдсэний дараагаар
+                    төслийн нэр, хүсэж буй хэмжээ, төрөл, зэрэг нь солигдох
+                    боломжгүй тул та төслийнхөө мэдээллийг үнэн зөв бөглөнө үү.
+                  </p>
                 </div>
                 <div className="project-action mb-3">
                   <Button
                     color="primary"
                     block
                     className="project-create-btn"
+                    disabled={disabled}
                     onClick={() => {
                       setError({});
-                      if (!data.title)
+                      if (isNaN(data.amount) || data.amount === "")
+                        setError({
+                          ...error,
+                          amount:
+                            "Please enter a valid goal amount for your campaign.",
+                        });
+                      else if (!data.title)
                         setError({
                           ...error,
                           title: "Please enter a title for your campaign.",
                         });
-                      if (!data.amount)
-                        setError({
-                          ...error,
-                          amount:
-                            "Please enter a goal amount for your campaign.",
-                        });
-                      if (data.amount && data.title) setStep(2);
+                      else setStep(2);
                     }}
                   >
                     Next

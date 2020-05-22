@@ -44,13 +44,6 @@ const send = async (to, subject, html) => {
     }
   });
 };
-// file
-var path = require("path");
-const fs = require("fs");
-const { promisify } = require("util");
-const unlinkAsync = promisify(fs.unlink);
-const upload_path =
-  path.dirname(require.main.filename) + "/client/public/uploads/";
 exports.info = function (req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

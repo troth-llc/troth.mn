@@ -9,7 +9,14 @@ const hash = () => {
     .digest("hex");
 };
 exports.category = (req, res) => {
-  Category.find().then((result) => res.json({ result }));
+  Category.find().then((result) => {
+    var promises = result.map((category) => {
+      return Project.find({ category: category._id }).then((result) => {
+        return { category, count: result.length };
+      });
+    });
+    Promise.all(promises).then((result) => res.json({ result }));
+  });
 };
 exports.create = (req, res) => {
   const { title, amount, nonprofit, category, content } = req.body;
@@ -34,7 +41,7 @@ exports.create = (req, res) => {
       const cover = `http://cdn.troth.mn/${blob.name}`;
       Project.create({
         title,
-        amount,
+        amount: parseInt(amount),
         category,
         nonprofit,
         content,
@@ -71,4 +78,7 @@ exports.media = (req, res) => {
     });
     blobStream.end(req.file.buffer);
   }
+};
+exports.get = (req, res) => {
+  Project.find({ owner: req.user.id }).then((result) => res.json(result));
 };

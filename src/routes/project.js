@@ -13,5 +13,6 @@ const { multer } = require("../middleware/multer");
  */
 router.post("/create", multer.single("file"), token, project.create);
 router.post("/media", multer.single("file"), token, project.media);
+router.get("/get", token, project.get);
 router.get("/category", project.category);
 module.exports = router;

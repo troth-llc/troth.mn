@@ -19,6 +19,7 @@ import {
   Info,
   Notification,
   ProjectCreate,
+  Projects,
 } from "container";
 import {
   BrowserRouter as Router,
@@ -89,6 +90,7 @@ const App = () => {
             <Route path="/auth/register" component={Register} />
             {/* Project */}
             <PrivateRoute path="/project/create" component={ProjectCreate} />
+            <PrivateRoute path="/project" component={Projects} />
             {/* Other */}
             <Route path="/:username" component={Find} />
             <Route path="*">

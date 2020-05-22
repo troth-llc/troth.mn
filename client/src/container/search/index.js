@@ -59,8 +59,8 @@ const Search = (props) => {
           <Route exact path="/search">
             {categories ? (
               categories.map((category) => (
-                <div key={category._id} className="search-category">
-                  <Link to={"/project/category/" + category._id}>
+                <div key={category.category._id} className="search-category">
+                  <Link to={"/project/category/" + category.category._id}>
                     <div className="search-arrows">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -91,8 +91,12 @@ const Search = (props) => {
                       </svg>
                     </div>
                     <div className="category-detail">
-                      <div className="category-name">{category.name}</div>
-                      <div className="category-count">0 Projects</div>
+                      <div className="category-name">
+                        {category.category.name}
+                      </div>
+                      <div className="category-count">
+                        {category.count} Projects
+                      </div>
                     </div>
                   </Link>
                 </div>

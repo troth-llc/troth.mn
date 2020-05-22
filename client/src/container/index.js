@@ -12,6 +12,7 @@ import Find from "./profile/find";
 import Info from "./settings";
 import Notification from "./notification/index";
 import ProjectCreate from "./project/create";
+import Projects from "./project";
 export {
   Home,
   Search,
@@ -27,4 +28,5 @@ export {
   Info,
   Notification,
   ProjectCreate,
+  Projects,
 };
