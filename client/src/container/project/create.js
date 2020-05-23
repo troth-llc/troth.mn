@@ -36,7 +36,10 @@ const CreateProject = () => {
                     required={true}
                     onKeyUp={(e) => {
                       setError({ ...data, amount: "" });
-                      if (isNaN(e.target.value)) {
+                      if (
+                        isNaN(e.target.value) ||
+                        parseInt(data.amount) < 9999
+                      ) {
                         disable(true);
                         setError({
                           ...error,
@@ -145,7 +148,11 @@ const CreateProject = () => {
                     disabled={disabled}
                     onClick={() => {
                       setError({});
-                      if (isNaN(data.amount) || data.amount === "")
+                      if (
+                        isNaN(data.amount) ||
+                        data.amount === "" ||
+                        parseInt(data.amount) < 9999
+                      )
                         setError({
                           ...error,
                           amount:
@@ -240,8 +247,9 @@ const CreateProject = () => {
                     height: 300,
                     menubar: false,
                     initialValue: data.content,
-                    plugins: "image link autoresize importcss",
+                    plugins: "image link autoresize importcss paste",
                     autoresize_bottom_margin: 50,
+                    paste_merge_formats: false,
                     image_dimensions: false,
                     image_description: false,
                     images_upload_handler: (blobInfo, success, failure) => {
@@ -268,10 +276,7 @@ const CreateProject = () => {
                     placeholder: "Explain why you're raising money...",
                     toolbar: "bold link image",
                   }}
-                  onEditorChange={(content) => {
-                    console.log(content, data.content);
-                    setData({ ...data, content });
-                  }}
+                  onEditorChange={(content) => setData({ ...data, content })}
                 />
                 <div
                   className={`invalid-feedback ${
@@ -285,6 +290,7 @@ const CreateProject = () => {
                     color="primary"
                     block
                     className="project-create-btn mt-3"
+                    disabled={disabled}
                     onClick={() => {
                       if (!data.content)
                         setError({ ...error, content: "Enter your story" });

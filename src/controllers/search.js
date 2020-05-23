@@ -1,7 +1,8 @@
 const User = require("../models/user");
+const Project = require("../models/project");
 const { validationResult } = require("express-validator");
 
-exports.user = function (req, res) {
+exports.user = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(200).json({ errors: errors.array(), status: false });
@@ -34,4 +35,33 @@ exports.user = function (req, res) {
       res.json({ status: true, user });
     }
   );
+};
+exports.project = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ errors: errors.array(), status: false });
+  }
+  var query = {};
+  const { search } = req.body;
+  if (search) {
+    query = {
+      $or: [
+        {
+          title: {
+            $regex: search.trim(),
+            $options: "i",
+          },
+        },
+        {
+          content: {
+            $regex: search.trim(),
+            $options: "i",
+          },
+        },
+      ],
+    };
+  }
+  Project.find(query, "-__v", { sort: "amount" }, (err, project) => {
+    res.json({ status: true, project });
+  });
 };

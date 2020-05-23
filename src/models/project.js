@@ -24,6 +24,10 @@ const projectSchema = new Schema({
     type: String,
     required: true,
   },
+  funded: {
+    type: Number,
+    default: 0,
+  },
   updated: {
     type: Date,
     default: new Date(),

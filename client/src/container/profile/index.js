@@ -22,44 +22,7 @@ const Profile = () => {
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
   const toggle = () => setModal(!modal);
-  const projects = [
-    {
-      title: "Hello world",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 20,
-      funded: 350,
-    },
-    {
-      title: "Hello Troth",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 81,
-      funded: 52,
-    },
-    {
-      title: "testing",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 67,
-      funded: 977,
-    },
-    {
-      title: "Hello world",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 20,
-      funded: 350,
-    },
-    {
-      title: "Hello Troth",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 81,
-      funded: 52,
-    },
-    {
-      title: "testing",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 67,
-      funded: 977,
-    },
-  ];
+  const [projects, setProjects] = useState(null);
   useEffect(() => {
     var app = document.getElementsByClassName("app")[0];
     app.classList.add("p-0");
@@ -67,6 +30,11 @@ const Profile = () => {
       app.classList.remove("p-0");
     };
   }, [user]);
+  useEffect(() => {
+    axios
+      .get("/api/project/get")
+      .then((result) => setProjects(result.data.result));
+  }, []);
   return (
     <div>
       {user ? (
@@ -130,9 +98,13 @@ const Profile = () => {
             </div>
             {/* add react router switch here */}
             <div className="profile-project">
-              {projects.map((project, index) => (
-                <ProjectItem key={index} {...project} />
-              ))}
+              {projects ? (
+                projects.map((project) => {
+                  return <ProjectItem {...project} key={project._id} />;
+                })
+              ) : (
+                <Spinner size="sm" color="secondary" />
+              )}
             </div>
           </div>
           <Modal isOpen={modal} centered>

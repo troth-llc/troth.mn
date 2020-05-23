@@ -49,17 +49,25 @@
   a:hover {
     text-decoration: none;
   }
+  .cover-container {
+    position: relative;
+    height: 110px;
+    max-width: 110px;
+    min-width: 110px;
+  }
   .project-photo {
-    img {
-      height: 110px;
-      max-width: 110px;
-      min-width: 110px;
-    }
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    display: block;
+    padding-top: 100%;
   }
   .project-detail {
+    max-height: 110px;
     width: 100%;
     padding: 15px;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 5px 5px 0;
     background-color: #f4f6f8;
     font-family: Rubik;
     .project-title {

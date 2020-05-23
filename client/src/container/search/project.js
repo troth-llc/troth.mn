@@ -1,46 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ProjectItem } from "components";
-import { Row, Col } from "reactstrap";
+import { Row, Col, Spinner } from "reactstrap";
+import axios from "axios";
 const Project = (props) => {
-  const projects = [
-    {
-      title: "Hello world",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 20,
-      funded: 350,
-    },
-    {
-      title: "Hello Troth",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 81,
-      funded: 52,
-    },
-    {
-      title: "testing",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 67,
-      funded: 977,
-    },
-    {
-      title: "Hello world",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 20,
-      funded: 350,
-    },
-    {
-      title: "Hello Troth",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 81,
-      funded: 52,
-    },
-    {
-      title: "testing",
-      src: require("assets/image/project/landscape.jpg"),
-      progress: 67,
-      funded: 977,
-    },
-  ];
+  const [projects, setProjects] = useState(null);
+  useEffect(() => {
+    setProjects(null);
+    axios
+      .post("/api/search/projects", {
+        search: props.match.params.search.trim(),
+      })
+      .then((response) => setProjects(response.data.project));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.match.params.search]);
   return (
     <>
       <div className="search-nav">
@@ -66,9 +39,15 @@ const Project = (props) => {
         </div>
       </div>
       <div className="search-projects">
-        {projects.map((project, index) => (
-          <ProjectItem key={index} {...project} />
-        ))}
+        {projects ? (
+          projects.map((project) => (
+            <ProjectItem key={project._id} {...project} />
+          ))
+        ) : (
+          <div className="text-center w-100 pt-3">
+            <Spinner color="secondary" size="sm" />
+          </div>
+        )}
       </div>
     </>
   );

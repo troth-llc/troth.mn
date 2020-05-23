@@ -107,20 +107,14 @@ const Find = (props) => {
           <div className="p-3">
             <div className="home-nav">
               <Row className="m-0">
-                <Col>
-                  <NavLink to="/calendar" className="home-link">
-                    Calendar
-                  </NavLink>
-                </Col>
                 <Col className="divider-nav">
-                  <NavLink to="/profile" exact className="home-link">
+                  <a
+                    href="#projects"
+                    onClick={(e) => e.preventDefault()}
+                    className="home-link"
+                  >
                     Projects
-                  </NavLink>
-                </Col>
-                <Col className="divider-nav">
-                  <NavLink to="/profile/saved" className="home-link">
-                    Saved
-                  </NavLink>
+                  </a>
                 </Col>
               </Row>
             </div>

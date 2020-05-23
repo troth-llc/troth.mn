@@ -80,5 +80,9 @@ exports.media = (req, res) => {
   }
 };
 exports.get = (req, res) => {
-  Project.find({ owner: req.user.id }).then((result) => res.json(result));
+  Project.find({ owner: req.user.id }).then((result) => res.json({ result }));
+};
+exports.get_user = (req, res) => {
+  const { id } = req.params;
+  Project.find({ owner: id }).then((result) => res.json({ result }));
 };

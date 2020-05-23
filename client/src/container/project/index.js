@@ -5,7 +5,9 @@ const Projects = () => {
   return (
     <div className="projects">
       <Row>
-        <Col sm="6" md="3" lg></Col>
+        <Col sm="6" md="3" lg>
+          <h5 className="text-center">Your Projects</h5>
+        </Col>
       </Row>
     </div>
   );

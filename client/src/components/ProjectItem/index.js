@@ -7,7 +7,7 @@ const ProjectItem = (props) => {
     <div className="project-item">
       <Link to="/">
         <div className="project-header">
-          <img src={props.src} alt="img" />
+          <img src={props.cover} alt="img" />
         </div>
         <div className="project-detail">
           <div className="project-title">{props.title}</div>
@@ -28,9 +28,12 @@ const ProjectItem = (props) => {
     </div>
   ) : (
     <div className="project-item-landscape ">
-      <Link to="/" className="flex-row d-flex">
-        <div className="project-photo">
-          <img src={props.src} alt={props.title} />
+      <Link to={"/project/" + props._id} className="flex-row d-flex">
+        <div className="cover-container">
+          <div
+            className="project-photo"
+            style={{ backgroundImage: `url(${props.cover})` }}
+          />
         </div>
         <div className="project-detail">
           <div className="project-title">{props.title}</div>
