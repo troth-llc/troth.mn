@@ -34,10 +34,13 @@ const Profile = () => {
       {user ? (
         <>
           <div className="profile">
-            <div className="d-flex">
+            <div className="d-flex container p-0">
               <div className="profile-avatar" onClick={toggle}>
                 {user.avatar ? (
-                  <img src={user.avatar} alt="user profile" />
+                  <div
+                    className="avatar-container"
+                    style={{ backgroundImage: `url(${user.avatar})` }}
+                  />
                 ) : (
                   <div className="avatar-preview">
                     {user.username.charAt(0).toUpperCase()}
@@ -59,19 +62,19 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            <hr />
+            <hr className="container p-0" />
             {user.about ? (
-              <>
+              <div className="container p-0">
                 <div className="profile-bio">{user.about}</div>
                 <hr />
-              </>
+              </div>
             ) : null}
             <div className="profile-action d-flex">
               <Link to="/settings/info">Edit profile</Link>
             </div>
           </div>
           <div className="p-3">
-            <div className="home-nav">
+            <div className="home-nav container p-0">
               <Row className="m-0">
                 <Col>
                   <NavLink to="/calendar" className="home-link">
@@ -91,7 +94,7 @@ const Profile = () => {
               </Row>
             </div>
             {/* add react router switch here */}
-            <div className="profile-project">
+            <div className="profile-project container p-0">
               {projects ? (
                 projects.map((project) => {
                   return <ProjectItem {...project} key={project._id} />;
@@ -117,8 +120,8 @@ const Profile = () => {
                   e.preventDefault();
                   const { current } = profileFile;
                   var FileSize = current.files[0].size / 1024 / 1024;
-                  if (FileSize > 10) {
-                    setError({ file: "Submission file must be under 10" });
+                  if (FileSize > 5) {
+                    setError({ file: "file must be under 5mb" });
                   } else {
                     disable(true);
                     const upload = new FormData();

@@ -26,7 +26,7 @@ const Search = (props) => {
     : "";
   return (
     <div id="search">
-      <div className="search-container">
+      <div className="search-container  container">
         <Link to="/">
           <img src={require("assets/image/left-arrow.svg")} alt="back-arrow" />
         </Link>
@@ -54,7 +54,7 @@ const Search = (props) => {
           />
         </form>
       </div>
-      <div className="category-container">
+      <div className="category-container container p-0">
         <Switch>
           <Route exact path="/search">
             {categories ? (

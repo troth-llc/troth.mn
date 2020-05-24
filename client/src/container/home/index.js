@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Row, Col } from "reactstrap";
 import { Scrollable, ProjectItem } from "components";
@@ -48,6 +48,9 @@ const Home = () => {
       portrait: true,
     },
   ];
+  useEffect(() => {
+    if (window.screen.width >= 786) window.location.href = "/coming-soon";
+  }, []);
   return (
     <div className="d-flex flex-column container home-container">
       <div className="home-nav">

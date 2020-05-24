@@ -109,7 +109,15 @@
   &:focus {
     background-color: #e6e3e3;
   }
-  .user-avatar img,
+
+  .user-avatar .avatar-container {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
   .search-avatar-preview {
     height: 40px;
     width: 40px;

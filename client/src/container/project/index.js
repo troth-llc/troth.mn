@@ -11,20 +11,18 @@ const Projects = () => {
   }, []);
   return (
     <div className="projects container">
-      <h5 className="text-center">Your Projects</h5>
+      <h5 className="text-center mt-3 mb-3">Your Projects</h5>
       <Row>
         {state ? (
           state.length !== 0 ? (
             state.map((project) => {
               return (
-                <Col key={project._id} md="4" lg="3" xs="6">
+                <Col key={project._id} md="4" lg="3" xs="6" className="mb-4">
                   <ProjectItem {...project} portrait="true" />
                 </Col>
               );
             })
-          ) : (
-            <p>Loading</p>
-          )
+          ) : null
         ) : (
           <div className="text-center w-100 pt-3">
             <Spinner color="secondary" size="sm" />

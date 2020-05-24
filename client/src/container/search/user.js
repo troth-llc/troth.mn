@@ -43,7 +43,10 @@ const User = (props) => {
                 <Link to={"/" + user.username}>
                   <div className="user-avatar">
                     {user.avatar ? (
-                      <img src={user.avatar} alt={user.name} />
+                      <div
+                        className="avatar-container"
+                        style={{ backgroundImage: `url(${user.avatar})` }}
+                      />
                     ) : (
                       <div className="search-avatar-preview">
                         {user.username.charAt(0).toUpperCase()}

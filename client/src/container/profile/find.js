@@ -44,10 +44,13 @@ const Find = (props) => {
         <>
           {you ? you._id === user._id && <Redirect to="/profile" /> : null}
           <div className="profile">
-            <div className="d-flex">
+            <div className="d-flex container p-0">
               <div className="profile-avatar">
                 {user.avatar ? (
-                  <img src={user.avatar} alt="user profile" />
+                  <div
+                    className="avatar-container"
+                    style={{ backgroundImage: `url(${user.avatar})` }}
+                  />
                 ) : (
                   <div className="avatar-preview">
                     {user.username.charAt(0).toUpperCase()}
@@ -69,11 +72,11 @@ const Find = (props) => {
                 </div>
               </div>
             </div>
-            <hr />
+            <hr className="container p-0" />
             {user.about ? (
               <>
-                <div className="profile-bio">{user.about}</div>
-                <hr />
+                <div className="profile-bio container p-0">{user.about}</div>
+                <hr className="container p-0" />
               </>
             ) : null}
             {you ? (
@@ -102,7 +105,7 @@ const Find = (props) => {
             ) : null}
           </div>
           <div className="p-3">
-            <div className="home-nav">
+            <div className="home-nav container p-0">
               <Row className="m-0">
                 <Col>
                   <NavLink
@@ -125,7 +128,7 @@ const Find = (props) => {
               </Row>
             </div>
             {/* add react router switch here */}
-            <div className="profile-project">
+            <div className="profile-project container p-0">
               {projects.map((project, index) => (
                 <ProjectItem key={index} {...project} />
               ))}

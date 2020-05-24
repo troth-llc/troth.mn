@@ -7,7 +7,7 @@ import Email from "./email";
 import "./style.scss";
 const Info = () => {
   return (
-    <div className="settings">
+    <div className="settings container p-rem">
       <div className="home-nav">
         <Row className="m-0">
           <Col>
@@ -27,7 +27,7 @@ const Info = () => {
           </Col>
         </Row>
       </div>
-      <div className="mt-3">
+      <div className="mt-3 max-380-auto">
         <Switch>
           <Route exact path="/settings/info" component={Information} />
           <Route exact path="/settings/password" component={Password} />

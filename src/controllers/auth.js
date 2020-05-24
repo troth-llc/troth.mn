@@ -67,29 +67,27 @@ exports.create = function (req, res) {
                   },
                   { upsert: true, new: true }
                 ).exec(async (err, user) => {
-                  if (err) console.log(err);
-                  send(
-                    user.email,
-                    "Verify Your Email Address",
-                    `<p>Dear <b>${user.name}</b> <br/> This message has been sent to you because you entered your email on a registration form, 
+                  if (err) return res.json({ status: false });
+                  else {
+                    jwt.sign(
+                      { id: user._id },
+                      process.env.JWTSECRET,
+                      {
+                        expiresIn: 36000, // 10 hours
+                      },
+                      (err, token) => {
+                        if (err) throw err;
+                        return res.json({ status: true, token });
+                      }
+                    );
+                    send(
+                      user.email,
+                      "Verify Your Email Address",
+                      `<p>Dear <b>${user.name}</b> <br/> This message has been sent to you because you entered your email on a registration form, 
                   click the button below to verify your email. If you didn't make this request, ignore this email.</p>
-                  <a href="http://localhost:3000/auth/email/${token}">Click here to verify your email</>`
-                  ).then((result) => {
-                    if (!result) return res.json({ status: false });
-                    else {
-                      jwt.sign(
-                        { id: user._id },
-                        process.env.JWTSECRET,
-                        {
-                          expiresIn: 36000, // 10 hours
-                        },
-                        (err, token) => {
-                          if (err) throw err;
-                          res.json({ status: true, token });
-                        }
-                      );
-                    }
-                  });
+                  <a href="https://troth.mn/auth/email/${token}">Click here to verify your email</>`
+                    );
+                  }
                 });
               });
             }
@@ -199,7 +197,7 @@ exports.forgot = function (req, res) {
                 new_user.email,
                 "Reset your password?",
                 `<p>if you requested a password reset for <b>@${new_user.username}</b>, click the button below. If you didn't make this request, ignore this email.</p>
-              <a href="http://localhost:3000/auth/password/${token}">Click here to reset password</>`
+              <a href="https://troth.mn/auth/password/${token}">Click here to reset password</>`
               ).then((result) => {
                 if (!result) res.json({ status: false });
                 else res.json({ status: true });
@@ -280,7 +278,7 @@ exports.email = function (req, res) {
             "Verify Your Email Address",
             `<p>Dear <b>${user.name}</b> <br/> 
           Click the button below to verify your email. If you didn't make this request, ignore this email.</p>
-          <a href="http://localhost:3000/auth/email/${
+          <a href="https://troth.mn/auth/email/${
             user.email_token ? user.email_token : token
           }">Click here to verify your email</>`
           ).then((result) => {

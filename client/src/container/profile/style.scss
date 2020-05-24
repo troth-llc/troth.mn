@@ -6,7 +6,11 @@
   .d-flex {
     width: 100%;
   }
-  .profile-avatar img {
+  .profile-avatar .avatar-container {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
     height: 58px;
     width: 58px;
     border-radius: 50%;
@@ -81,6 +85,8 @@
       border-radius: 5px;
       background-color: #f4f6f8;
       width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
       &:hover {
         color: #fa6c51;
         text-decoration: none;
@@ -92,7 +98,10 @@
       font-size: 12px;
       height: 40px;
       border-radius: 5px;
+      max-width: 380px;
+      margin: 0 auto;
       width: 100%;
+      cursor: pointer;
       &.unfollow {
         background-color: #f4f6f8;
         color: #898989;

@@ -18,6 +18,10 @@ const projectSchema = new Schema({
     type: Number,
     required: true,
   },
+  status: {
+    type: Boolean,
+    default: false,
+  },
   category: { type: Schema.Types.ObjectId, ref: "project_category" },
   owner: { type: Schema.Types.ObjectId, ref: "user" },
   content: {

@@ -8,8 +8,8 @@ import {
   Home,
   Search,
   Profile,
-  Calendar,
-  Event,
+  // Calendar,
+  // Event,
   Login,
   Register,
   Forgot,
@@ -73,6 +73,23 @@ const App = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/search" component={Search} />
+            <Route exact path="/coming-soon">
+              <div id="coming-soon">
+                <div className="center">
+                  <span className="material-icons">laptop</span>
+                  <span className="notice">
+                    Your browser is not currently supported.
+                  </span>
+                  <a
+                    href="https://discord.gg/HaQC5r3"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Join discord
+                  </a>
+                </div>
+              </div>
+            </Route>
             <PrivateRoute
               path="/notifications"
               exact
@@ -80,8 +97,8 @@ const App = () => {
             />
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/settings" component={Info} />
-            <PrivateRoute path="/calendar" component={Calendar} />
-            <PrivateRoute path="/event/:id" component={Event} />
+            {/* <PrivateRoute path="/calendar" component={Calendar} /> */}
+            {/* <PrivateRoute path="/event/:id" component={Event} /> */}
             {/* auth routes */}
             <Route exact path="/auth" component={Login} />
             <Route exact path="/auth/forgot" component={Forgot} />
