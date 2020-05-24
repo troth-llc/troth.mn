@@ -23,13 +23,7 @@ const Profile = () => {
   const [disabled, disable] = useState(false);
   const toggle = () => setModal(!modal);
   const [projects, setProjects] = useState(null);
-  useEffect(() => {
-    var app = document.getElementsByClassName("app")[0];
-    app.classList.add("p-0");
-    return () => {
-      app.classList.remove("p-0");
-    };
-  }, [user]);
+  useEffect(() => {}, [user]);
   useEffect(() => {
     axios
       .get("/api/project/get")
@@ -103,7 +97,9 @@ const Profile = () => {
                   return <ProjectItem {...project} key={project._id} />;
                 })
               ) : (
-                <Spinner size="sm" color="secondary" />
+                <div className="text-center w-100 pt-5">
+                  <Spinner size="sm" color="secondary" />
+                </div>
               )}
             </div>
           </div>

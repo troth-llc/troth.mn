@@ -49,7 +49,7 @@ const Home = () => {
     },
   ];
   return (
-    <div className="d-flex flex-column">
+    <div className="d-flex flex-column container home-container">
       <div className="home-nav">
         <Row className="m-0">
           <Col>
@@ -73,7 +73,7 @@ const Home = () => {
       <div className="project-container">
         <Row>
           {projects.map((project, index) => (
-            <Col xs={6} key={index} className="mb-3">
+            <Col md="4" lg="3" xs="6" key={index} className="mb-3">
               <ProjectItem {...project} />
             </Col>
           ))}

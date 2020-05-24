@@ -19,7 +19,7 @@ const Notification = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return state ? (
-    <div className="notification">
+    <div className="notification p-rem">
       {state.map((notification) => {
         return (
           <Link

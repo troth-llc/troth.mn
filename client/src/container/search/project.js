@@ -40,9 +40,13 @@ const Project = (props) => {
       </div>
       <div className="search-projects">
         {projects ? (
-          projects.map((project) => (
-            <ProjectItem key={project._id} {...project} />
-          ))
+          projects.length !== 0 ? (
+            projects.map((project) => (
+              <ProjectItem key={project._id} {...project} />
+            ))
+          ) : (
+            <p className="text-center text-muted mt-3">No projects found</p>
+          )
         ) : (
           <div className="text-center w-100 pt-3">
             <Spinner color="secondary" size="sm" />

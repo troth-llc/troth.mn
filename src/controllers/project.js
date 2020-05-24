@@ -38,7 +38,7 @@ exports.create = (req, res) => {
       console.log(err);
     });
     blobStream.on("finish", async () => {
-      const cover = `http://cdn.troth.mn/${blob.name}`;
+      const cover = `https://cdn.troth.mn/${blob.name}`;
       Project.create({
         title,
         amount: parseInt(amount),
@@ -73,7 +73,7 @@ exports.media = (req, res) => {
       console.log(err);
     });
     blobStream.on("finish", async () => {
-      const src = `http://cdn.troth.mn/${blob.name}`;
+      const src = `https://cdn.troth.mn/${blob.name}`;
       return res.json({ status: true, src });
     });
     blobStream.end(req.file.buffer);

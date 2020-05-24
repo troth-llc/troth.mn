@@ -1,6 +1,8 @@
 .app {
   margin-top: 54px;
   margin-bottom: 60px;
+}
+.p-rem {
   padding: 1rem 1rem;
 }
 .app .Calendar {

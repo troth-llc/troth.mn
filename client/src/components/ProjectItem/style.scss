@@ -10,9 +10,13 @@
     box-shadow: 0 30px 70px 0 rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
   }
-  .project-header img {
-    min-height: 135px;
-    max-height: 135px;
+  .project-header {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    display: block;
+    padding-top: 66.625%;
     width: 100%;
   }
   .project-detail {
@@ -59,7 +63,7 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    border-radius: 5px;
+    border-radius: 5px 0 0 5px;
     display: block;
     padding-top: 100%;
   }

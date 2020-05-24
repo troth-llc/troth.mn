@@ -5,22 +5,23 @@ import "./style.scss";
 const ProjectItem = (props) => {
   return props.portrait ? (
     <div className="project-item">
-      <Link to="/">
-        <div className="project-header">
-          <img src={props.cover} alt="img" />
-        </div>
+      <Link to={`/project/${props._id}`}>
+        <div
+          className="project-header"
+          style={{ backgroundImage: `url(${props.cover})` }}
+        />
         <div className="project-detail">
           <div className="project-title">{props.title}</div>
           <div className="project-progress">
             <Progress value={props.progress} />
           </div>
           <div className="status-info">
-            <div className="count">{props.progress}%</div>
+            <div className="count">0 %</div>
             <div className="text">Project Funded</div>
           </div>
           <hr className="project-divider" />
           <div className="status-info">
-            <div className="count">{props.funded}</div>
+            <div className="count">0</div>
             <div className="text">Project Backer</div>
           </div>
         </div>
@@ -42,11 +43,11 @@ const ProjectItem = (props) => {
           </div>
           <div className="d-flex flex-row">
             <div className="status-info d-flex flex-row mr-4">
-              <div className="count">{props.progress}% </div>
+              <div className="count">0 % </div>
               <div className="text ml-1"> - Funded</div>
             </div>
             <div className="status-info d-flex flex-row">
-              <div className="count">{props.funded}</div>
+              <div className="count">0</div>
               <div className="text ml-1"> - Backer</div>
             </div>
           </div>

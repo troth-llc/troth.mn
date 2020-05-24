@@ -34,11 +34,8 @@ const Find = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    var app = document.getElementsByClassName("app")[0];
-    app.classList.add("p-0");
     return () => {
       document.title = "TROTH";
-      app.classList.remove("p-0");
     };
   }, [user]);
   return (
@@ -107,14 +104,23 @@ const Find = (props) => {
           <div className="p-3">
             <div className="home-nav">
               <Row className="m-0">
-                <Col className="divider-nav">
-                  <a
-                    href="#projects"
-                    onClick={(e) => e.preventDefault()}
+                <Col>
+                  <NavLink
+                    to={`/project/funded/${user._id}`}
                     className="home-link"
                   >
+                    Funded
+                  </NavLink>
+                </Col>
+                <Col className="divider-nav">
+                  <NavLink to={`/${user.username}`} exact className="home-link">
                     Projects
-                  </a>
+                  </NavLink>
+                </Col>
+                <Col className="divider-nav">
+                  <NavLink to="/profile/saved" className="home-link">
+                    Link
+                  </NavLink>
                 </Col>
               </Row>
             </div>

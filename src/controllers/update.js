@@ -132,8 +132,7 @@ exports.avatar = function (req, res) {
       console.log(err);
     });
     blobStream.on("finish", async () => {
-      // The public URL can be used to directly access the file via HTTP.
-      const avatar = `http://cdn.troth.mn/${blob.name}`;
+      const avatar = `https://cdn.troth.mn/${blob.name}`;
       User.findById(req.user.id, (err, user) => {
         user.avatar = avatar;
         user.save((err) => {

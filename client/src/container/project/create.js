@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FormGroup, Input, FormFeedback, Label, Button } from "reactstrap";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import "./style.scss";
 import axios from "axios";
@@ -35,7 +35,7 @@ const CreateProject = () => {
                     className="input-round"
                     required={true}
                     onKeyUp={(e) => {
-                      setError({ ...data, amount: "" });
+                      setError({ ...error, amount: "" });
                       if (
                         isNaN(e.target.value) ||
                         parseInt(data.amount) < 9999
@@ -129,11 +129,6 @@ const CreateProject = () => {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <span className="terms text-muted">
-                    The platform is free for users. Transaction fee is 2% per
-                    donation. By continuing, you agree to the TROTH{" "}
-                    <Link to="/terms">Terms.</Link>
-                  </span>
                   <p className="terms text-muted">
                     Тухайн төсөлд анхны хөрөнгө оруулалт хийгдсэний дараагаар
                     төслийн нэр, хүсэж буй хэмжээ, төрөл, зэрэг нь солигдох
@@ -247,11 +242,17 @@ const CreateProject = () => {
                     height: 300,
                     menubar: false,
                     initialValue: data.content,
-                    plugins: "image link autoresize importcss paste",
+                    plugins:
+                      "image link autoresize importcss paste linkchecker",
                     autoresize_bottom_margin: 50,
+                    link_quicklink: true,
                     paste_merge_formats: false,
                     image_dimensions: false,
                     image_description: false,
+                    //
+                    link_title: false,
+                    forced_root_block: "",
+                    target_list: [{ text: "New window", value: "_blank" }],
                     images_upload_handler: (blobInfo, success, failure) => {
                       const upload = new FormData();
                       upload.append(
