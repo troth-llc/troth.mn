@@ -23,13 +23,13 @@ const Projects = () => {
               );
             })
           ) : (
-            <p className="text-center">No projects found</p>
-          )
+              <p className="text-center w-100">No projects found</p>
+            )
         ) : (
-          <div className="text-center w-100 pt-3">
-            <Spinner color="secondary" size="sm" />
-          </div>
-        )}
+            <div className="text-center w-100 pt-3">
+              <Spinner color="secondary" size="sm" />
+            </div>
+          )}
       </Row>
       <div className="create">
         <Link to="/project/create" className="default-button">
