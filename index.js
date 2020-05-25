@@ -1,18 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
 require("dotenv").config();
 const PORT = process.env.PORT;
 const mongodb = process.env.MONGO;
+const path = require('path');
+if (process.env.DEV == 'false') app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(express.json());
-// socket.io
-io.on("connection", function(socket) {
-  console.log("a user connected");
-});
 // call routes
 app.use("/api", require("./src/routes"));
+if (process.env.DEV == 'false') app.get('*', (req, res) => res.sendFile(path.join(__dirname + '/client/build/index.html')));
 app.listen(PORT, () => {
   mongoose
     .connect(mongodb, {

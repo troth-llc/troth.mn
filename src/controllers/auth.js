@@ -14,7 +14,7 @@ const send = async (to, subject, html) => {
       secure: true,
       auth: {
         type: "OAuth2",
-        user: process.env.MAIL,
+        user: process.env.GMAIL,
         serviceClient: key.client_id,
         privateKey: key.private_key,
       },
@@ -22,7 +22,7 @@ const send = async (to, subject, html) => {
     try {
       await transporter.verify();
       var result = await transporter.sendMail({
-        from: `TROTH LLC ${process.env.MAIL}`,
+        from: `TROTH LLC ${process.env.GMAIL}`,
         to,
         subject,
         html,
@@ -280,7 +280,7 @@ exports.email = function (req, res) {
           Click the button below to verify your email. If you didn't make this request, ignore this email.</p>
           <a href="https://troth.mn/auth/email/${
             user.email_token ? user.email_token : token
-          }">Click here to verify your email</>`
+            }">Click here to verify your email</>`
           ).then((result) => {
             if (!result) console.log("email sending failed");
             else
