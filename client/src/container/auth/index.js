@@ -24,7 +24,7 @@ const Login = () => {
               let { status, token } = response.data;
               if (status) {
                 Cookies.set("token", token, {
-                  path: "/",
+                  path: "/", domain: '.troth.mn', secure: true
                 });
                 window.location.href = "/";
               } else if (status === false)

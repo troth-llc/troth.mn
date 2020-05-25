@@ -32,7 +32,7 @@ const Register = () => {
               if (status) {
                 {
                   Cookies.set("token", token, {
-                    path: "/",
+                    path: "/", domain: '.troth.mn', secure: true
                   });
                   window.location.href = "/";
                 }

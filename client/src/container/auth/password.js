@@ -40,8 +40,7 @@ const Password = (props) => {
                   let { status, token } = response.data;
                   if (status)
                     Cookies.set("token", token, {
-                      path: "/",
-                      domain: ".troth.mn",
+                      path: "/", domain: '.troth.mn', secure: true
                     });
                   else if (status === false)
                     console.log("some thing went wrong");
