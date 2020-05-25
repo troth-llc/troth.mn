@@ -15,9 +15,10 @@ const Password = (props) => {
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
   const cookie = Cookies.get("token");
+  var dev = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
   useEffect(() => {
     cookie && (window.location.href = "/");
-  }, []);
+  }, [cookie]);
   return (
     <div className="login">
       <h5 className="text-center w-100 pt-3 pb-3">Reset your password</h5>
@@ -40,7 +41,9 @@ const Password = (props) => {
                   let { status, token } = response.data;
                   if (status)
                     Cookies.set("token", token, {
-                      path: "/", domain: '.troth.mn', secure: true
+                      path: "/",
+                      domain: `${dev ? window.location.hostname : ".troth.mn"}`,
+                      secure: dev ? false : true,
                     });
                   else if (status === false)
                     console.log("some thing went wrong");

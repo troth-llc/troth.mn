@@ -15,9 +15,10 @@ const Register = () => {
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
   const cookie = Cookies.get("token");
+  var dev = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
   useEffect(() => {
     cookie && (window.location.href = "/");
-  }, []);
+  }, [cookie]);
   return (
     <div className="register">
       <h5 className="text-center w-100 pt-3 pb-3">Sign up</h5>
@@ -30,12 +31,12 @@ const Register = () => {
               let errors = response.data.errors;
               let { status, token } = response.data;
               if (status) {
-                {
-                  Cookies.set("token", token, {
-                    path: "/", domain: '.troth.mn', secure: true
-                  });
-                  window.location.href = "/";
-                }
+                Cookies.set("token", token, {
+                  path: "/",
+                  domain: `${dev ? window.location.hostname : ".troth.mn"}`,
+                  secure: dev ? false : true,
+                });
+                window.location.href = "/";
               } else if (status === false)
                 setError({ status: "Server unavailable, Try again later" });
               else {

@@ -22,7 +22,9 @@ const Projects = () => {
                 </Col>
               );
             })
-          ) : null
+          ) : (
+            <p className="text-center">No projects found</p>
+          )
         ) : (
           <div className="text-center w-100 pt-3">
             <Spinner color="secondary" size="sm" />
@@ -30,7 +32,9 @@ const Projects = () => {
         )}
       </Row>
       <div className="create">
-        <Link to="/project/create">Create a Project</Link>
+        <Link to="/project/create" className="default-button">
+          Create a Project
+        </Link>
       </div>
     </div>
   );

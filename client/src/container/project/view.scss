@@ -86,3 +86,17 @@
     }
   }
 }
+.default-button {
+  justify-content: center;
+  color: #fa6c51;
+  font-weight: 500;
+  line-height: 40px;
+  display: flex;
+  font-size: 12px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: #fff;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+}

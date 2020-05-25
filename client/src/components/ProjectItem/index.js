@@ -11,7 +11,16 @@ const ProjectItem = (props) => {
           style={{ backgroundImage: `url(${props.cover})` }}
         />
         <div className="project-detail">
-          <div className="project-title">{props.title}</div>
+          <div
+            className={`project-title ${
+              props.status === false ? "mb-0" : null
+            }`}
+          >
+            {props.title}
+            {props.status === false ? (
+              <p className="project-status text-warning">Pending</p>
+            ) : null}
+          </div>
           <div className="project-progress">
             <Progress value={props.progress} />
           </div>
@@ -37,7 +46,16 @@ const ProjectItem = (props) => {
           />
         </div>
         <div className="project-detail">
-          <div className="project-title">{props.title}</div>
+          <div
+            className={`project-title ${
+              props.status === false ? "mb-0" : null
+            }`}
+          >
+            {props.title}
+            {props.status === false ? (
+              <p className="project-status text-warning">Pending</p>
+            ) : null}
+          </div>
           <div className="project-progress">
             <Progress value={props.progress} />
           </div>

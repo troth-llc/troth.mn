@@ -24,9 +24,12 @@ const Search = (props) => {
   var value = location.pathname.split("/")[3]
     ? location.pathname.split("/")[3]
     : "";
+  const clear = (input) => {
+    return encodeURIComponent(input).replace(/[!'()*]/g, "");
+  };
   return (
     <div id="search">
-      <div className="search-container  container">
+      <div className="search-container container">
         <Link to="/">
           <img src={require("assets/image/left-arrow.svg")} alt="back-arrow" />
         </Link>
@@ -49,8 +52,8 @@ const Search = (props) => {
             placeholder="Search"
             alt="back"
             autoFocus={true}
-            defaultValue={decodeURIComponent(value)}
-            onChange={(e) => setSearch(e.target.value)}
+            defaultValue={decodeURIComponent(clear(value))}
+            onChange={(e) => setSearch(clear(e.target.value))}
           />
         </form>
       </div>

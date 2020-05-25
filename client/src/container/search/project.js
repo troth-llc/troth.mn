@@ -5,33 +5,30 @@ import { Row, Col, Spinner } from "reactstrap";
 import axios from "axios";
 const Project = (props) => {
   const [projects, setProjects] = useState(null);
+  const id = encodeURIComponent(
+    props.match.params.search.replace(/[!'()*]/g, "")
+  );
   useEffect(() => {
     setProjects(null);
     axios
       .post("/api/search/projects", {
-        search: props.match.params.search.trim(),
+        search: id.trim(),
       })
       .then((response) => setProjects(response.data.project));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.match.params.search]);
+  }, [id]);
   return (
     <>
       <div className="search-nav">
         <div className="home-nav">
           <Row className="m-0">
             <Col>
-              <NavLink
-                to={"/search/project/" + props.match.params.search}
-                className="home-link"
-              >
+              <NavLink to={"/search/project/" + id} className="home-link">
                 Projects
               </NavLink>
             </Col>
             <Col className="divider-nav">
-              <NavLink
-                to={"/search/user/" + props.match.params.search}
-                className="home-link"
-              >
+              <NavLink to={"/search/user/" + id} className="home-link">
                 Users
               </NavLink>
             </Col>

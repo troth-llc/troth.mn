@@ -28,6 +28,12 @@
       font-size: 14px;
       text-align: left;
       color: #424852;
+      .project-status {
+        margin-top: 5px;
+        margin-bottom: 0;
+        font-size: 12px;
+        line-height: 12px;
+      }
     }
   }
   .status-info {
@@ -91,5 +97,13 @@
       line-height: 1.7;
       color: #a9b0bb;
     }
+  }
+}
+.project-title {
+  .project-status {
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-size: 12px;
+    line-height: 12px;
   }
 }

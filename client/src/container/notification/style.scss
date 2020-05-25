@@ -24,10 +24,24 @@
     }
   }
   .user-follow-avatar {
-    height: 36px;
-    width: 36px;
-    border-radius: 50%;
-    border: 1px solid #898989;
+    .avatar {
+      height: 36px;
+      width: 36px;
+      border-radius: 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .avatar-placeholder {
+      text-align: center;
+      height: 36px;
+      width: 36px;
+      background: #fff;
+      line-height: 36px;
+      border-radius: 50%;
+      color: #898989;
+      font-weight: 400;
+    }
     margin-right: 15px;
   }
   .user-follow-date {

@@ -36,7 +36,20 @@ const Notification = () => {
                 !notification.read ? " new" : ""
               }`}
             >
-              <div className="user-follow-avatar"></div>
+              <div className="user-follow-avatar">
+                {notification.user.avatar ? (
+                  <div
+                    className="avatar"
+                    style={{
+                      backgroundImage: `url(${notification.user.avatar})`,
+                    }}
+                  ></div>
+                ) : (
+                  <div className="avatar-placeholder">
+                    {notification.user.username.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </div>
               <div>
                 <div className="user-follow-name">
                   <span>{notification.user.name}</span> followed you

@@ -19,7 +19,7 @@ const Forgot = () => {
   const cookie = Cookies.get("token");
   useEffect(() => {
     cookie && (window.location.href = "/");
-  }, []);
+  }, [cookie]);
   return (
     <div className="login">
       <h5 className="text-center w-100 pt-3 pb-3">Forgot password</h5>

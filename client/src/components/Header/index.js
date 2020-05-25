@@ -108,7 +108,7 @@ const Header = () => {
               <p className="text-muted text-center mb-0 f-12">
                 &copy; {new Date().getFullYear()} TROTH
                 <br />
-                Beta v0.8.1
+                Beta v0.8.2
               </p>
             </div>
           </div>

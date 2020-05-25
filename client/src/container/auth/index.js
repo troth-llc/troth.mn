@@ -9,9 +9,10 @@ const Login = () => {
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
   const cookie = Cookies.get("token");
+  var dev = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
   useEffect(() => {
     cookie && (window.location.href = "/");
-  }, []);
+  }, [cookie]);
   return (
     <div className="login">
       <h5 className="text-center w-100 pt-3 pb-3">Sign in</h5>
@@ -24,7 +25,9 @@ const Login = () => {
               let { status, token } = response.data;
               if (status) {
                 Cookies.set("token", token, {
-                  path: "/", domain: '.troth.mn', secure: true
+                  path: "/",
+                  domain: `${dev ? window.location.hostname : ".troth.mn"}`,
+                  secure: dev ? false : true,
                 });
                 window.location.href = "/";
               } else if (status === false)
