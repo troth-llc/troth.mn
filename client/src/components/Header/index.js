@@ -2,13 +2,13 @@ import React, { useState, useContext } from "react";
 import { Navbar, Spinner } from "reactstrap";
 import { Link, NavLink } from "react-router-dom";
 import Drawer, { DrawerAppContent } from "@material/react-drawer";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import { User } from "context/user";
 import "./style.scss";
 const Header = () => {
   const [open, setOpen] = useState(false);
   const { user } = useContext(User);
-  const [cookies, , removeCookie] = useCookies("token");
+  const cookie = Cookies.get("token");
   const auth_routes = [
     { name: "Home", to: "/", exact: true },
     { name: "Settings", to: "/settings/info", exact: false },
@@ -19,7 +19,7 @@ const Header = () => {
       exact: false,
       action: (e) => {
         e.preventDefault();
-        removeCookie("token");
+        Cookies.remove("token");
         document.location.reload();
       },
     },
@@ -55,7 +55,7 @@ const Header = () => {
             onClick={() => setOpen(false)}
           >
             <div className="drawer-header">
-              {cookies.token ? (
+              {cookie ? (
                 <div className="drawer-profile d-flex flex-row">
                   {user ? (
                     <>
@@ -78,7 +78,7 @@ const Header = () => {
               )}
             </div>
             <div className="drawer-link">
-              {cookies.token
+              {cookie
                 ? auth_routes.map((route, index) => {
                     return (
                       <NavLink

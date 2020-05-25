@@ -11,7 +11,7 @@ const Projects = () => {
   }, []);
   return (
     <div className="projects container">
-      <h5 className="text-center mt-3 mb-3">Your Projects</h5>
+      <h5 className="text-center pt-3 mb-3">Your Projects</h5>
       <Row>
         {state ? (
           state.length !== 0 ? (

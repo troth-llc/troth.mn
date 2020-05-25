@@ -22,7 +22,7 @@ const send = async (to, subject, html) => {
       secure: true,
       auth: {
         type: "OAuth2",
-        user: process.env.MAIL,
+        user: process.env.GMAIL,
         serviceClient: key.client_id,
         privateKey: key.private_key,
       },
@@ -30,7 +30,7 @@ const send = async (to, subject, html) => {
     try {
       await transporter.verify();
       var result = await transporter.sendMail({
-        from: `TROTH LLC ${process.env.MAIL}`,
+        from: `TROTH LLC ${process.env.GMAIL}`,
         to,
         subject,
         html,
@@ -216,21 +216,12 @@ exports.verify = function (req, res) {
               if (err) console.log(err);
               data.verification_status = "pending";
               data.save();
-              transporter.sendMail(
-                {
-                  from: process.env.MAIL,
-                  to: data.email,
-                  subject: "Documents Uploaded Successfully",
-                  html: `<b>Dear ${data.name}</b><br />
-                  <p>We would like to inform you that your documents have been uploaded successfully and will be evaluated by the relevant department within 24 business hours.</p>`,
-                },
-                (err, info) => {
-                  if (err) console.log(err);
-                  res.json({
-                    status: info.accepted.length > 0 ? true : false,
-                  });
-                }
-              );
+              send(
+                data.email,
+                "Documents Uploaded Successfully",
+                `<b>Dear ${data.name}</b><br />
+              <p>We would like to inform you that your documents have been uploaded successfully and will be evaluated by the relevant department within 24 business hours.</p>`
+              ).then((res) => res.json({ status: true }));
             }
           );
         }

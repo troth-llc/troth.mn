@@ -7,7 +7,7 @@ import {
   Button,
   Alert,
 } from "reactstrap";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./style.scss";
@@ -15,11 +15,11 @@ const Forgot = () => {
   const [data, setData] = useState({});
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
-  const [cookie] = useCookies(["token"]);
   const [open, setOpen] = useState(false);
+  const cookie = Cookies.get("token");
   useEffect(() => {
-    cookie.token && (window.location.href = "/");
-  }, [cookie]);
+    cookie && (window.location.href = "/");
+  }, []);
   return (
     <div className="login">
       <h5 className="text-center w-100 pt-3 pb-3">Forgot password</h5>

@@ -7,17 +7,17 @@ import {
   Button,
   Label,
 } from "reactstrap";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import axios from "axios";
 const Register = () => {
   const [data, setData] = useState({});
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
-  const [cookie, setCookie] = useCookies(["token"]);
+  const cookie = Cookies.get("token");
   useEffect(() => {
-    cookie.token && (window.location.href = "/");
-  }, [cookie]);
+    cookie && (window.location.href = "/");
+  }, []);
   return (
     <div className="register">
       <h5 className="text-center w-100 pt-3 pb-3">Sign up</h5>
@@ -29,8 +29,14 @@ const Register = () => {
             axios.post("/api/auth/register", { ...data }).then((response) => {
               let errors = response.data.errors;
               let { status, token } = response.data;
-              if (status) setCookie("token", token, { path: "/" });
-              else if (status === false)
+              if (status) {
+                {
+                  Cookies.set("token", token, {
+                    path: "/",
+                  });
+                  window.location.href = "/";
+                }
+              } else if (status === false)
                 setError({ status: "Server unavailable, Try again later" });
               else {
                 disable(false);

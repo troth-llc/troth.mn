@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import "./App.css";
 import "@material/react-drawer/dist/drawer.css";
 import { Header, BottomNav } from "components";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import axios from "axios";
 import {
   Home,
@@ -31,31 +31,31 @@ import {
 // own context
 import { User } from "context/user";
 const App = () => {
-  const [cookie, , removeCookie] = useCookies("token");
+  const cookie = Cookies.get("token");
   const [user, setUser] = useState(null);
   const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
       {...rest}
       render={(props) =>
-        cookie.token ? <Component {...props} /> : <Redirect to="/auth" />
+        cookie ? <Component {...props} /> : <Redirect to="/auth" />
       }
     />
   );
   const login = () => {
-    if (cookie.token) {
+    if (cookie) {
       axios
         .get("/api/auth")
         .then((response) => {
           const { user, msg } = response.data;
           if (user === null || msg) {
-            removeCookie("token");
+            Cookies.remove("token");
             document.location.reload();
           }
           setUser(user);
         })
         .catch((error) => {
           if (error) {
-            removeCookie("token");
+            Cookies.remove("token");
             document.location.reload();
           }
         });

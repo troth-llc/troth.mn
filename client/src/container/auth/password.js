@@ -7,17 +7,17 @@ import {
   Button,
   Alert,
 } from "reactstrap";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import axios from "axios";
 import "./style.scss";
 const Password = (props) => {
   const [data, setData] = useState({});
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
-  const [cookie, setCookie] = useCookies(["token"]);
+  const cookie = Cookies.get("token");
   useEffect(() => {
-    cookie.token && (window.location.href = "/");
-  }, [cookie]);
+    cookie && (window.location.href = "/");
+  }, []);
   return (
     <div className="login">
       <h5 className="text-center w-100 pt-3 pb-3">Reset your password</h5>
@@ -38,7 +38,11 @@ const Password = (props) => {
                 .then((response) => {
                   let errors = response.data.errors;
                   let { status, token } = response.data;
-                  if (status) setCookie("token", token, { path: "/" });
+                  if (status)
+                    Cookies.set("token", token, {
+                      path: "/",
+                      domain: ".troth.mn",
+                    });
                   else if (status === false)
                     console.log("some thing went wrong");
                   else {
