@@ -66,6 +66,16 @@ const Profile = () => {
             {user.about ? (
               <div className="container p-0">
                 <div className="profile-bio">{user.about}</div>
+                {user.website ? (
+                  <a
+                    href={user.website}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="profile-website"
+                  >
+                    {user.website.substring(0, 50)}
+                  </a>
+                ) : null}
                 <hr />
               </div>
             ) : null}

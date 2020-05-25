@@ -1,5 +1,6 @@
 const Category = require("../models/project_category");
 const Project = require("../models/project");
+const User = require("../models/user");
 const { bucket } = require("../middleware/multer");
 const crypto = require("crypto");
 const hash = () => {
@@ -80,9 +81,26 @@ exports.media = (req, res) => {
   }
 };
 exports.get = (req, res) => {
-  Project.find({ owner: req.user.id }).then((result) => res.json({ result }));
+  Project.find({ owner: req.user.id })
+    .then((result) => res.json({ result }))
+    .catch((err) => res.json({ status: false }));
 };
 exports.get_user = (req, res) => {
   const { id } = req.params;
-  Project.find({ owner: id }).then((result) => res.json({ result }));
+  Project.find({ owner: id, status: true })
+    .then((result) => res.json({ result }))
+    .catch((err) => res.json({ status: false }));
+};
+exports.view = (req, res) => {
+  const { id } = req.params;
+  Project.findById(id)
+    .populate({
+      path: "owner",
+      select: "name username avatar",
+    })
+    .populate("category", "name")
+    .exec((error, result) => {
+      if (error) return res.json({ status: false, msg: "project not found" });
+      else return res.json({ result });
+    });
 };

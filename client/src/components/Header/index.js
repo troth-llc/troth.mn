@@ -73,7 +73,7 @@ const Header = () => {
                 </div>
               ) : (
                 <Link to="/auth" className="drawer-signin">
-                  Sign in
+                  Account
                 </Link>
               )}
             </div>
@@ -103,6 +103,13 @@ const Header = () => {
                       </NavLink>
                     );
                   })}
+            </div>
+            <div className="drawer-footer">
+              <p className="text-muted text-center mb-0 f-12">
+                &copy; {new Date().getFullYear()} TROTH
+                <br />
+                Beta v0.8.0
+              </p>
             </div>
           </div>
         </DrawerAppContent>

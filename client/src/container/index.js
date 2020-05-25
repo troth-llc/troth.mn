@@ -13,6 +13,7 @@ import Info from "./settings";
 import Notification from "./notification/index";
 import ProjectCreate from "./project/create";
 import Projects from "./project";
+import ProjectView from "./project/view";
 export {
   Home,
   Search,
@@ -29,4 +30,5 @@ export {
   Notification,
   ProjectCreate,
   Projects,
+  ProjectView,
 };

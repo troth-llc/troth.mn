@@ -20,6 +20,7 @@ import {
   Notification,
   ProjectCreate,
   Projects,
+  ProjectView,
 } from "container";
 import {
   BrowserRouter as Router,
@@ -83,7 +84,7 @@ const App = () => {
                   <a
                     href="https://discord.gg/HaQC5r3"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                   >
                     Join discord
                   </a>
@@ -106,6 +107,7 @@ const App = () => {
             <Route exact path="/auth/email/:token" component={Email} />
             <Route path="/auth/register" component={Register} />
             {/* Project */}
+            <Route path="/project/view/:id" component={ProjectView} />
             <PrivateRoute path="/project/create" component={ProjectCreate} />
             <PrivateRoute path="/project" component={Projects} />
             {/* Other */}

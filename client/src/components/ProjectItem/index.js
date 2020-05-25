@@ -5,7 +5,7 @@ import "./style.scss";
 const ProjectItem = (props) => {
   return props.portrait ? (
     <div className="project-item">
-      <Link to={`/project/${props._id}`}>
+      <Link to={`/project/view/${props._id}`}>
         <div
           className="project-header"
           style={{ backgroundImage: `url(${props.cover})` }}
@@ -29,7 +29,7 @@ const ProjectItem = (props) => {
     </div>
   ) : (
     <div className="project-item-landscape ">
-      <Link to={"/project/" + props._id} className="flex-row d-flex">
+      <Link to={"/project/view/" + props._id} className="flex-row d-flex">
         <div className="cover-container">
           <div
             className="project-photo"

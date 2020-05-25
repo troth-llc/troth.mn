@@ -45,6 +45,7 @@ exports.project = (req, res) => {
   const { search } = req.body;
   if (search) {
     query = {
+      status: true,
       $or: [
         {
           title: {

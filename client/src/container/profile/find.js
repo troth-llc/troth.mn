@@ -8,10 +8,10 @@ import "./style.scss";
 const Find = (props) => {
   const CancelToken = axios.CancelToken;
   const source = CancelToken.source();
-  const projects = [];
   const [user, setUser] = useState(null);
   const { user: you } = useContext(User);
   const [follow, setFollow] = useState(false);
+  const [projects, setProjects] = useState(null);
   useEffect(() => {
     const get = () => {
       setUser(null);
@@ -22,6 +22,9 @@ const Find = (props) => {
         .then((response) => {
           if (response.data.status) {
             setUser(response.data.user);
+            axios
+              .get("/api/project/get/" + response.data.user._id)
+              .then((res) => setProjects(res.data.result));
             setFollow(Boolean(response.data.following));
             document.title = response.data.user.username;
           } else setUser(false);
@@ -129,9 +132,11 @@ const Find = (props) => {
             </div>
             {/* add react router switch here */}
             <div className="profile-project container p-0">
-              {projects.map((project, index) => (
-                <ProjectItem key={index} {...project} />
-              ))}
+              {projects
+                ? projects.map((project, index) => (
+                    <ProjectItem key={index} {...project} />
+                  ))
+                : null}
             </div>
           </div>
         </>
