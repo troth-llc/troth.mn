@@ -69,9 +69,9 @@ const ProjectView = (props) => {
                   </div>
                 </div>
                 <div className="col owner-info">
-                  <Link to={state.owner.username}>{state.owner.name}</Link>{" "}
-                  Organizing this project. Published{" "}
-                  {moment(state.created).fromNow()}
+                  <Link to={state.owner.username}>{state.owner.name}</Link>
+                  <br />
+                  Created this project • {moment(state.created).fromNow()}
                 </div>
               </div>
             </div>

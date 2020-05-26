@@ -31,6 +31,7 @@ import {
 } from "react-router-dom";
 // own context
 import { User } from "context/user";
+var dev = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
 const App = () => {
   const cookie = Cookies.get("token");
   const [user, setUser] = useState(null);
@@ -49,14 +50,22 @@ const App = () => {
         .then((response) => {
           const { user, msg } = response.data;
           if (user === null || msg) {
-            Cookies.remove("token");
+            Cookies.remove("token", {
+              path: "/",
+              domain: `${dev ? window.location.hostname : ".troth.mn"}`,
+              secure: dev ? false : true,
+            });
             document.location.reload();
           }
           setUser(user);
         })
         .catch((error) => {
           if (error) {
-            Cookies.remove("token");
+            Cookies.remove("token", {
+              path: "/",
+              domain: `${dev ? window.location.hostname : ".troth.mn"}`,
+              secure: dev ? false : true,
+            });
             document.location.reload();
           }
         });

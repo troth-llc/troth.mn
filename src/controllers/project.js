@@ -3,6 +3,7 @@ const Project = require("../models/project");
 const User = require("../models/user");
 const { bucket } = require("../middleware/multer");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const hash = () => {
   return crypto
     .createHash("sha1")
@@ -93,14 +94,29 @@ exports.get_user = (req, res) => {
 };
 exports.view = (req, res) => {
   const { id } = req.params;
-  Project.findById(id)
-    .populate({
-      path: "owner",
-      select: "name username avatar",
-    })
-    .populate("category", "name")
-    .exec((error, result) => {
-      if (error) return res.json({ status: false, msg: "project not found" });
-      else return res.json({ result });
-    });
+  const token = req.header("x-auth-token");
+  if (token) {
+    const user = jwt.verify(token, process.env.JWTSECRET);
+    Project.findOne({ _id: id, owner: user.id })
+      .populate({
+        path: "owner",
+        select: "name username avatar",
+      })
+      .populate("category", "name")
+      .exec((error, result) => {
+        if (error) return res.json({ status: false, msg: "project not found" });
+        else return res.json({ result });
+      });
+  } else {
+    Project.findOne({ _id: id, status: true })
+      .populate({
+        path: "owner",
+        select: "name username avatar",
+      })
+      .populate("category", "name")
+      .exec((error, result) => {
+        if (error) return res.json({ status: false, msg: "project not found" });
+        else return res.json({ result });
+      });
+  }
 };

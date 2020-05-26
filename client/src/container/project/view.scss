@@ -64,6 +64,15 @@
       width: 48px;
       border-radius: 50%;
     }
+    .owner-avatar-preview {
+      height: 48px;
+      width: 48px;
+      text-align: center;
+      line-height: 48px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      font-weight: 500;
+      border-radius: 50%;
+    }
   }
   .owner-info {
     font-size: 14px;

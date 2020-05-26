@@ -20,7 +20,7 @@ const CreateProject = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="project-row">
+    <div className="project-row p-rem">
       <div className="create-project">
         {
           {
@@ -34,12 +34,14 @@ const CreateProject = () => {
                     placeholder="Amount"
                     className="input-round"
                     required={true}
+                    defaultValue={data.amount}
                     onKeyUp={(e) => {
+                      var value = e.target.value;
+                      var regex = new RegExp(
+                        /^(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?$/
+                      );
                       setError({ ...error, amount: "" });
-                      if (
-                        isNaN(e.target.value) ||
-                        parseInt(data.amount) < 9999
-                      ) {
+                      if (parseInt(value) < 9999 || !regex.test(value)) {
                         disable(true);
                         setError({
                           ...error,
@@ -47,7 +49,11 @@ const CreateProject = () => {
                             "Please enter a valid goal amount for your campaign.",
                         });
                       } else disable(false);
-                      setData({ ...data, [e.target.name]: e.target.value });
+                      setData({
+                        ...data,
+                        [e.target.name]:
+                          value.length < 1 ? "" : parseInt(value),
+                      });
                     }}
                     autoFocus={true}
                     invalid={error.amount ? true : false}
@@ -61,6 +67,8 @@ const CreateProject = () => {
                     name="title"
                     placeholder="Title"
                     className="input-round"
+                    defaultValue={data.title}
+                    maxLength="50"
                     required={true}
                     onChange={(e) =>
                       setData({ ...data, [e.target.name]: e.target.value })
@@ -242,8 +250,7 @@ const CreateProject = () => {
                     height: 300,
                     menubar: false,
                     initialValue: data.content,
-                    plugins:
-                      "image link autoresize importcss paste linkchecker",
+                    plugins: "image link autoresize importcss paste lists ",
                     autoresize_bottom_margin: 50,
                     link_quicklink: true,
                     paste_merge_formats: false,
@@ -275,7 +282,7 @@ const CreateProject = () => {
                     content_style:
                       "img { border-radius: 5px; border: 1px solid #ddd; display: block; width: 100%; }",
                     placeholder: "Explain why you're raising money...",
-                    toolbar: "bold link image",
+                    toolbar: "bold link image numlist bullist",
                   }}
                   onEditorChange={(content) => setData({ ...data, content })}
                 />

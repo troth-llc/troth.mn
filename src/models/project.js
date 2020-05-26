@@ -22,6 +22,10 @@ const projectSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  rejected: {
+    type: Boolean,
+    default: false,
+  },
   category: { type: Schema.Types.ObjectId, ref: "project_category" },
   owner: { type: Schema.Types.ObjectId, ref: "user" },
   content: {
