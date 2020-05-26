@@ -9,6 +9,7 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const { user } = useContext(User);
   const cookie = Cookies.get("token");
+  var dev = !process.env.NODE_ENV || process.env.NODE_ENV === "development";
   const auth_routes = [
     { name: "Home", to: "/", exact: true },
     { name: "Settings", to: "/settings/info", exact: false },
@@ -19,7 +20,11 @@ const Header = () => {
       exact: false,
       action: (e) => {
         e.preventDefault();
-        Cookies.remove("token");
+        Cookies.remove("token", {
+          path: "/",
+          domain: `${dev ? window.location.hostname : ".troth.mn"}`,
+          secure: dev ? false : true,
+        });
         document.location.reload();
       },
     },
