@@ -69,7 +69,9 @@ const ProjectView = (props) => {
                   </div>
                 </div>
                 <div className="col owner-info">
-                  <Link to={state.owner.username}>{state.owner.name}</Link>
+                  <Link to={"/" + state.owner.username}>
+                    {state.owner.name}
+                  </Link>
                   <br />
                   Created this project • {moment(state.created).fromNow()}
                 </div>
@@ -85,7 +87,7 @@ const ProjectView = (props) => {
           {user ? (
             user._id === state.owner._id ? (
               <Link
-                className="default-button mt-3"
+                className="default-button mt-3 pb-3 edit-button"
                 to={"/project/edit/" + state._id}
               >
                 Edit Project

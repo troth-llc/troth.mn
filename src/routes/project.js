@@ -11,6 +11,7 @@ const { multer } = require("../middleware/multer");
  *     responses:
  *       200:
  */
+router.post("/update", multer.single("file"), token, project.update);
 router.post("/create", multer.single("file"), token, project.create);
 router.post("/media", multer.single("file"), token, project.media);
 router.get("/get", token, project.get);

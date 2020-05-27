@@ -6,7 +6,7 @@ import "./style.scss";
 import axios from "axios";
 const CreateProject = () => {
   const upload = useRef(null);
-  const [data, setData] = useState({ nonprofit: true });
+  const [data, setData] = useState({ nonprofit: false });
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
   const [category, setCategory] = useState(null);
@@ -83,6 +83,7 @@ const CreateProject = () => {
                     type="select"
                     name="category"
                     className="input-round"
+                    defaultValue={data.category}
                     onChange={(e) => {
                       setData({ ...data, [e.target.name]: e.target.value });
                     }}
@@ -114,7 +115,7 @@ const CreateProject = () => {
                         <Input
                           type="radio"
                           name="nonprofit"
-                          defaultChecked={true}
+                          defaultChecked={!data.nonprofit}
                           onClick={() => {
                             setData({ ...data, nonprofit: false });
                           }}
@@ -127,6 +128,7 @@ const CreateProject = () => {
                         <Input
                           type="radio"
                           name="nonprofit"
+                          defaultChecked={data.nonprofit}
                           onClick={() => {
                             setData({ ...data, nonprofit: true });
                           }}

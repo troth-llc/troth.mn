@@ -109,3 +109,10 @@
   max-width: 380px;
   margin: 0 auto;
 }
+p {
+  word-break: break-all;
+  white-space: normal;
+}
+.edit-button {
+  margin-bottom: 72px;
+}

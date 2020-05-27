@@ -120,3 +120,56 @@ exports.view = (req, res) => {
       });
   }
 };
+exports.update = (req, res) => {
+  const {
+    title,
+    amount,
+    nonprofit,
+    category,
+    content,
+    _id,
+    cover: current_cover,
+  } = req.body;
+  const { file } = req;
+  if (!file) {
+    Project.findByIdAndUpdate(_id, {
+      title,
+      amount: parseInt(amount),
+      category,
+      nonprofit,
+      content,
+      cover: current_cover,
+      updated: new Date(),
+      rejected: false,
+    }).then(() => {
+      return res.json({ status: true });
+    });
+  } else {
+    const blob = bucket.file(
+      "img/" +
+        hash() +
+        "." +
+        req.file.originalname.split(".").pop().toLowerCase()
+    );
+    const blobStream = blob.createWriteStream();
+    blobStream.on("error", (err) => {
+      console.log(err);
+    });
+    blobStream.on("finish", async () => {
+      const cover = `https://cdn.troth.mn/${blob.name}`;
+      Project.findByIdAndUpdate(_id, {
+        title,
+        amount: parseInt(amount),
+        category,
+        nonprofit,
+        content,
+        cover,
+        updated: new Date(),
+        rejected: false,
+      }).then(() => {
+        return res.json({ status: true });
+      });
+    });
+    blobStream.end(req.file.buffer);
+  }
+};
