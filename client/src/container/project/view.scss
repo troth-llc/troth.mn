@@ -2,6 +2,11 @@
   hr {
     margin: 10px 0;
   }
+  .yt-iframe {
+    position: absolute;
+    top: 0;
+    height: 100%;
+  }
   .project-view-header {
     .view-background {
       border-radius: 0.25rem;
@@ -93,6 +98,10 @@
       max-width: 490px;
       max-height: 490px;
     }
+    p {
+      word-break: break-all;
+      white-space: normal;
+    }
   }
 }
 .default-button {
@@ -109,10 +118,10 @@
   max-width: 380px;
   margin: 0 auto;
 }
-p {
-  word-break: break-all;
-  white-space: normal;
-}
+
 .edit-button {
   margin-bottom: 72px;
+}
+.yt-iframe {
+  width: 100%;
 }

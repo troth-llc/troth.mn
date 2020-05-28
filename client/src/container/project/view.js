@@ -27,10 +27,21 @@ const ProjectView = (props) => {
           <div className="project-view">
             <div className="project-view-header">
               <div className="view-background">
-                <div
-                  className="image"
-                  style={{ backgroundImage: `url(${state.cover})` }}
-                />
+                {state.video ? (
+                  <iframe
+                    src={state.video}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title="youtube player"
+                    className="yt-iframe"
+                  />
+                ) : (
+                  <div
+                    className="image"
+                    style={{ backgroundImage: `url(${state.cover})` }}
+                  />
+                )}
               </div>
             </div>
             <header className="campaign-header">

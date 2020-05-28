@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FormGroup, Input, FormFeedback, Label, Button } from "reactstrap";
+import {
+  FormGroup,
+  Input,
+  FormFeedback,
+  Label,
+  Button,
+  Modal,
+  ModalBody,
+} from "reactstrap";
 // import { Link } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import "./style.scss";
@@ -12,6 +20,8 @@ const CreateProject = () => {
   const [category, setCategory] = useState(null);
   const [step, setStep] = useState(1);
   const [preview, setPreview] = useState(null);
+  const [modal, setModal] = useState(false);
+  const [video, setVideo] = useState(null);
   useEffect(() => {
     axios.get("/api/project/category").then((res) => {
       setCategory(res.data.result);
@@ -26,12 +36,14 @@ const CreateProject = () => {
           {
             1: (
               <div className="medium-10">
-                <h5 className="text-center pt-2 project-title">New Campaign</h5>
+                <h5 className="text-center pt-2 project-title">
+                  Шинэ төсөл үүсгэх
+                </h5>
                 <FormGroup>
                   <Input
                     type="text"
                     name="amount"
-                    placeholder="Amount"
+                    placeholder="Төсөлд шаардагдах мөнгөн дүн"
                     className="input-round"
                     required={true}
                     defaultValue={data.amount}
@@ -45,8 +57,7 @@ const CreateProject = () => {
                         disable(true);
                         setError({
                           ...error,
-                          amount:
-                            "Please enter a valid goal amount for your campaign.",
+                          amount: "Төслийнхөө үнийн дүнг зөв оруулна уу.",
                         });
                       } else disable(false);
                       setData({
@@ -65,7 +76,7 @@ const CreateProject = () => {
                   <Input
                     type="text"
                     name="title"
-                    placeholder="Title"
+                    placeholder="Төслийн нэр"
                     className="input-round"
                     defaultValue={data.title}
                     maxLength="50"
@@ -89,7 +100,7 @@ const CreateProject = () => {
                     }}
                   >
                     <option value="-1" disabled>
-                      Choose a category
+                      Төслийн төрөл
                     </option>
                     {category ? (
                       category.map((cat) => {
@@ -108,7 +119,9 @@ const CreateProject = () => {
                   </Input>
                 </FormGroup>
                 <div className="mb-3">
-                  <h5>Who are you raising money for?</h5>
+                  <h5 className="project-profit">
+                    Та цуглуулсан хөрөнгөө хэнд зориулах вэ?
+                  </h5>
                   <div>
                     <FormGroup check>
                       <Label check>
@@ -120,7 +133,7 @@ const CreateProject = () => {
                             setData({ ...data, nonprofit: false });
                           }}
                         />{" "}
-                        Myself or someone else
+                        Өөртөө болон бусад хүмүүст
                       </Label>
                     </FormGroup>
                     <FormGroup check>
@@ -133,7 +146,7 @@ const CreateProject = () => {
                             setData({ ...data, nonprofit: true });
                           }}
                         />{" "}
-                        Nonprofit
+                        Ашгийн бус
                       </Label>
                     </FormGroup>
                   </div>
@@ -160,13 +173,12 @@ const CreateProject = () => {
                       )
                         setError({
                           ...error,
-                          amount:
-                            "Please enter a valid goal amount for your campaign.",
+                          amount: "Төслийнхөө үнийн дүнг зөв оруулна уу",
                         });
                       else if (!data.title)
                         setError({
                           ...error,
-                          title: "Please enter a title for your campaign.",
+                          title: "`Төслийн нэрээ оруулна уу.`",
                         });
                       else setStep(2);
                     }}
@@ -179,7 +191,7 @@ const CreateProject = () => {
             2: (
               <div className="medium-10">
                 <h5 className="text-center pt-2 project-title">
-                  Upload Campaign photo
+                  Төслийн зураг
                 </h5>
                 {preview ? (
                   <>
@@ -202,16 +214,28 @@ const CreateProject = () => {
                       className="btn btn-link pl-0"
                       onClick={() => setPreview(null)}
                     >
-                      Remove photo
+                      Remove
                     </button>
                   </>
                 ) : (
-                  <div
-                    className="project-cover"
-                    onClick={() => upload.current.click()}
-                  >
-                    <span className="material-icons">add_a_photo</span>
-                  </div>
+                  <>
+                    <Button
+                      color="primary"
+                      block
+                      className="project-create-btn mt-3"
+                      onClick={() => upload.current.click()}
+                    >
+                      Зураг байршуулах
+                    </Button>
+                    <Button
+                      color="secondary"
+                      block
+                      className="project-create-btn mt-3"
+                      onClick={() => setModal(true)}
+                    >
+                      Youtube бичлэг холбох
+                    </Button>
+                  </>
                 )}
                 <div
                   className={`invalid-feedback ${error.cover ? "d-block" : ""}`}
@@ -219,18 +243,20 @@ const CreateProject = () => {
                   {error.cover}
                 </div>
                 <div className="project-action mb-3">
-                  <Button
-                    color="primary"
-                    block
-                    className="project-create-btn mt-3"
-                    onClick={() => {
-                      if (!preview)
-                        setError({ ...error, cover: "Image required" });
-                      else setStep(3);
-                    }}
-                  >
-                    Next
-                  </Button>
+                  {preview ? (
+                    <Button
+                      color="primary"
+                      block
+                      className="project-create-btn mt-3"
+                      onClick={() => {
+                        if (!preview)
+                          setError({ ...error, cover: "Image required" });
+                        else setStep(3);
+                      }}
+                    >
+                      Next
+                    </Button>
+                  ) : null}
                   <button
                     className="btn btn-link mt-2 w-100"
                     onClick={() => setStep(1)}
@@ -243,7 +269,7 @@ const CreateProject = () => {
             3: (
               <div className="medium-10">
                 <h5 className="pt-2 pb-2 text-center project-title">
-                  Tell your story
+                  Төслийн дэлгэрэнгүй
                 </h5>
                 <Editor
                   initialValue=""
@@ -308,7 +334,8 @@ const CreateProject = () => {
                         disable(true);
                         const { current } = upload;
                         const save = new FormData();
-                        save.append("file", current.files[0]);
+                        if (video) save.append("video", video);
+                        else save.append("file", current.files[0]);
                         save.append("title", data.title);
                         save.append("amount", data.amount);
                         save.append("content", data.content);
@@ -367,6 +394,85 @@ const CreateProject = () => {
           accept="image/x-png,image/jpeg"
         />
       </div>
+      <Modal
+        isOpen={modal}
+        className="youtube-modal create-project"
+        fade={false}
+      >
+        <ModalBody>
+          <h5 className="text-center">Youtube дэх бичлэг нэмэх</h5>
+          <FormGroup className="mt-3">
+            <Input
+              type="url"
+              name="video"
+              placeholder="Youtube дэх бичлэгийн холбоос"
+              className="input-round"
+              defaultValue={data.video}
+              required={true}
+              onChange={(e) => {
+                setVideo(null);
+                setError({});
+                setData({ ...data, [e.target.name]: e.target.value });
+              }}
+              invalid={error.video ? true : false}
+              autoComplete="off"
+            />
+            <FormFeedback>{error.video}</FormFeedback>
+          </FormGroup>
+          {video ? (
+            <>
+              <iframe
+                src={"https://www.youtube.com/embed/" + video}
+                frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="youtube player"
+                className="yt-iframe"
+              />
+              <Button
+                color="primary"
+                block
+                className="project-create-btn mt-3"
+                onClick={() => {
+                  setModal(false);
+                  setStep(3);
+                }}
+              >
+                Save
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                color="primary"
+                block
+                className="project-create-btn mt-3"
+                onClick={() => {
+                  var youtube = (url) => {
+                    var match = url.match(
+                      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/
+                    );
+                    return match && match[2].length == 11 ? match[2] : false;
+                  };
+                  if (youtube(data.video)) {
+                    setVideo(youtube(data.video));
+                  } else setError({ ...error, video: "Алдаатай холбоос" });
+                }}
+              >
+                Next
+              </Button>
+            </>
+          )}
+
+          <p className="text-muted f-13 mt-3">
+            Хэрвээ та утаснаасаа бичлэг оруулахыг хүсч байвал эхлээд уг бичлэгээ
+            Youtube-д байршуулсан байх шаардлагатай.
+          </p>
+          <Button color="link" block onClick={() => setModal(false)}>
+            Back
+          </Button>
+        </ModalBody>
+      </Modal>
     </div>
   );
 };

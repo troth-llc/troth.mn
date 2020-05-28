@@ -21,6 +21,21 @@
     margin-bottom: 0.625rem;
   }
   .project-create-btn {
+    max-width: 380px;
+    margin: 0 auto;
+    &.btn-secondary {
+      background: transparent;
+      color: #fa6c51;
+      font-weight: 500;
+      border: 1px solid #fa6c51;
+      &:hover,
+      &:focus,
+      &:active {
+        background: #eaeaea !important;
+        color: #fa6c51 !important;
+        border: 1px solid #fa6c51 !important;
+      }
+    }
     border-radius: 10px;
     min-height: 48px;
     font-size: 18px;
@@ -167,4 +182,21 @@
 }
 .create {
   margin-top: 10px;
+}
+.project-profit {
+  font-size: 16px;
+}
+.youtube-modal {
+  margin: 0;
+  max-width: unset;
+  height: 100%;
+  width: 100%;
+  .modal-dialog {
+    height: 100%;
+  }
+  .modal-content {
+    border: none;
+    height: 100%;
+    border-radius: 0;
+  }
 }

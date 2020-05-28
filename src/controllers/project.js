@@ -21,14 +21,28 @@ exports.category = (req, res) => {
   });
 };
 exports.create = (req, res) => {
-  const { title, amount, nonprofit, category, content } = req.body;
+  const { title, amount, nonprofit, category, content, video } = req.body;
   const { file } = req;
-  if (!file)
+  if (!file && !video)
     return res.json({
       status: false,
       msg: "No file uploaded.",
     });
-  else {
+  else if (video) {
+    const cover = `https://img.youtube.com/vi/${video}/sddefault.jpg`;
+    Project.create({
+      title,
+      amount: parseInt(amount),
+      category,
+      nonprofit,
+      content,
+      cover,
+      video: `https://www.youtube.com/embed/${video}`,
+      owner: req.user.id,
+    }).then(() => {
+      return res.json({ status: true });
+    });
+  } else {
     const blob = bucket.file(
       "img/" +
         hash() +
@@ -128,17 +142,20 @@ exports.update = (req, res) => {
     category,
     content,
     _id,
+    video,
     cover: current_cover,
   } = req.body;
   const { file } = req;
   if (!file) {
+    const yt_cover = `https://img.youtube.com/vi/${video}/sddefault.jpg`;
     Project.findByIdAndUpdate(_id, {
       title,
       amount: parseInt(amount),
       category,
       nonprofit,
       content,
-      cover: current_cover,
+      cover: yt_cover,
+      video: `https://www.youtube.com/embed/${video}`,
       updated: new Date(),
       rejected: false,
     }).then(() => {
@@ -164,6 +181,7 @@ exports.update = (req, res) => {
         nonprofit,
         content,
         cover,
+        video: null,
         updated: new Date(),
         rejected: false,
       }).then(() => {
