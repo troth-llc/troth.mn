@@ -13,9 +13,11 @@ const hash = () => {
 exports.category = (req, res) => {
   Category.find().then((result) => {
     var promises = result.map((category) => {
-      return Project.find({ category: category._id }).then((result) => {
-        return { category, count: result.length };
-      });
+      return Project.find({ category: category._id, status: true }).then(
+        (result) => {
+          return { category, count: result.length };
+        }
+      );
     });
     Promise.all(promises).then((result) => res.json({ result }));
   });
@@ -154,8 +156,8 @@ exports.update = (req, res) => {
       category,
       nonprofit,
       content,
-      cover: yt_cover,
-      video: `https://www.youtube.com/embed/${video}`,
+      cover: !video && current_cover ? current_cover : yt_cover,
+      video: video ? `https://www.youtube.com/embed/${video}` : null,
       updated: new Date(),
       rejected: false,
     }).then(() => {
