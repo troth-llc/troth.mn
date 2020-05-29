@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import dompurify from "dompurify";
 import axios from "axios";
 import { Spinner, Progress } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -8,6 +9,7 @@ import { User } from "context/user";
 const ProjectView = (props) => {
   const [state, setState] = useState(null);
   const { user } = useContext(User);
+  const sanitizer = dompurify.sanitize;
   useEffect(() => {
     axios.get("/api/project/view/" + props.match.params.id).then((res) => {
       if (res.data.result) {
@@ -92,7 +94,7 @@ const ProjectView = (props) => {
             {/* campaign detail */}
             <div
               className="campaign-content mt-3"
-              dangerouslySetInnerHTML={{ __html: state.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizer(state.content) }}
             />
           </div>
           {user ? (

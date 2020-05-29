@@ -97,8 +97,8 @@ const Profile = () => {
                   </NavLink>
                 </Col>
                 <Col className="divider-nav">
-                  <NavLink to="/profile/saved" className="home-link">
-                    Saved
+                  <NavLink to="/profile/funded" className="home-link">
+                    Funded
                   </NavLink>
                 </Col>
               </Row>
