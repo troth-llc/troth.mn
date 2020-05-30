@@ -11,6 +11,8 @@ import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import axios from "axios";
 const Register = () => {
+  var params = new URLSearchParams(window.location.search.slice(1));
+  const next = params.get("next");
   const [data, setData] = useState({});
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
@@ -36,7 +38,7 @@ const Register = () => {
                   domain: `${dev ? window.location.hostname : ".troth.mn"}`,
                   secure: dev ? false : true,
                 });
-                window.location.href = "/";
+                window.location.href = next ? next : "/";
               } else if (status === false)
                 setError({ status: "Server unavailable, Try again later" });
               else {
@@ -121,7 +123,7 @@ const Register = () => {
             <div className="invalid-feedback d-block">{error.status}</div>
             <div className="no-account">
               Already a member?
-              <Link to="/auth">Sign in</Link>
+              <Link to={next ? `/auth?next=${next}` : "/auth"}>Sign in</Link>
             </div>
             <div className="legal">
               By continuing, you agree to TROTH's{" "}

@@ -4,7 +4,9 @@ import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./style.scss";
-const Login = () => {
+const Login = (props) => {
+  var params = new URLSearchParams(window.location.search.slice(1));
+  const next = params.get("next");
   const [data, setData] = useState({});
   const [error, setError] = useState({});
   const [disabled, disable] = useState(false);
@@ -29,7 +31,7 @@ const Login = () => {
                   domain: `${dev ? window.location.hostname : ".troth.mn"}`,
                   secure: dev ? false : true,
                 });
-                window.location.href = "/";
+                window.location.href = next ? next : "/";
               } else if (status === false)
                 setError({ status: "Server unavailable, Try again later" });
               else {
@@ -79,7 +81,11 @@ const Login = () => {
             </Button>
             <div className="no-account">
               No account?
-              <Link to="/auth/register">Sign up</Link>
+              <Link
+                to={next ? `/auth/register?next=${next}` : "/auth/register"}
+              >
+                Sign up
+              </Link>
             </div>
             <div className="invalid-feedback d-block">{error.status}</div>
           </div>

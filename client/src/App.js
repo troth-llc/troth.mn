@@ -39,7 +39,11 @@ const App = () => {
     <Route
       {...rest}
       render={(props) =>
-        cookie ? <Component {...props} /> : <Redirect to="/auth" />
+        cookie ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={`/auth?next=${encodeURI(rest.path)}`} />
+        )
       }
     />
   );
