@@ -448,11 +448,11 @@ const CreateProject = () => {
                 block
                 className="project-create-btn mt-3"
                 onClick={() => {
-                  var youtube = (url) => {
+                  const youtube = (url) => {
                     var match = url.match(
-                      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/
+                      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=|\?v=)([^#]*).*/
                     );
-                    return match && match[2].length == 11 ? match[2] : false;
+                    return match && match[2].length === 11 ? match[2] : false;
                   };
                   if (youtube(data.video)) {
                     setVideo(youtube(data.video));

@@ -15,9 +15,9 @@ import axios from "axios";
 const ProjectEdit = (props) => {
   const youtube = (url) => {
     var match = url.match(
-      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=|\?v=)([^#]*).*/
     );
-    return match && match[2].length == 11 ? match[2] : false;
+    return match && match[2].length === 11 ? match[2] : false;
   };
   const upload = useRef(null);
   const [data, setData] = useState(null);
