@@ -99,7 +99,7 @@ exports.media = (req, res) => {
 };
 exports.get = (req, res) => {
   Project.find({ owner: req.user.id })
-    .select("-__v rejected")
+    .select("-__v -rejected")
     .then((result) => res.json({ result }))
     .catch((err) => res.json({ status: false }));
 };
@@ -121,7 +121,12 @@ exports.view = (req, res) => {
       })
       .populate("category", "name")
       .exec((error, result) => {
-        if (error) return res.json({ status: false, msg: "project not found" });
+        if (error)
+          return res.json({
+            status: false,
+            msg: "project not found",
+            result: [],
+          });
         else return res.json({ result });
       });
   } else {
@@ -132,7 +137,12 @@ exports.view = (req, res) => {
       })
       .populate("category", "name")
       .exec((error, result) => {
-        if (error) return res.json({ status: false, msg: "project not found" });
+        if (error)
+          return res.json({
+            status: false,
+            msg: "project not found",
+            result: [],
+          });
         else return res.json({ result });
       });
   }
@@ -204,6 +214,7 @@ exports.browse = (req, res) => {
   category
     .then((cat) => {
       Project.find({ category: id, status: true })
+        .select("-__v -rejected")
         .populate({
           path: "owner",
           select: "name username avatar",
