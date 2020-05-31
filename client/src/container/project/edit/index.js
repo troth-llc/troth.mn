@@ -10,7 +10,7 @@ import {
   ModalBody,
 } from "reactstrap";
 import { Editor } from "@tinymce/tinymce-react";
-import "./style.scss";
+import "../style.scss";
 import axios from "axios";
 const ProjectEdit = (props) => {
   const youtube = (url) => {

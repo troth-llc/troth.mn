@@ -10,7 +10,7 @@ exports.find = function (req, res) {
   }
   User.findOne({ username })
     .select(
-      "username avatar verified type badges projects name following followers"
+      "username avatar verified type badges projects name following followers about website"
     )
     .then((user) => {
       if (user) {

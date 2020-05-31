@@ -99,6 +99,7 @@ exports.media = (req, res) => {
 };
 exports.get = (req, res) => {
   Project.find({ owner: req.user.id })
+    .select("-__v rejected")
     .then((result) => res.json({ result }))
     .catch((err) => res.json({ status: false }));
 };
@@ -192,4 +193,27 @@ exports.update = (req, res) => {
     });
     blobStream.end(req.file.buffer);
   }
+};
+exports.browse = (req, res) => {
+  const { id } = req.params;
+  var category = new Promise((resolve, reject) => {
+    return Category.findById(id)
+      .then((result) => resolve(result.name))
+      .catch((err) => reject(err));
+  });
+  category
+    .then((cat) => {
+      Project.find({ category: id, status: true })
+        .populate({
+          path: "owner",
+          select: "name username avatar",
+        })
+        .populate("category", "name")
+        .exec((error, result) => {
+          if (error)
+            return res.json({ status: false, msg: "project not found" });
+          else return res.json({ result, category: cat });
+        });
+    })
+    .catch((err) => res.json({ result: [], status: false }));
 };

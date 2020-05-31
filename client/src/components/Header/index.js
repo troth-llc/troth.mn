@@ -64,7 +64,16 @@ const Header = () => {
                 <div className="drawer-profile d-flex flex-row">
                   {user ? (
                     <>
-                      <div className="drawer-avatar">T</div>
+                      <div className="drawer-avatar">
+                        {user.avatar ? (
+                          <div
+                            className="header-avatar-picture"
+                            style={{ backgroundImage: `url(${user.avatar})` }}
+                          />
+                        ) : (
+                          user.username.charAt(0).toUpperCase()
+                        )}
+                      </div>
                       <div className="drawer-user-info">
                         <div className="user-name">{user.name}</div>
                         <div className="user-type">{user.type}</div>
@@ -113,7 +122,7 @@ const Header = () => {
               <p className="text-muted text-center mb-0 f-12">
                 &copy; {new Date().getFullYear()} TROTH
                 <br />
-                Beta v0.8.7
+                Beta v0.8.8
               </p>
             </div>
           </div>

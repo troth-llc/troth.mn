@@ -18,4 +18,5 @@ router.get("/get", token, project.get);
 router.get("/get/:id", project.get_user);
 router.get("/view/:id", project.view);
 router.get("/category", project.category);
+router.get("/category/:id", project.browse);
 module.exports = router;

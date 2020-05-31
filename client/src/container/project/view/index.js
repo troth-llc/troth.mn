@@ -64,33 +64,41 @@ const ProjectView = (props) => {
               </h2>
             </div>
             {/* owner information */}
-            <hr />
+
             <div>
-              <div className="row">
-                <div className="col-2">
-                  <div className="owner-avatar-container">
-                    {state.owner.avatar ? (
-                      <div
-                        className="owner-avatar"
-                        style={{
-                          backgroundImage: `url(${state.owner.avatar})`,
-                        }}
-                      />
-                    ) : (
-                      <div className="owner-avatar-preview"></div>
-                    )}
-                  </div>
+              <div className="d-flex flex-row pt-2">
+                <div className="owner-avatar-container">
+                  {state.owner.avatar ? (
+                    <div
+                      className="owner-avatar"
+                      style={{
+                        backgroundImage: `url(${state.owner.avatar})`,
+                      }}
+                    />
+                  ) : (
+                    <div className="owner-avatar-preview"></div>
+                  )}
                 </div>
-                <div className="col owner-info">
+
+                <div className="owner-info">
                   <Link to={"/" + state.owner.username}>
                     {state.owner.name}
-                  </Link>
-                  <br />
-                  Created this project • {moment(state.created).fromNow()}
+                  </Link>{" "}
+                  Is organizing this fundraiser.
                 </div>
               </div>
             </div>
-            <hr />
+            <ul className="project-category">
+              <li>Created {moment(state.created).fromNow()}</li>
+              <li>
+                <Link to={"/project/category/" + state.category._id}>
+                  <span className="material-icons material-icons-outlined">
+                    local_offer
+                  </span>{" "}
+                  {state.category.name}
+                </Link>
+              </li>
+            </ul>
             {/* campaign detail */}
             <div
               className="campaign-content mt-3"

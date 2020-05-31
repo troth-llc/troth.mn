@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 // import { Link } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
-import "./style.scss";
+import "../style.scss";
 import axios from "axios";
 const CreateProject = () => {
   const upload = useRef(null);

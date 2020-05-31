@@ -7,6 +7,53 @@
     top: 0;
     height: 100%;
   }
+  .project-category {
+    margin-top: 10px;
+    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    font-size: 1rem !important;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    margin-bottom: 0;
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+    li {
+      align-items: center;
+      display: flex;
+      margin-right: 1rem;
+      .material-icons {
+        font-size: 20px;
+        margin-right: 8px;
+      }
+      &:last-child:before {
+        content: "";
+        border-left: 1px solid;
+        font-size: 1.143em;
+        height: 1em;
+        border-color: #767676;
+        color: #ddd;
+        display: inline-block;
+        margin-right: 1rem;
+      }
+      a {
+        display: flex;
+        vertical-align: middle;
+        align-items: center;
+        height: 24px;
+        color: unset;
+        &:hover,
+        &:focus,
+        &:active {
+          color: gray;
+          text-decoration: none;
+        }
+      }
+    }
+  }
   .project-view-header {
     .view-background {
       border-radius: 0.25rem;
@@ -81,6 +128,7 @@
   }
   .owner-info {
     font-size: 14px;
+    margin-left: 15px;
     a {
       color: #fa6c51;
     }

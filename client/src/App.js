@@ -22,6 +22,7 @@ import {
   Projects,
   ProjectView,
   ProjectEdit,
+  CategoryList,
 } from "container";
 import {
   BrowserRouter as Router,
@@ -124,6 +125,7 @@ const App = () => {
 
             <PrivateRoute path="/project/edit/:id" component={ProjectEdit} />
             <Route path="/project/view/:id" component={ProjectView} />
+            <Route path="/project/category/:id" component={CategoryList} />
             <PrivateRoute path="/project/create" component={ProjectCreate} />
             <PrivateRoute path="/project" component={Projects} />
             {/* Other */}

@@ -11,10 +11,11 @@ import Email from "./auth/verify";
 import Find from "./profile/find";
 import Info from "./settings";
 import Notification from "./notification/index";
-import ProjectCreate from "./project/create";
-import Projects from "./project";
-import ProjectView from "./project/view";
-import ProjectEdit from "./project/edit";
+import ProjectCreate from "./project/create/index";
+import Projects from "./project/index";
+import ProjectView from "./project/view/index";
+import ProjectEdit from "./project/edit/index";
+import CategoryList from "./project/category/index";
 export {
   Home,
   Search,
@@ -33,4 +34,5 @@ export {
   Projects,
   ProjectView,
   ProjectEdit,
+  CategoryList,
 };
