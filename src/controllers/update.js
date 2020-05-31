@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const key = require("../../config.json");
 const { bucket } = require("../middleware/multer");
 const crypto = require("crypto");
+const sharp = require("sharp");
 const hash = () => {
   return crypto
     .createHash("sha1")
@@ -140,7 +141,13 @@ exports.avatar = function (req, res) {
         });
       });
     });
-    blobStream.end(req.file.buffer);
+    sharp(Buffer.from(req.file.buffer))
+      .resize(320)
+      .toBuffer()
+      .then((data) => {
+        blobStream.end(data);
+      })
+      .catch((err) => console.log(err));
   }
 };
 exports.email = function (req, res) {

@@ -182,6 +182,7 @@
 }
 .create {
   margin-top: 10px;
+  margin-bottom: 75px;
 }
 .project-profit {
   font-size: 16px;
@@ -198,5 +199,14 @@
     border: none;
     height: 100%;
     border-radius: 0;
+  }
+}
+.verify-email {
+  a {
+    color: #fa6c51;
+    font-size: 12px;
+  }
+  span.material-icons {
+    font-size: 36px;
   }
 }

@@ -47,7 +47,7 @@ const Find = (props) => {
         <>
           {you ? you._id === user._id && <Redirect to="/profile" /> : null}
           <div className="profile">
-            <div className="d-flex container p-0">
+            <div className="d-flex container p-0 position-relative">
               <div className="profile-avatar">
                 {user.avatar ? (
                   <div

@@ -4,6 +4,7 @@ const User = require("../models/user");
 const { bucket } = require("../middleware/multer");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const sharp = require("sharp");
 const hash = () => {
   return crypto
     .createHash("sha1")
@@ -69,7 +70,13 @@ exports.create = (req, res) => {
         return res.json({ status: true });
       });
     });
-    blobStream.end(req.file.buffer);
+    sharp(Buffer.from(req.file.buffer))
+      .resize({ width: 720, height: 405 })
+      .toBuffer()
+      .then((data) => {
+        blobStream.end(data);
+      })
+      .catch((err) => console.log(err));
   }
 };
 exports.media = (req, res) => {
@@ -201,7 +208,13 @@ exports.update = (req, res) => {
         return res.json({ status: true });
       });
     });
-    blobStream.end(req.file.buffer);
+    sharp(Buffer.from(req.file.buffer))
+      .resize({ width: 1280, height: 720 })
+      .toBuffer()
+      .then((data) => {
+        blobStream.end(data);
+      })
+      .catch((err) => console.log(err));
   }
 };
 exports.browse = (req, res) => {

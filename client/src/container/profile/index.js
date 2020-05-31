@@ -34,7 +34,7 @@ const Profile = () => {
       {user ? (
         <>
           <div className="profile">
-            <div className="d-flex container p-0">
+            <div className="d-flex container p-0 position-relative">
               <div className="profile-avatar" onClick={toggle}>
                 {user.avatar ? (
                   <div
