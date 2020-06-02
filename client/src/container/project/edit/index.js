@@ -9,10 +9,12 @@ import {
   Modal,
   ModalBody,
 } from "reactstrap";
+import dompurify from "dompurify";
 import { Editor } from "@tinymce/tinymce-react";
 import "../style.scss";
 import axios from "axios";
 const ProjectEdit = (props) => {
+  const sanitizer = dompurify.sanitize;
   const youtube = (url) => {
     var match = url.match(
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=|\?v=)([^#]*).*/
@@ -330,7 +332,7 @@ const ProjectEdit = (props) => {
                   Төслийн дэлгэрэнгүй
                 </h5>
                 <Editor
-                  initialValue={data.content}
+                  initialValue={sanitizer(data.content)}
                   apiKey="xqa5rr4g470438lnpu55qo75efenradbjmxtn02addc6utwr"
                   init={{
                     height: 300,
