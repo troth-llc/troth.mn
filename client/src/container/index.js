@@ -16,6 +16,7 @@ import Projects from "./project/index";
 import ProjectView from "./project/view/index";
 import ProjectEdit from "./project/edit/index";
 import CategoryList from "./project/category/index";
+import CapstonePremium from "./capstone/premium";
 export {
   Home,
   Search,
@@ -35,4 +36,5 @@ export {
   ProjectView,
   ProjectEdit,
   CategoryList,
+  CapstonePremium,
 };

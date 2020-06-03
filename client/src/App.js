@@ -23,6 +23,7 @@ import {
   ProjectView,
   ProjectEdit,
   CategoryList,
+  CapstonePremium,
 } from "container";
 import {
   BrowserRouter as Router,
@@ -122,12 +123,17 @@ const App = () => {
             <Route exact path="/auth/email/:token" component={Email} />
             <Route path="/auth/register" component={Register} />
             {/* Project */}
-
             <PrivateRoute path="/project/edit/:id" component={ProjectEdit} />
             <Route path="/project/view/:id" component={ProjectView} />
             <Route path="/project/category/:id" component={CategoryList} />
             <PrivateRoute path="/project/create" component={ProjectCreate} />
             <PrivateRoute path="/project" component={Projects} />
+            {/* capstone */}
+            <PrivateRoute
+              path="/capstone/premium"
+              exact
+              component={CapstonePremium}
+            />
             {/* Other */}
             <Route path="/:username" component={Find} />
             <Route path="*">

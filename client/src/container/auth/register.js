@@ -75,7 +75,10 @@ const Register = () => {
               placeholder="Username"
               className="input-round"
               onChange={(e) =>
-                setData({ ...data, [e.target.name]: e.target.value })
+                setData({
+                  ...data,
+                  [e.target.name]: e.target.value.toLowerCase(),
+                })
               }
               invalid={error.username ? true : false}
               autoComplete="off"
