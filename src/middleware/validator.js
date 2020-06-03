@@ -12,6 +12,10 @@ const usernames = [
   "password",
   "troth",
   "follow",
+  "auth",
+  "capstone",
+  "project",
+  "notifications",
 ];
 exports.create = [
   check("email").isEmail(),
