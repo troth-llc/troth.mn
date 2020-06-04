@@ -13,5 +13,6 @@ const xmlparser = require("express-xml-bodyparser");
  *       200:
  */
 router.get("/", token, invoice.index);
-router.post("/hook", xmlparser({ strict: false }), invoice.hook);
+router.post("/hook", xmlparser({ strict: false }), invoice.premium_hook);
+router.post("/premium", token, invoice.premium);
 module.exports = router;
