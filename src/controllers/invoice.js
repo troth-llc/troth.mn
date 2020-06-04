@@ -1,7 +1,39 @@
 const Invoice = require("../models/invoice");
 const User = require("../models/user");
-const request = require("request");
 const axios = require("axios");
+const nodemailer = require("nodemailer");
+const key = require("../../config.json");
+// email config
+const send = async (to, subject, html) => {
+  return new Promise(async (resolve, reject) => {
+    var transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        type: "OAuth2",
+        user: process.env.GMAIL,
+        serviceClient: key.client_id,
+        privateKey: key.private_key,
+      },
+    });
+    try {
+      await transporter.verify();
+      var result = await transporter.sendMail({
+        from: `TROTH LLC ${process.env.GMAIL}`,
+        to,
+        subject,
+        html,
+      });
+      if (result.accepted.length > 0) {
+        resolve(true);
+      }
+    } catch (err) {
+      reject(err);
+      resolve(false);
+    }
+  });
+};
 exports.index = (req, res) => {
   return res.json({ status: true });
 };
@@ -80,8 +112,21 @@ exports.premium_hook = (req, res) => {
     if (parseInt(rettype) === 0) {
       User.findOneAndUpdate({ _id: save.bill_id }, { type: "premium" })
         .then((data) => {
+          send(
+            data.email,
+            "Thank you for your purchase",
+            `Dear <strong>${data.name}</strong>,
+            <br/>
+          <p>We are happy to announce that you’re confirmed as a Troth Premium member. Our journey starts now.</p>
+          <p>Let’s make our dream project a reality.</p>
+          <p>Best regards, <br/>
+          <strong>Troth LLC</strong></p>
+          </br>
+          <pre>https://capstone.troth.mn</pre>
+          `
+          );
           console.log(
-            "user " + data.name + " bought premium status" + new Date()
+            "user " + data.name + " bought premium status " + new Date()
           );
         })
         .catch((err) => console.log(err));
