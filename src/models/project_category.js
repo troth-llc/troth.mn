@@ -8,7 +8,7 @@ const project_categorySchema = new Schema({
   },
   created: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 const project_category = mongoose.model(

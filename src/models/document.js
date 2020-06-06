@@ -22,7 +22,7 @@ const documentSchema = new Schema({
   },
   created: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 const document = mongoose.model("document", documentSchema);

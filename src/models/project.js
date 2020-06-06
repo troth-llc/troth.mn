@@ -42,11 +42,11 @@ const projectSchema = new Schema({
   },
   updated: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
   created: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 const project = mongoose.model("project", projectSchema);

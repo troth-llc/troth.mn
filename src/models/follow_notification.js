@@ -9,7 +9,7 @@ const notificationSchema = new Schema({
   },
   created: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 });
 const notification = mongoose.model("follow_notification", notificationSchema);
