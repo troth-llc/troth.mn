@@ -48,3 +48,18 @@
 .f-13 {
   font-size: 13px;
 }
+/* editor */
+@media (min-width: 651px) {
+  .codex-editor--narrow .codex-editor__redactor {
+    width: 100%;
+  }
+}
+@media (max-width: 650px) {
+  .ce-toolbar__content {
+    max-width: calc(100% - 35px);
+    flex: 1;
+  }
+}
+.fs-16 {
+  font-size: 16px;
+}

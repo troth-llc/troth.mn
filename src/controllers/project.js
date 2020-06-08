@@ -99,7 +99,7 @@ exports.media = (req, res) => {
     });
     blobStream.on("finish", async () => {
       const src = `https://cdn.troth.mn/${blob.name}`;
-      return res.json({ status: true, src });
+      return res.json({ success: 1, file: { url: src } });
     });
     blobStream.end(req.file.buffer);
   }

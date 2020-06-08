@@ -10,7 +10,15 @@ import {
 } from "reactstrap";
 import { User } from "context/user";
 import { Link } from "react-router-dom";
-import { Editor } from "@tinymce/tinymce-react";
+// editor
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import ImageTool from "@editorjs/image";
+import CodeTool from "@editorjs/code";
+import Embed from "@editorjs/embed";
+import List from "@editorjs/list";
+import Marker from "@editorjs/marker";
+import LinkTool from "@editorjs/link";
 import "../style.scss";
 import axios from "axios";
 const CreateProject = () => {
@@ -29,8 +37,138 @@ const CreateProject = () => {
       setCategory(res.data.result);
       setData({ ...data, category: res.data.result[0].category._id });
     });
+    return () => {
+      setCategory(null);
+      setData({ nonprofit: false });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {}, [user]);
+  const Editor = () => {
+    const [editor, setEditor] = useState(null);
+    useEffect(() => {
+      setEditor(
+        new EditorJS({
+          holder: "editor_js",
+          autofocus: true,
+          tools: {
+            header: {
+              class: Header,
+              inlineToolbar: ["link"],
+              config: {
+                placeholder: "Header",
+              },
+              shortcut: "CMD+SHIFT+H",
+            },
+            image: {
+              class: ImageTool,
+              config: {
+                endpoints: {
+                  byFile: "/api/project/media", // Your backend file uploader endpoint
+                  // byUrl: "http://localhost:8008/fetchUrl", // Your endpoint that provides uploading by Url
+                },
+              },
+            },
+            list: {
+              class: List,
+              inlineToolbar: true,
+              shortcut: "CMD+SHIFT+L",
+            },
+            marker: {
+              inlineToolbar: true,
+              class: Marker,
+              shortcut: "CMD+SHIFT+M",
+            },
+            code: {
+              inlineToolbar: true,
+              class: CodeTool,
+              shortcut: "CMD+SHIFT+C",
+            },
+            linkTool: LinkTool,
+            embed: Embed,
+          },
+          data: data.content,
+          onChange: (e) => {
+            console.log("Now I know that Editor's content changed!", e);
+          },
+        })
+      );
+      return () => {
+        if (editor)
+          editor.isReady.then(() => {
+            editor.destroy();
+          });
+      };
+    }, []);
+    return (
+      <div className="medium-10">
+        <h4 className="text-center fs-16">Төслийн дэлгэрэнгүй</h4>
+        <div id="editor_js"></div>
+        <div className={`invalid-feedback ${error.content ? "d-block" : ""}`}>
+          {error.content}
+        </div>
+        <div className="project-action mb-3">
+          <Button
+            color="primary"
+            block
+            className="project-create-btn mt-3"
+            disabled={disabled}
+            onClick={() => {
+              editor
+                .save()
+                .then((result) => {
+                  setData({ ...data, content: result.blocks });
+                  if (result.blocks.length === 0)
+                    setError({ ...error, content: "Enter your story" });
+                  else {
+                    disable(true);
+                    const { current } = upload;
+                    const save = new FormData();
+                    if (video) save.append("video", video);
+                    else save.append("file", current.files[0]);
+                    save.append("title", data.title);
+                    save.append("amount", data.amount);
+                    save.append("content", data.content);
+                    save.append("nonprofit", data.nonprofit);
+                    save.append("category", data.category);
+                    axios({
+                      method: "post",
+                      url: "/api/project/create",
+                      headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
+                      data: save,
+                    }).then((response) => {
+                      if (response.data.status)
+                        window.location.href = "/project";
+                      else {
+                        let errors = response.data.errors;
+                        errors.map((error) =>
+                          setError({ [error.param]: error.msg })
+                        );
+                        disable(false);
+                      }
+                      disable(false);
+                    });
+                  }
+                })
+                .catch((err) => {
+                  setError({ ...error, content: "Saving error : " + err });
+                });
+            }}
+          >
+            Save
+          </Button>
+          <button
+            className="btn btn-link mt-2 w-100"
+            onClick={() => setStep(2)}
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    );
+  };
   return (
     <div className="project-row p-rem">
       {user && user.email_verified_at ? (
@@ -227,7 +365,12 @@ const CreateProject = () => {
                         color="primary"
                         block
                         className="project-create-btn mt-3"
-                        onClick={() => upload.current.click()}
+                        onClick={() => {
+                          upload.current.value = null;
+                          upload.current.click();
+                          setVideo(null);
+                          setData({ ...data, video: null });
+                        }}
                       >
                         Зураг байршуулах
                       </Button>
@@ -272,108 +415,7 @@ const CreateProject = () => {
                   </div>
                 </div>
               ),
-              3: (
-                <div className="medium-10">
-                  <h5 className="pt-2 pb-2 text-center project-title">
-                    Төслийн дэлгэрэнгүй
-                  </h5>
-                  <Editor
-                    initialValue=""
-                    apiKey="xqa5rr4g470438lnpu55qo75efenradbjmxtn02addc6utwr"
-                    init={{
-                      height: 300,
-                      menubar: false,
-                      initialValue: data.content,
-                      plugins: "image link autoresize importcss paste lists ",
-                      autoresize_bottom_margin: 50,
-                      link_quicklink: true,
-                      paste_merge_formats: false,
-                      image_dimensions: false,
-                      image_description: false,
-                      //
-                      link_title: false,
-                      forced_root_block: "",
-                      target_list: [{ text: "New window", value: "_blank" }],
-                      images_upload_handler: (blobInfo, success, failure) => {
-                        const upload = new FormData();
-                        upload.append(
-                          "file",
-                          blobInfo.blob(),
-                          blobInfo.filename()
-                        );
-                        axios({
-                          method: "post",
-                          url: "/api/project/media",
-                          headers: {
-                            "Content-Type": "multipart/form-data",
-                          },
-                          data: upload,
-                        }).then((response) => {
-                          if (response.data.status) success(response.data.src);
-                          else failure(response.data.msg);
-                        });
-                      },
-                      content_style:
-                        "img { border-radius: 5px; border: 1px solid #ddd; display: block; width: 100%; }",
-                      placeholder: "Explain why you're raising money...",
-                      toolbar: "bold link image numlist bullist",
-                    }}
-                    onEditorChange={(content) => setData({ ...data, content })}
-                  />
-                  <div
-                    className={`invalid-feedback ${
-                      error.content ? "d-block" : ""
-                    }`}
-                  >
-                    {error.content}
-                  </div>
-                  <div className="project-action mb-3">
-                    <Button
-                      color="primary"
-                      block
-                      className="project-create-btn mt-3"
-                      disabled={disabled}
-                      onClick={() => {
-                        if (!data.content)
-                          setError({ ...error, content: "Enter your story" });
-                        else {
-                          disable(true);
-                          const { current } = upload;
-                          const save = new FormData();
-                          if (video) save.append("video", video);
-                          else save.append("file", current.files[0]);
-                          save.append("title", data.title);
-                          save.append("amount", data.amount);
-                          save.append("content", data.content);
-                          save.append("nonprofit", data.nonprofit);
-                          save.append("category", data.category);
-                          axios({
-                            method: "post",
-                            url: "/api/project/create",
-                            headers: {
-                              "Content-Type": "multipart/form-data",
-                            },
-                            data: save,
-                          }).then((response) => {
-                            if (response.data.status)
-                              window.location.href = "/project";
-                            else {
-                              let errors = response.data.errors;
-                              errors.map((error) =>
-                                setError({ [error.param]: error.msg })
-                              );
-                              disable(false);
-                            }
-                            disable(false);
-                          });
-                        }
-                      }}
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </div>
-              ),
+              3: <Editor />,
             }[step]
           }
           <input
@@ -391,7 +433,7 @@ const CreateProject = () => {
                 : setError({ ...error, cover: "Invalid image" });
               if (file && (ext === "png" || ext === "jpeg" || ext === "jpg")) {
                 var reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = (e) => {
                   setPreview(e.target.result);
                 };
                 reader.readAsDataURL(file);

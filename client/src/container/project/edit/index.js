@@ -10,7 +10,6 @@ import {
   ModalBody,
 } from "reactstrap";
 import dompurify from "dompurify";
-import { Editor } from "@tinymce/tinymce-react";
 import "../style.scss";
 import axios from "axios";
 const ProjectEdit = (props) => {
@@ -331,48 +330,7 @@ const ProjectEdit = (props) => {
                 <h5 className="pt-2 pb-2 text-center project-title">
                   Төслийн дэлгэрэнгүй
                 </h5>
-                <Editor
-                  initialValue={sanitizer(data.content)}
-                  apiKey="xqa5rr4g470438lnpu55qo75efenradbjmxtn02addc6utwr"
-                  init={{
-                    height: 300,
-                    menubar: false,
-                    plugins: "image link autoresize importcss paste lists ",
-                    autoresize_bottom_margin: 50,
-                    link_quicklink: true,
-                    paste_merge_formats: false,
-                    image_dimensions: false,
-                    image_description: false,
-                    //
-                    link_title: false,
-                    forced_root_block: "",
-                    target_list: [{ text: "New window", value: "_blank" }],
-                    images_upload_handler: (blobInfo, success, failure) => {
-                      const upload = new FormData();
-                      upload.append(
-                        "file",
-                        blobInfo.blob(),
-                        blobInfo.filename()
-                      );
-                      axios({
-                        method: "post",
-                        url: "/api/project/media",
-                        headers: {
-                          "Content-Type": "multipart/form-data",
-                        },
-                        data: upload,
-                      }).then((response) => {
-                        if (response.data.status) success(response.data.src);
-                        else failure(response.data.msg);
-                      });
-                    },
-                    content_style:
-                      "img { border-radius: 5px; border: 1px solid #ddd; display: block; width: 100%; }",
-                    placeholder: "Explain why you're raising money...",
-                    toolbar: "bold link image numlist bullist",
-                  }}
-                  onEditorChange={(content) => setData({ ...data, content })}
-                />
+
                 <div
                   className={`invalid-feedback ${
                     error.content ? "d-block" : ""

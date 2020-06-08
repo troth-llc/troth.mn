@@ -13,7 +13,7 @@ const { multer } = require("../middleware/multer");
  */
 router.post("/update", multer.single("file"), token, project.update);
 router.post("/create", multer.single("file"), token, project.create);
-router.post("/media", multer.single("file"), token, project.media);
+router.post("/media", multer.single("image"), project.media);
 router.get("/get", token, project.get);
 router.get("/get/:id", project.get_user);
 router.get("/view/:id", project.view);
