@@ -9,11 +9,18 @@ import {
   Modal,
   ModalBody,
 } from "reactstrap";
-import dompurify from "dompurify";
 import "../style.scss";
 import axios from "axios";
+// editor
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import ImageTool from "@editorjs/image";
+import CodeTool from "@editorjs/code";
+import Embed from "@editorjs/embed";
+import List from "@editorjs/list";
+import Marker from "@editorjs/marker";
+import LinkTool from "@editorjs/link";
 const ProjectEdit = (props) => {
-  const sanitizer = dompurify.sanitize;
   const youtube = (url) => {
     var match = url.match(
       /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=|\?v=)([^#]*).*/
@@ -29,6 +36,7 @@ const ProjectEdit = (props) => {
   const [preview, setPreview] = useState(null);
   const [modal, setModal] = useState(false);
   const [video, setVideo] = useState(null);
+  const [editor, setEditor] = useState(null);
   useEffect(() => {
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
@@ -70,6 +78,57 @@ const ProjectEdit = (props) => {
     loadCategory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (step === 3) {
+      try {
+        setEditor(
+          new EditorJS({
+            holder: "editor",
+            autofocus: true,
+            tools: {
+              header: {
+                class: Header,
+                inlineToolbar: ["link"],
+                config: {
+                  placeholder: "Header",
+                },
+                shortcut: "CMD+SHIFT+H",
+              },
+              image: {
+                class: ImageTool,
+                config: {
+                  endpoints: {
+                    byFile: "/api/project/media", //  backend file uploader endpoint
+                    // byUrl: "http://localhost:8008/fetchUrl", //  endpoint that provides uploading by Url
+                  },
+                },
+              },
+              list: {
+                class: List,
+                inlineToolbar: true,
+                shortcut: "CMD+SHIFT+L",
+              },
+              marker: {
+                inlineToolbar: true,
+                class: Marker,
+                shortcut: "CMD+SHIFT+M",
+              },
+              code: {
+                inlineToolbar: true,
+                class: CodeTool,
+                shortcut: "CMD+SHIFT+C",
+              },
+              linkTool: LinkTool,
+              embed: Embed,
+            },
+            data: JSON.parse(data.content),
+          })
+        );
+      } catch (err) {
+        console.log("editor not ready");
+      }
+    }
+  }, [step]);
   useEffect(() => {}, [category, data]);
   return (
     <div className="project-row p-rem">
@@ -327,10 +386,8 @@ const ProjectEdit = (props) => {
             ),
             3: (
               <div className="medium-10">
-                <h5 className="pt-2 pb-2 text-center project-title">
-                  Төслийн дэлгэрэнгүй
-                </h5>
-
+                <h4 className="text-center fs-16">Төслийн дэлгэрэнгүй</h4>
+                <div id="editor"></div>
                 <div
                   className={`invalid-feedback ${
                     error.content ? "d-block" : ""
@@ -345,45 +402,60 @@ const ProjectEdit = (props) => {
                     className="project-create-btn mt-3"
                     disabled={disabled}
                     onClick={() => {
-                      if (!data.content)
-                        setError({ ...error, content: "Enter your story" });
-                      else {
-                        disable(true);
-                        const { current } = upload;
-                        const save = new FormData();
-                        save.append("_id", data._id);
-                        if (current.files[0])
-                          save.append("file", current.files[0]);
-                        else save.append("cover", data.cover);
-                        if (video) save.append("video", video);
-                        save.append("title", data.title);
-                        save.append("amount", data.amount);
-                        save.append("content", data.content);
-                        save.append("nonprofit", data.nonprofit);
-                        save.append(
-                          "category",
-                          data.category._id ? data.category._id : data.category
-                        );
-                        axios({
-                          method: "post",
-                          url: "/api/project/update",
-                          headers: {
-                            "Content-Type": "multipart/form-data",
-                          },
-                          data: save,
-                        }).then((response) => {
-                          if (response.data.status)
-                            window.location.href = "/project";
+                      editor
+                        .save()
+                        .then((result) => {
+                          if (result.blocks.length === 0)
+                            setError({
+                              ...error,
+                              content: "Enter your story",
+                            });
                           else {
-                            let errors = response.data.errors;
-                            errors.map((error) =>
-                              setError({ [error.param]: error.msg })
+                            disable(true);
+                            const { current } = upload;
+                            const save = new FormData();
+                            save.append("_id", data._id);
+                            if (current.files[0])
+                              save.append("file", current.files[0]);
+                            else save.append("cover", data.cover);
+                            if (video) save.append("video", video);
+                            save.append("title", data.title);
+                            save.append("amount", data.amount);
+                            save.append("content", JSON.stringify(result));
+                            save.append("nonprofit", data.nonprofit);
+                            save.append(
+                              "category",
+                              data.category._id
+                                ? data.category._id
+                                : data.category
                             );
-                            disable(false);
+                            axios({
+                              method: "post",
+                              url: "/api/project/update",
+                              headers: {
+                                "Content-Type": "multipart/form-data",
+                              },
+                              data: save,
+                            }).then((response) => {
+                              if (response.data.status)
+                                window.location.href = "/project";
+                              else {
+                                let errors = response.data.errors;
+                                errors.map((error) =>
+                                  setError({ [error.param]: error.msg })
+                                );
+                                disable(false);
+                              }
+                              disable(false);
+                            });
                           }
-                          disable(false);
+                        })
+                        .catch((err) => {
+                          setError({
+                            ...error,
+                            content: "Saving error : " + err,
+                          });
                         });
-                      }
                     }}
                   >
                     Save
