@@ -440,10 +440,10 @@ const ProjectEdit = (props) => {
                               if (response.data.status)
                                 window.location.href = "/project";
                               else {
-                                let errors = response.data.errors;
-                                errors.map((error) =>
-                                  setError({ [error.param]: error.msg })
-                                );
+                                setError({
+                                  content:
+                                    "some thing went wrong try again later",
+                                });
                                 disable(false);
                               }
                               disable(false);

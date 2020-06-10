@@ -188,9 +188,8 @@ exports.project = [
   check("amount").isNumeric(),
   check("title")
     .isLength({
-      min: 5,
       max: 50,
     })
-    .withMessage("Must be between 5 and 100 in length"),
+    .withMessage("Must be between 1 and 50 in length"),
   check("category"),
 ];

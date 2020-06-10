@@ -7,6 +7,7 @@ import {
   Button,
   Modal,
   ModalBody,
+  Spinner,
 } from "reactstrap";
 import { User } from "context/user";
 import { Link } from "react-router-dom";
@@ -96,362 +97,371 @@ const CreateProject = () => {
   }, [step]);
   return (
     <div className="project-row p-rem">
-      {user && user.email_verified_at ? (
-        <div className="create-project">
-          {
+      {user ? (
+        user.email_verified_at === null ? (
+          <div className="text-center verify-email d-flex flex-column">
+            <span className="material-icons material-icons-two-tone">
+              mark_email_read
+            </span>
+            Please verify your email address
+            <br />
+            <Link to="/settings/email">
+              Click here to verify your email address
+            </Link>
+          </div>
+        ) : (
+          <div className="create-project">
             {
-              1: (
-                <div className="medium-10">
-                  <h5 className="text-center pt-2 project-title">
-                    Шинэ төсөл үүсгэх
-                  </h5>
-                  <FormGroup>
-                    <Input
-                      type="text"
-                      name="amount"
-                      placeholder="Төсөлд шаардагдах мөнгөн дүн"
-                      className="input-round"
-                      required={true}
-                      defaultValue={data.amount}
-                      onKeyUp={(e) => {
-                        var value = e.target.value;
-                        var regex = new RegExp(
-                          /^(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?$/
-                        );
-                        setError({ ...error, amount: "" });
-                        if (parseInt(value) < 9999 || !regex.test(value)) {
-                          disable(true);
-                          setError({
-                            ...error,
-                            amount: "Төслийнхөө үнийн дүнг зөв оруулна уу.",
-                          });
-                        } else disable(false);
-                        setData({
-                          ...data,
-                          [e.target.name]:
-                            value.length < 1 ? "" : parseInt(value),
-                        });
-                      }}
-                      autoFocus={true}
-                      invalid={error.amount ? true : false}
-                      autoComplete="off"
-                    />
-                    <FormFeedback>{error.amount}</FormFeedback>
-                  </FormGroup>
-                  <FormGroup>
-                    <Input
-                      type="text"
-                      name="title"
-                      placeholder="Төслийн нэр"
-                      className="input-round"
-                      defaultValue={data.title}
-                      maxLength="50"
-                      required={true}
-                      onChange={(e) =>
-                        setData({ ...data, [e.target.name]: e.target.value })
-                      }
-                      invalid={error.title ? true : false}
-                      autoComplete="off"
-                    />
-                    <FormFeedback>{error.title}</FormFeedback>
-                  </FormGroup>
-                  <FormGroup>
-                    <Input
-                      type="select"
-                      name="category"
-                      className="input-round"
-                      defaultValue={data.category}
-                      onChange={(e) => {
-                        setData({ ...data, [e.target.name]: e.target.value });
-                      }}
-                    >
-                      <option value="-1" disabled>
-                        Төслийн төрөл
-                      </option>
-                      {category ? (
-                        category.map((cat) => {
-                          return (
-                            <option
-                              key={cat.category._id}
-                              value={cat.category._id}
-                            >
-                              {cat.category.name}
-                            </option>
-                          );
-                        })
-                      ) : (
-                        <option></option>
-                      )}
-                    </Input>
-                  </FormGroup>
-                  <div className="mb-3">
-                    <h5 className="project-profit">
-                      Та цуглуулсан хөрөнгөө хэнд зориулах вэ?
+              {
+                1: (
+                  <div className="medium-10">
+                    <h5 className="text-center pt-2 project-title">
+                      Шинэ төсөл үүсгэх
                     </h5>
-                    <div>
-                      <FormGroup check>
-                        <Label check>
-                          <Input
-                            type="radio"
-                            name="nonprofit"
-                            defaultChecked={!data.nonprofit}
-                            onClick={() => {
-                              setData({ ...data, nonprofit: false });
-                            }}
-                          />{" "}
-                          Өөртөө болон бусад хүмүүст
-                        </Label>
-                      </FormGroup>
-                      <FormGroup check>
-                        <Label check>
-                          <Input
-                            type="radio"
-                            name="nonprofit"
-                            defaultChecked={data.nonprofit}
-                            onClick={() => {
-                              setData({ ...data, nonprofit: true });
-                            }}
-                          />{" "}
-                          Ашгийн бус
-                        </Label>
-                      </FormGroup>
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <p className="terms text-muted">
-                      Тухайн төсөлд анхны хөрөнгө оруулалт хийгдсэний дараагаар
-                      төслийн нэр, хүсэж буй хэмжээ, төрөл, зэрэг нь солигдох
-                      боломжгүй тул та төслийнхөө мэдээллийг үнэн зөв бөглөнө
-                      үү.
-                    </p>
-                  </div>
-                  <div className="project-action mb-3">
-                    <Button
-                      color="primary"
-                      block
-                      className="project-create-btn"
-                      disabled={disabled}
-                      onClick={() => {
-                        setError({});
-                        if (
-                          isNaN(data.amount) ||
-                          data.amount === "" ||
-                          parseInt(data.amount) < 9999
-                        )
-                          setError({
-                            ...error,
-                            amount: "Төслийнхөө үнийн дүнг зөв оруулна уу",
+                    <FormGroup>
+                      <Input
+                        type="text"
+                        name="amount"
+                        placeholder="Төсөлд шаардагдах мөнгөн дүн"
+                        className="input-round"
+                        required={true}
+                        defaultValue={data.amount}
+                        onKeyUp={(e) => {
+                          var value = e.target.value;
+                          var regex = new RegExp(
+                            /^(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?$/
+                          );
+                          setError({ ...error, amount: "" });
+                          if (parseInt(value) < 9999 || !regex.test(value)) {
+                            disable(true);
+                            setError({
+                              ...error,
+                              amount: "Төслийнхөө үнийн дүнг зөв оруулна уу.",
+                            });
+                          } else disable(false);
+                          setData({
+                            ...data,
+                            [e.target.name]:
+                              value.length < 1 ? "" : parseInt(value),
                           });
-                        else if (!data.title)
-                          setError({
-                            ...error,
-                            title: "`Төслийн нэрээ оруулна уу.`",
-                          });
-                        else setStep(2);
-                      }}
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
-              ),
-              2: (
-                <div className="medium-10">
-                  <h5 className="text-center pt-2 project-title">
-                    Төслийн зураг
-                  </h5>
-                  {preview ? (
-                    <>
-                      <div className="mc-tile mc-tile--16x9">
-                        <div className="mc-tile__content content">
-                          <div className="mc-tile__component mc-tile-image">
-                            <div className="mc-tile-image__image mc-background mc-background--loaded mc-background--fit-container mc-background--position-x-center mc-background--position-y-center mc-background--size-cover">
-                              <div className="mc-background__background-container">
-                                <img
-                                  src={preview}
-                                  className="mc-background__background"
-                                  alt="name"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        className="btn btn-link pl-0"
-                        onClick={() => setPreview(null)}
-                      >
-                        Remove
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        color="primary"
-                        block
-                        className="project-create-btn mt-3"
-                        onClick={() => {
-                          upload.current.value = null;
-                          upload.current.click();
-                          setVideo(null);
-                          setData({ ...data, video: null });
+                        }}
+                        autoFocus={true}
+                        invalid={error.amount ? true : false}
+                        autoComplete="off"
+                      />
+                      <FormFeedback>{error.amount}</FormFeedback>
+                    </FormGroup>
+                    <FormGroup>
+                      <Input
+                        type="text"
+                        name="title"
+                        placeholder="Төслийн нэр"
+                        className="input-round"
+                        defaultValue={data.title}
+                        maxLength="50"
+                        required={true}
+                        onChange={(e) =>
+                          setData({ ...data, [e.target.name]: e.target.value })
+                        }
+                        invalid={error.title ? true : false}
+                        autoComplete="off"
+                      />
+                      <FormFeedback>{error.title}</FormFeedback>
+                    </FormGroup>
+                    <FormGroup>
+                      <Input
+                        type="select"
+                        name="category"
+                        className="input-round"
+                        defaultValue={data.category}
+                        onChange={(e) => {
+                          setData({ ...data, [e.target.name]: e.target.value });
                         }}
                       >
-                        Зураг байршуулах
-                      </Button>
-                      <Button
-                        color="secondary"
-                        block
-                        className="project-create-btn mt-3"
-                        onClick={() => setModal(true)}
-                      >
-                        Youtube бичлэг холбох
-                      </Button>
-                    </>
-                  )}
-                  <div
-                    className={`invalid-feedback ${
-                      error.cover ? "d-block" : ""
-                    }`}
-                  >
-                    {error.cover}
-                  </div>
-                  <div className="project-action mb-3">
-                    {preview ? (
+                        <option value="-1" disabled>
+                          Төслийн төрөл
+                        </option>
+                        {category ? (
+                          category.map((cat) => {
+                            return (
+                              <option
+                                key={cat.category._id}
+                                value={cat.category._id}
+                              >
+                                {cat.category.name}
+                              </option>
+                            );
+                          })
+                        ) : (
+                          <option></option>
+                        )}
+                      </Input>
+                    </FormGroup>
+                    <div className="mb-3">
+                      <h5 className="project-profit">
+                        Та цуглуулсан хөрөнгөө хэнд зориулах вэ?
+                      </h5>
+                      <div>
+                        <FormGroup check>
+                          <Label check>
+                            <Input
+                              type="radio"
+                              name="nonprofit"
+                              defaultChecked={!data.nonprofit}
+                              onClick={() => {
+                                setData({ ...data, nonprofit: false });
+                              }}
+                            />{" "}
+                            Өөртөө болон бусад хүмүүст
+                          </Label>
+                        </FormGroup>
+                        <FormGroup check>
+                          <Label check>
+                            <Input
+                              type="radio"
+                              name="nonprofit"
+                              defaultChecked={data.nonprofit}
+                              onClick={() => {
+                                setData({ ...data, nonprofit: true });
+                              }}
+                            />{" "}
+                            Ашгийн бус
+                          </Label>
+                        </FormGroup>
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <p className="terms text-muted">
+                        Тухайн төсөлд анхны хөрөнгө оруулалт хийгдсэний
+                        дараагаар төслийн нэр, хүсэж буй хэмжээ, төрөл, зэрэг нь
+                        солигдох боломжгүй тул та төслийнхөө мэдээллийг үнэн зөв
+                        бөглөнө үү.
+                      </p>
+                    </div>
+                    <div className="project-action mb-3">
                       <Button
                         color="primary"
                         block
-                        className="project-create-btn mt-3"
+                        className="project-create-btn"
+                        disabled={disabled}
                         onClick={() => {
-                          if (!preview)
-                            setError({ ...error, cover: "Image required" });
-                          else setStep(3);
+                          setError({});
+                          if (
+                            isNaN(data.amount) ||
+                            data.amount === "" ||
+                            parseInt(data.amount) < 9999
+                          )
+                            setError({
+                              ...error,
+                              amount: "Төслийнхөө үнийн дүнг зөв оруулна уу",
+                            });
+                          else if (!data.title)
+                            setError({
+                              ...error,
+                              title: "`Төслийн нэрээ оруулна уу.`",
+                            });
+                          else setStep(2);
                         }}
                       >
                         Next
                       </Button>
-                    ) : null}
-                    <button
-                      className="btn btn-link mt-2 w-100"
-                      onClick={() => setStep(1)}
+                    </div>
+                  </div>
+                ),
+                2: (
+                  <div className="medium-10">
+                    <h5 className="text-center pt-2 project-title">
+                      Төслийн зураг
+                    </h5>
+                    {preview ? (
+                      <>
+                        <div className="mc-tile mc-tile--16x9">
+                          <div className="mc-tile__content content">
+                            <div className="mc-tile__component mc-tile-image">
+                              <div className="mc-tile-image__image mc-background mc-background--loaded mc-background--fit-container mc-background--position-x-center mc-background--position-y-center mc-background--size-cover">
+                                <div className="mc-background__background-container">
+                                  <img
+                                    src={preview}
+                                    className="mc-background__background"
+                                    alt="name"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          className="btn btn-link pl-0"
+                          onClick={() => setPreview(null)}
+                        >
+                          Remove
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          color="primary"
+                          block
+                          className="project-create-btn mt-3"
+                          onClick={() => {
+                            upload.current.value = null;
+                            upload.current.click();
+                            setVideo(null);
+                            setData({ ...data, video: null });
+                          }}
+                        >
+                          Зураг байршуулах
+                        </Button>
+                        <Button
+                          color="secondary"
+                          block
+                          className="project-create-btn mt-3"
+                          onClick={() => setModal(true)}
+                        >
+                          Youtube бичлэг холбох
+                        </Button>
+                      </>
+                    )}
+                    <div
+                      className={`invalid-feedback ${
+                        error.cover ? "d-block" : ""
+                      }`}
                     >
-                      Back
-                    </button>
+                      {error.cover}
+                    </div>
+                    <div className="project-action mb-3">
+                      {preview ? (
+                        <Button
+                          color="primary"
+                          block
+                          className="project-create-btn mt-3"
+                          onClick={() => {
+                            if (!preview)
+                              setError({ ...error, cover: "Image required" });
+                            else setStep(3);
+                          }}
+                        >
+                          Next
+                        </Button>
+                      ) : null}
+                      <button
+                        className="btn btn-link mt-2 w-100"
+                        onClick={() => setStep(1)}
+                      >
+                        Back
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ),
-              3: (
-                <div className="medium-10">
-                  <h4 className="text-center fs-16">Төслийн дэлгэрэнгүй</h4>
-                  <div id="editor"></div>
-                  <div
-                    className={`invalid-feedback ${
-                      error.content ? "d-block" : ""
-                    }`}
-                  >
-                    {error.content}
-                  </div>
-                  <div className="project-action mb-3">
-                    <Button
-                      color="primary"
-                      block
-                      className="project-create-btn mt-3"
-                      disabled={disabled}
-                      onClick={() => {
-                        editor
-                          .save()
-                          .then((result) => {
-                            if (result.blocks.length === 0)
+                ),
+                3: (
+                  <div className="medium-10">
+                    <h4 className="text-center fs-16">Төслийн дэлгэрэнгүй</h4>
+                    <div id="editor"></div>
+                    <div
+                      className={`invalid-feedback ${
+                        error.content ? "d-block" : ""
+                      }`}
+                    >
+                      {error.content}
+                    </div>
+                    <div className="project-action mb-3">
+                      <Button
+                        color="primary"
+                        block
+                        className="project-create-btn mt-3"
+                        disabled={disabled}
+                        onClick={() => {
+                          editor
+                            .save()
+                            .then((result) => {
+                              if (result.blocks.length === 0)
+                                setError({
+                                  ...error,
+                                  content: "Enter your story",
+                                });
+                              else {
+                                disable(true);
+                                const { current } = upload;
+                                const save = new FormData();
+                                if (video) save.append("video", video);
+                                else save.append("file", current.files[0]);
+                                save.append("title", data.title);
+                                save.append("amount", data.amount);
+                                save.append("content", JSON.stringify(result));
+                                save.append("nonprofit", data.nonprofit);
+                                save.append(
+                                  "category",
+                                  data.category
+                                    ? data.category
+                                    : category[0].category._id
+                                );
+                                axios({
+                                  method: "post",
+                                  url: "/api/project/create",
+                                  headers: {
+                                    "Content-Type": "multipart/form-data",
+                                  },
+                                  data: save,
+                                }).then((response) => {
+                                  if (response.data.status)
+                                    window.location.href = "/project";
+                                  else {
+                                    setError({
+                                      content:
+                                        "some thing went wrong try again later",
+                                    });
+                                    disable(false);
+                                  }
+                                  disable(false);
+                                });
+                              }
+                            })
+                            .catch((err) => {
                               setError({
                                 ...error,
-                                content: "Enter your story",
+                                content: "Saving error : " + err,
                               });
-                            else {
-                              disable(true);
-                              const { current } = upload;
-                              const save = new FormData();
-                              if (video) save.append("video", video);
-                              else save.append("file", current.files[0]);
-                              save.append("title", data.title);
-                              save.append("amount", data.amount);
-                              save.append("content", JSON.stringify(result));
-                              save.append("nonprofit", data.nonprofit);
-                              save.append(
-                                "category",
-                                data.category
-                                  ? data.category
-                                  : category[0].category._id
-                              );
-                              axios({
-                                method: "post",
-                                url: "/api/project/create",
-                                headers: {
-                                  "Content-Type": "multipart/form-data",
-                                },
-                                data: save,
-                              }).then((response) => {
-                                if (response.data.status)
-                                  window.location.href = "/project";
-                                else {
-                                  let errors = response.data.errors;
-                                  errors.map((error) =>
-                                    setError({ [error.param]: error.msg })
-                                  );
-                                  disable(false);
-                                }
-                                disable(false);
-                              });
-                            }
-                          })
-                          .catch((err) => {
-                            setError({
-                              ...error,
-                              content: "Saving error : " + err,
                             });
-                          });
-                      }}
-                    >
-                      Save
-                    </Button>
+                        }}
+                      >
+                        Save
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ),
-            }[step]
-          }
-          <input
-            type="file"
-            className="d-none"
-            ref={upload}
-            onChange={(e) => {
-              setError({ ...error, cover: "" });
-              var file = e.target.files[0];
-              var ext;
-              file
-                ? (ext = file.name
-                    .substring(file.name.lastIndexOf(".") + 1)
-                    .toLowerCase())
-                : setError({ ...error, cover: "Invalid image" });
-              if (file && (ext === "png" || ext === "jpeg" || ext === "jpg")) {
-                var reader = new FileReader();
-                reader.onload = (e) => {
-                  setPreview(e.target.result);
-                };
-                reader.readAsDataURL(file);
-              } else setError({ ...error, cover: "Invalid image" });
-            }}
-            accept="image/x-png,image/jpeg"
-          />
-        </div>
+                ),
+              }[step]
+            }
+            <input
+              type="file"
+              className="d-none"
+              ref={upload}
+              onChange={(e) => {
+                setError({ ...error, cover: "" });
+                var file = e.target.files[0];
+                var ext;
+                file
+                  ? (ext = file.name
+                      .substring(file.name.lastIndexOf(".") + 1)
+                      .toLowerCase())
+                  : setError({ ...error, cover: "Invalid image" });
+                if (
+                  file &&
+                  (ext === "png" || ext === "jpeg" || ext === "jpg")
+                ) {
+                  var reader = new FileReader();
+                  reader.onload = (e) => {
+                    setPreview(e.target.result);
+                  };
+                  reader.readAsDataURL(file);
+                } else setError({ ...error, cover: "Invalid image" });
+              }}
+              accept="image/x-png,image/jpeg"
+            />
+          </div>
+        )
       ) : (
-        <div className="text-center verify-email d-flex flex-column">
-          <span className="material-icons material-icons-two-tone">
-            mark_email_read
-          </span>
-          Please verify your email address
-          <br />
-          <Link to="/settings/email">
-            Click here to verify your email address
-          </Link>
+        <div className="p-3 text-center">
+          <Spinner size="sm" color="secondary" />
         </div>
       )}
       <Modal

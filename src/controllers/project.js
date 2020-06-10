@@ -5,6 +5,7 @@ const { bucket } = require("../middleware/multer");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const sharp = require("sharp");
+const { validationResult } = require("express-validator");
 const hash = () => {
   return crypto
     .createHash("sha1")
@@ -26,7 +27,10 @@ exports.category = (req, res) => {
 exports.create = (req, res) => {
   const { title, amount, nonprofit, category, content, video } = req.body;
   const { file } = req;
-  if (!file && !video)
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ errors: errors.array(), status: false });
+  } else if (!file && !video)
     return res.json({
       status: false,
       msg: "No file uploaded.",
@@ -166,7 +170,10 @@ exports.update = (req, res) => {
     cover: current_cover,
   } = req.body;
   const { file } = req;
-  if (!file) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(200).json({ errors: errors.array(), status: false });
+  } else if (!file) {
     const yt_cover = `https://img.youtube.com/vi/${video}/sddefault.jpg`;
     Project.findByIdAndUpdate(_id, {
       title,
