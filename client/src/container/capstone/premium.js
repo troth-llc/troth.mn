@@ -46,6 +46,7 @@ const CapstonePremium = () => {
                     className="banks"
                     onClick={() => {
                       setLoading(true);
+                      setError("");
                       axios.post("/api/invoice/premium").then((response) => {
                         if (response.data.status) {
                           hide(true);
@@ -70,6 +71,7 @@ const CapstonePremium = () => {
                   <div
                     className="banks"
                     onClick={() => {
+                      setError("");
                       if (user && user.type === "premium")
                         setError("Та Premium хэрэглэгч болсон байна.");
                       else {

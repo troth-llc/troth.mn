@@ -52,15 +52,15 @@ exports.premium = (req, res) => {
       EK:
         "KfbsuGZKsq1gM3an6JdA6LQny/8hjKkYa6eQot/tAE/aEGOwLWJOxKsZsQ2bvxHv/T7VZLuEF3eS1CGyxZQmRsjQaNfh36kA9MVQUe2zXtA1kRMNb6H8YXACVhe4Snx0SbEztFnMXt9uskA7iEwcnW/lpaRkwxmhbh3NiNjlCSw=",
       SG: "MPdUd+c0jdmdpir6FIfBRKSO3T8=",
-      srcInstId: "20200318",
+      srcInstId: "20061101",
       channel: "44",
       lang: "0",
       traceNo: "2020052703472500",
       tranCur: "MNT",
       tranAmount: process.env.PREMIUM_AMOUNT,
       billId: req.user.id,
-      posNo: "60883",
-      payeeId: "60883",
+      posNo: "47661",
+      payeeId: "47661",
       tranDesc: "TROTH PREMIUM SUBSCRIPTION",
       qrPaidLimit: "1",
       deviceIp: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
@@ -109,8 +109,32 @@ exports.premium_hook = (req, res) => {
       amount: Number(amount),
       bill_id: String(billid),
     };
-    // update user type to prmium
-    if (parseInt(rettype) === 0) {
+    // update user type to premium
+    if (parseInt(amount) > process.env.PREMIUM_AMOUNT) {
+      User.findById({ _id: save.bill_id })
+        .then((data) => {
+          send(
+            data.email,
+            "Notice",
+            `Dear <strong>${data.name}</strong>,
+            <br/>
+          <p>Гүйлгээ амжилтгүй боллоо.</p>
+          </br>
+          <pre>${paymentid}</pre>
+          <strong>Troth LLC</strong></p>
+          </br>
+          <pre>https://capstone.troth.mn</pre>
+          `
+          );
+          console.log(
+            "user " + data.name + " bought premium status " + new Date()
+          );
+        })
+        .catch((err) => console.log("invoice error: ", err));
+    } else if (
+      parseInt(rettype) === 0 &&
+      parseInt(amount) === process.env.PREMIUM_AMOUNT
+    ) {
       User.findOneAndUpdate({ _id: save.bill_id }, { type: "premium" })
         .then((data) => {
           send(
