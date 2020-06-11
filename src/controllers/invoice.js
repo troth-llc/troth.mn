@@ -99,6 +99,7 @@ exports.premium_hook = (req, res) => {
       amount,
       billid,
     } = req.body.data;
+    console.log(req.body.data, new Date());
     var save = {
       status: String(rettype),
       description: String(retdesc),
@@ -129,7 +130,7 @@ exports.premium_hook = (req, res) => {
             "user " + data.name + " bought premium status " + new Date()
           );
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log("invoice error: ", err));
     }
     // save invoice
     Invoice.create({ ...save })
