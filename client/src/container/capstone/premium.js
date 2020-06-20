@@ -1,154 +1,239 @@
 import React, { useState, useContext } from "react";
 import "./style.scss";
-import { Spinner } from "reactstrap";
+import { Spinner, Modal, ModalHeader, ModalBody, Button } from "reactstrap";
 import axios from "axios";
 import { User } from "context/user";
 const CapstonePremium = () => {
   const [state, setState] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [hiden, hide] = useState(false);
+  const [deeplink, setDeeplink] = useState("");
   const [error, setError] = useState("");
-  const [mobile, setMobile] = useState(true);
-  const [bank, setBank] = useState(null);
   const { user } = useContext(User);
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+  const create = (bank) => {
+    setLoading(true);
+    setError("");
+    axios.post("/api/invoice/premium").then((response) => {
+      if (response.data.status) {
+        setState(JSON.parse(response.data.result));
+        setDeeplink(bank);
+      } else if (response.data.msg) setError(response.data.msg);
+      else setError("Some thing went wrong try again later.");
+      setLoading(false);
+    });
+  };
   return (
-    <div className="container">
-      <div className="capstone-premium">
-        <div className="card">
-          <div className="text-center">
-            <h5 className="pt-3">TROTH Премиум гишүүнчлэл</h5>
-          </div>
-          <div className="included">
-            <h4>Премиум гишүүнд нэгдсэнээр дараах эрхүүд нээгдэнэ:</h4>
-            <div className="included-list">
-              <span>
-                <li>
-                  <div>
-                    <span className="material-icons">done</span>
-                    Онлайн сургалтанд үнэгүй хамрагдах
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <span className="material-icons">done</span>
-                    Зохион байгуулагдах нээлттэй эвентүүдэд үнэ төлбөргүй
-                    оролцох
-                  </div>
-                </li>
-              </span>
+    <>
+      <div className="container">
+        <div className="capstone-premium">
+          <div className="card">
+            <div className="text-center">
+              <h5 className="pt-3">TROTH Премиум гишүүнчлэл</h5>
             </div>
-            {!loading ? (
-              !hiden ? (
-                <div className="payment-method">
-                  <h4>Төлбөр төлөх хэрэгсэл</h4>
-                  <hr />
-                  <div
-                    className="banks"
-                    onClick={() => {
-                      setLoading(true);
-                      setError("");
-                      axios.post("/api/invoice/premium").then((response) => {
-                        if (response.data.status) {
-                          hide(true);
-                          setState(JSON.parse(response.data.result));
-                        } else if (response.data.msg)
-                          setError(response.data.msg);
-                        else setError("Some thing went wrong try again later.");
-                        setLoading(false);
-                      });
-                    }}
-                  >
+            <div className="included">
+              <h4>Премиум гишүүнд нэгдсэнээр дараах эрхүүд нээгдэнэ:</h4>
+              <div className="included-list">
+                <span>
+                  <li>
                     <div>
-                      <img
-                        src="https://cdn.troth.mn/media/mostmoney.png"
-                        alt="mostmoney"
-                        className="bank-icon"
-                      />
-                      Mostmoney
+                      <span className="material-icons">done</span>
+                      Онлайн сургалтанд үнэгүй хамрагдах
                     </div>
-                    <span className="material-icons">keyboard_arrow_right</span>
-                  </div>
-                  <div
-                    className="banks"
-                    onClick={() => {
-                      setError("");
-                      if (user && user.type === "premium")
-                        setError("Та Premium хэрэглэгч болсон байна.");
-                      else {
-                        hide(true);
-                        setBank(true);
-                      }
-                    }}
-                  >
+                  </li>
+                  <li>
                     <div>
-                      <span className="material-icons icon material-icons-round">
-                        receipt_long
-                      </span>
-                      Дансаар
+                      <span className="material-icons">done</span>
+                      Зохион байгуулагдах нээлттэй эвентүүдэд үнэ төлбөргүй
+                      оролцох
                     </div>
-                    <span className="material-icons">keyboard_arrow_right</span>
-                  </div>
-                </div>
-              ) : null
-            ) : (
-              <div className="w-100 text-center p-3">
-                <Spinner color="secondary" size="sm" />
+                  </li>
+                </span>
               </div>
-            )}
-            {state ? (
-              <div className="qr-result">
-                <div className={mobile ? "d-none d-sm-block text-center" : ""}>
-                  <br />
-                  <span>
-                    Энэхүү QR кодыг уншуулснаар та төлбөрөө төлөх боломжтой
-                  </span>
-                  <img
-                    src={`data:image/png;base64,${state.qr_image}`}
-                    alt={state.qr_code}
-                  />
-                </div>
-                <div className="d-flex flex-column d-sm-none deeplink-container">
-                  <a
-                    className="deep-link"
-                    href={`most://q?qPay_QRcode=${state.qr_code}`}
-                  >
-                    Энд дарж үргэлжлүүлнэ үү.
-                  </a>
-                  <span
-                    className={mobile ? "open-qr" : "d-none"}
-                    onClick={() => setMobile(false)}
-                  >
-                    QR код харах
-                  </span>
-                </div>
+              <div className="auth-action">
+                <Button
+                  className="mt-2 auth-button mb-2"
+                  block
+                  onClick={toggle}
+                >
+                  Нэгдэх
+                </Button>
               </div>
-            ) : null}
-            {bank ? (
-              <div>
-                <hr />
-                <h5 className="text-center">
-                  Гишүүнчлэлийн төлбөр : 500,000 ₮
-                </h5>
-                {user ? (
-                  <span className="bank">
-                    • Хаан Банк <strong>5041263749 Б. Мөнх-Очир</strong> данс
-                    руу шилжүүлнэ <br />• Гүйлгээний утганд{" "}
-                    <strong>{user.email}</strong> гэж оруулна. <br />•
-                    Шилжүүлсэний дараа{" "}
-                    <pre className="d-inline">+976 8979 2133</pre> утсанд залгаж
-                    мэдэгдэнэ үү. Ингэснээр бид таныг шилжүүлэг хийснийг шуурхай
-                    мэдэх юм.
-                  </span>
-                ) : (
-                  <span className="text-danger text-center">Please wait..</span>
-                )}
-              </div>
-            ) : null}
-            <span className="text-danger">{error}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <Modal
+        isOpen={modal}
+        centered
+        className={`payment-modal ${loading || state ? "loaded" : ""}`}
+      >
+        <ModalHeader toggle={toggle}>Премиум гишүүнчлэлд нэгдэх</ModalHeader>
+        <ModalBody>
+          {loading === false ? (
+            state ? (
+              <div className="text-center qr-loaded">
+                <p className="mb-0">
+                  Энэхүү QR кодыг уншуулснаар та төлбөрөө төлөх боломжтой
+                </p>
+                <img
+                  src={`data:image/png;base64,${state.qr_image}`}
+                  alt={state.qr_code}
+                  className="qr-image"
+                  alt="Invoice QR"
+                />
+                {deeplink === "khanbank://q?qPay_QRcode=" ||
+                deeplink === "statebank://q?qPay_QRcode=" ||
+                deeplink === "xacbank://q?qPay_QRcode=" ? (
+                  <p className="text-muted text-center">
+                    <span className="material-icons">info</span>
+                    Шилжүүлэх дүн 500'000.
+                  </p>
+                ) : null}
+                <a href={deeplink + state.qr_code} className="deeplink">
+                  Энд дарж үргэлжлүүлнэ үү.
+                </a>
+              </div>
+            ) : (
+              <>
+                <h5 className="header-legend">Дансаар шилжүүлэх</h5>
+                <span className="text-muted">Банк</span>
+                <div className="detail">
+                  <p>Худалдаа Хөгжлийн Банк</p>
+                  {/* <span className="material-icons">keyboard_arrow_down</span> */}
+                  <div></div>
+                </div>
+                <span className="text-muted">Дансны дугаар:</span>
+                <div className="detail">
+                  <p>40 610 7359</p>
+                  <span
+                    className="action"
+                    onClick={() => navigator.clipboard.writeText("406107359")}
+                  >
+                    Хуулах
+                  </span>
+                </div>
+                <span className="text-muted">Хүлээн авагч:</span>
+                <div className="detail">
+                  <p>Б. Мөнх-Очир</p>
+                  <span
+                    className="action"
+                    onClick={() =>
+                      navigator.clipboard.writeText("Б. Мөнх-Очир")
+                    }
+                  >
+                    Хуулах
+                  </span>
+                </div>
+                <span className="text-muted">Шилжүүлэх дүн:</span>
+                <div className="detail">
+                  <p>500'000 ₮</p>
+                  <span
+                    className="action"
+                    onClick={() => navigator.clipboard.writeText("500000")}
+                  >
+                    Хуулах
+                  </span>
+                </div>
+                <span className="text-muted">Гүйлгээний утга:</span>
+                <div className="detail">
+                  {user ? (
+                    <>
+                      <p>{user.email}</p>
+                      <span
+                        className="action"
+                        onClick={() =>
+                          navigator.clipboard.writeText(user.email)
+                        }
+                      >
+                        Хуулах
+                      </span>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <hr />
+                <h5 className="header-legend">Qpay-ээр төлөх</h5>
+                <div className="bank-select">
+                  <div
+                    className="bank-container"
+                    onClick={() => create("most://q?qPay_QRcode=")}
+                  >
+                    <p className="bank-label">Most Money</p>
+                    <img
+                      src="https://cdn.troth.mn/media/mostmoney.png"
+                      alt="mostmoney"
+                      className="bank-icon"
+                    />
+                  </div>
+                  <div
+                    className="bank-container"
+                    onClick={() => create("tdbbank://q?qPay_QRcode=")}
+                  >
+                    <p className="bank-label">ХХБ</p>
+                    <img
+                      src="https://cdn.troth.mn/media/tdb.png"
+                      alt="tradedevbank"
+                      className="bank-icon"
+                    />
+                  </div>
+                  <div
+                    className="bank-container"
+                    onClick={() => create("ubcbank://q?qPay_QRcode=")}
+                  >
+                    <p className="bank-label">УБХБ</p>
+                    <img
+                      src="https://cdn.troth.mn/media/ubb.png"
+                      alt="UB City Bank"
+                      className="bank-icon"
+                    />
+                  </div>
+                  <div
+                    className="bank-container"
+                    onClick={() => create("khanbank://q?qPay_QRcode=")}
+                  >
+                    <p className="bank-label">Хаанбанк</p>
+                    <img
+                      src="https://cdn.troth.mn/media/khanbank.png"
+                      alt="Khaanbank"
+                      className="bank-icon"
+                    />
+                  </div>
+                  <div
+                    className="bank-container"
+                    onClick={() => create("xacbank://q?qPay_QRcode=")}
+                  >
+                    <p className="bank-label">Хасбанк</p>
+                    <img
+                      src="https://cdn.troth.mn/media/khasbank.png"
+                      alt="khasbank"
+                      className="bank-icon"
+                    />
+                  </div>
+                  <div
+                    className="bank-container"
+                    onClick={() => create("statebank://q?qPay_QRcode=")}
+                  >
+                    <p className="bank-label">Төрийн банк</p>
+                    <img
+                      src="https://cdn.troth.mn/media/statebank.png"
+                      alt="statebank"
+                      className="bank-icon"
+                    />
+                  </div>
+                </div>
+              </>
+            )
+          ) : (
+            <div className="w-100 p-3 text-center">
+              <Spinner size="sm" color="secondary" />
+            </div>
+          )}
+          <h5 className="text-danger header-legend mt-2">{error}</h5>
+        </ModalBody>
+      </Modal>
+    </>
   );
 };
 export default CapstonePremium;
