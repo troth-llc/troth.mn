@@ -1,4 +1,30 @@
 .project-view {
+  .campaing-block {
+    @media (min-width: 552px) {
+      margin-top: 1.23em;
+    }
+    @media (min-width: 728px) {
+      margin-top: 1.72em;
+    }
+    @media (min-width: 904px) {
+      margin-top: 1.72em;
+    }
+    @media (min-width: 1080px) {
+      margin-top: 1.72em;
+    }
+    margin-top: 1.23em;
+    margin-bottom: -0.31em;
+  }
+  .caption-img {
+    text-align: center;
+    margin-top: 10px;
+    max-width: 728px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 14px;
+    color: rgba(117, 117, 117, 1);
+    line-height: 20px;
+  }
   hr {
     margin: 10px 0;
   }
@@ -8,53 +34,32 @@
     height: 100%;
   }
   .project-category {
-    margin-top: 10px;
-    border-bottom: 1px solid #ddd;
-    border-top: 1px solid #ddd;
-    font-size: 1rem !important;
-    padding-bottom: 1rem;
-    padding-top: 1rem;
-    margin-bottom: 0;
-    list-style-type: none;
-    padding-left: 0;
-    margin-bottom: 0;
     display: flex;
-    flex-wrap: wrap;
-    font-size: 16px;
-    li {
-      align-items: center;
-      display: flex;
-      margin-right: 1rem;
-      .material-icons {
-        font-size: 20px;
-        margin-right: 8px;
-      }
-      &:last-child:before {
-        content: "";
-        border-left: 1px solid;
-        font-size: 1.143em;
-        height: 1em;
-        border-color: #767676;
-        color: #ddd;
-        display: inline-block;
-        margin-right: 1rem;
-      }
-      a {
-        display: flex;
-        vertical-align: middle;
-        align-items: center;
-        height: 24px;
-        color: unset;
-        &:hover,
-        &:focus,
-        &:active {
-          color: gray;
-          text-decoration: none;
-        }
+    max-height: 20px;
+    text-overflow: ellipsis;
+    color: rgba(117, 117, 117, 1);
+    line-height: 20px;
+    overflow: hidden;
+    font-size: 14px;
+    .material-icons {
+      font-size: 16px;
+      margin-left: 6px;
+      margin-right: 0px;
+      line-height: 18px;
+      height: 20px;
+      vertical-align: middle;
+    }
+    a {
+      &:hover,
+      &:focus,
+      &:active {
+        color: gray;
+        text-decoration: none;
       }
     }
   }
   .project-view-header {
+    margin-top: 15px;
     .view-background {
       border-radius: 0.25rem;
       cursor: pointer;
@@ -76,17 +81,27 @@
         max-width: 100%;
       }
     }
-    margin: 0 -15px;
-  }
-  .campaign-header {
-    margin-bottom: -0.25rem;
-    margin-top: 0.75rem;
   }
   .campaign-title {
-    @media screen and (max-width: 59.99875em) {
-      font-size: 1.5rem;
-      line-height: 1.33;
+    @media (min-width: 552px) {
+      line-height: 40px;
+      margin-top: 0.72em;
+      font-size: 20px;
     }
+    @media (min-width: 728px) {
+      line-height: 48px;
+      margin-top: 0.78em;
+      font-size: 30px;
+    }
+    @media (min-width: 1080px) {
+      line-height: 48px;
+      margin-top: 0.78em;
+      font-size: 30px;
+    }
+    line-height: 40px;
+    font-size: 20px;
+    margin-top: 0.72em;
+    letter-spacing: 0;
   }
   .campaign-progress-bar {
     margin-bottom: 0.5rem;
@@ -140,12 +155,13 @@
     line-height: 1.5;
     color: #333;
     a {
-      color: #fa6c51;
+      color: #222;
+      text-decoration: underline;
     }
     img {
       margin-left: auto;
       margin-right: auto;
-      max-width: 490px;
+      max-width: 680px;
       max-height: 490px;
       @media (max-width: 520px) {
         width: 100%;
@@ -177,10 +193,39 @@
 }
 .yt-iframe {
   width: 100%;
+  min-height: 350px;
 }
 .text-italic {
   font-style: italic;
 }
-.ce-block {
-  margin-bottom: 10px;
+.project-offset {
+  margin: 0 24px;
+  @media (min-width: 552px) {
+    margin: 0 24px;
+  }
+  @media (min-width: 728px) {
+    margin: 0 48px;
+  }
+
+  @media (min-width: 904px) {
+    margin: 0 64px;
+  }
+  max-width: 680px;
+  width: 100%;
+  min-width: 0;
+}
+.code-container {
+  padding: 20px;
+  background: rgba(242, 242, 242, 1);
+  overflow-x: auto;
+  border-radius: 4px;
+  span.code {
+    white-space: pre-wrap;
+    margin-bottom: -0.09em;
+    margin-top: -0.09em;
+    letter-spacing: -0.022em;
+    line-height: 1.18;
+    color: rgba(41, 41, 41, 1);
+    font-size: 14px;
+  }
 }

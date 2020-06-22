@@ -51,6 +51,7 @@ const CreateProject = () => {
           new EditorJS({
             holder: "editor",
             autofocus: true,
+            logLevel: "ERROR",
             tools: {
               header: {
                 class: Header,
@@ -86,6 +87,11 @@ const CreateProject = () => {
               },
               linkTool: LinkTool,
               embed: Embed,
+              paragraph: {
+                config: {
+                  placeholder: "Tell your story...",
+                },
+              },
             },
             data: data.content,
           })
@@ -356,6 +362,7 @@ const CreateProject = () => {
                 3: (
                   <div className="medium-10">
                     <h4 className="text-center fs-16">Төслийн дэлгэрэнгүй</h4>
+                    <hr />
                     <div id="editor"></div>
                     <div
                       className={`invalid-feedback ${

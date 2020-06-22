@@ -27,79 +27,41 @@ const ProjectView = (props) => {
     json.blocks.map((obj) => {
       switch (obj.type) {
         case "paragraph":
-          articleHTML += `<div class="ce-block">
-                        <div class="ce-block__content">
-                            <div class="ce-paragraph cdx-block">
-                            <p>${obj.data.text}</p>
-                            </div>
-                        </div>
-                        </div>\n`;
+          articleHTML += `<div class="campaing-block"><p>${obj.data.text}</p></div>\n`;
           break;
         case "image":
-          articleHTML += `<div class="ce-block">
-                        <div class="ce-block__content d-flex text-center flex-column">
-                          
+          articleHTML += `<div class="campaing-block">
+                        <div class="d-flex text-center flex-column">
                                     <img src="${obj.data.file.url}" alt="${obj.data.caption}"/>
-                                    <figcaption class="text-italic">
+                                    <figcaption class="caption-img">
                                         ${obj.data.caption}
                                     </figcaption>
-                               
-                            
-                        </div>
+                          </div>
                         </div>\n`;
           break;
         case "header":
-          articleHTML += `<div class="ce-block">
-                            <div class="ce-block__content">
-                                <div class="ce-paragraph cdx-block">
-                                    <h${obj.data.level}>${obj.data.text}</h${obj.data.level}>
-                                </div>
-                            </div>
-                        </div>\n`;
-          break;
-        case "raw":
-          articleHTML += `<div class="ce-block">
-                            <div class="ce-block__content">
-                                <div class="ce-code">
-                                    <code>${obj.data.html}</code>
-                                </div>
-                            </div>
-                        </div>\n`;
+          articleHTML += `<div class="campaing-block"><h${obj.data.level}>${obj.data.text}</h${obj.data.level}></div>\n`;
           break;
         case "code":
-          articleHTML += `<div class="ce-block">
-                        <div class="ce-block__content">
-                            <div class="ce-code">
-                                <code>${obj.data.code}</code>
-                            </div>
-                        </div>
-                        </div>\n`;
+          articleHTML += `<div class="campaing-block"><pre class="code-container"><span class="code">${obj.data.code}</span></pre></div>\n`;
           break;
         case "list":
           if (obj.data.style === "unordered") {
             const list = obj.data.items.map((item) => {
-              return `<li class="cdx-list__item">${item}</li>`;
+              return `<li>${item}</li>`;
             });
-            articleHTML += `<div class="ce-block">
-                                    <div class="ce-block__content">
-                                        <div class="ce-paragraph cdx-block">
-                                            <ul class="cdx-list--unordered">${list.join(
-                                              ""
-                                            )}</ul>
-                                        </div>
-                                    </div>
-                                </div>\n`;
+            articleHTML += `
+            <div class="campaing-block">
+               <ul>${list.join("")}</ul>
+               </div>\n`;
           } else {
             const list = obj.data.items.map((item) => {
-              return `<li class="cdx-list__item">${item}</li>`;
+              return `<li>${item}</li>`;
             });
-            articleHTML += `<div class="ce-block">
-                                <div class="ce-block__content">
-                                    <div class="ce-paragraph cdx-block">
-                                        <ol class="cdx-list--ordered">${list}</ol>
-                                    </div>
-                                </div>
-                            </div>\n`;
+            articleHTML += `
+            <div class="campaing-block">
+             <ol>${list.join("")}</ol>
+            </div>\n`;
           }
           break;
         case "delimeter":
@@ -141,110 +103,108 @@ const ProjectView = (props) => {
     return articleHTML;
   };
   return (
-    <div className="container">
-      {state ? (
-        state.length !== 0 ? (
-          <>
-            <div className="project-view">
-              <div className="project-view-header">
-                <div className="view-background">
-                  {state.video ? (
-                    <iframe
-                      src={state.video}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      title="youtube player"
-                      className="yt-iframe"
-                    />
-                  ) : (
-                    <div
-                      className="image"
-                      style={{ backgroundImage: `url(${state.cover})` }}
-                    />
-                  )}
+    <div className="d-flex flex-center">
+      <div className="project-offset">
+        {state ? (
+          state.length !== 0 ? (
+            <>
+              <div className="project-view">
+                <div>
+                  <h1 className="campaign-title">{state.title}</h1>
                 </div>
-              </div>
-              <header className="campaign-header">
-                <h1 className="campaign-title">{state.title}</h1>
-              </header>
-              {/* funded details */}
-              <div>
-                <Progress
-                  value={Math.round((state.amount / state.funded) * 100)}
-                  className="campaign-progress-bar"
-                />
-                <h2 className="progress-meter-heading">
-                  ₮{Number(state.funded.toFixed(1)).toLocaleString()}
-                  <span className="text-stat text-stat-title">
-                    raised of ₮
-                    {Number(state.amount.toFixed(1)).toLocaleString()} goal
-                  </span>
-                </h2>
-              </div>
-              {/* owner information */}
-
-              <div>
-                <div className="d-flex flex-row pt-2">
-                  <div className="owner-avatar-container">
-                    {state.owner.avatar ? (
-                      <div
-                        className="owner-avatar"
-                        style={{
-                          backgroundImage: `url(${state.owner.avatar})`,
-                        }}
+                {/* funded details */}
+                <div>
+                  <Progress
+                    value={Math.round((state.amount / state.funded) * 100)}
+                    className="campaign-progress-bar"
+                  />
+                  <h2 className="progress-meter-heading">
+                    ₮{Number(state.funded.toFixed(1)).toLocaleString()}
+                    <span className="text-stat text-stat-title">
+                      raised of ₮
+                      {Number(state.amount.toFixed(1)).toLocaleString()} goal
+                    </span>
+                  </h2>
+                </div>
+                {/* owner information */}
+                <div>
+                  <div className="d-flex flex-row pt-2 pb-2">
+                    <div className="owner-avatar-container">
+                      {state.owner.avatar ? (
+                        <div
+                          className="owner-avatar"
+                          style={{
+                            backgroundImage: `url(${state.owner.avatar})`,
+                          }}
+                        />
+                      ) : (
+                        <div className="owner-avatar-preview"></div>
+                      )}
+                    </div>
+                    <div className="owner-info">
+                      <Link to={"/" + state.owner.username}>
+                        {state.owner.name}
+                      </Link>{" "}
+                      <div className="project-category">
+                        {moment(state.created).fromNow()} ·{" "}
+                        <Link to={"/project/category/" + state.category._id}>
+                          <span className="material-icons material-icons-outlined">
+                            local_offer
+                          </span>{" "}
+                          {state.category.name}
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* campaign cover */}
+                <div className="project-view-header">
+                  <div className="view-background">
+                    {state.video ? (
+                      <iframe
+                        src={state.video}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title="youtube player"
+                        className="yt-iframe"
                       />
                     ) : (
-                      <div className="owner-avatar-preview"></div>
+                      <div
+                        className="image"
+                        style={{ backgroundImage: `url(${state.cover})` }}
+                      />
                     )}
                   </div>
-
-                  <div className="owner-info">
-                    <Link to={"/" + state.owner.username}>
-                      {state.owner.name}
-                    </Link>{" "}
-                    Is organizing this fundraiser.
-                  </div>
                 </div>
+                {/* campaign detail */}
+                <div
+                  className="campaign-content mt-3"
+                  dangerouslySetInnerHTML={{
+                    __html: json_to_html(JSON.parse(state.content)),
+                  }}
+                />
               </div>
-              <ul className="project-category">
-                <li>Created {moment(state.created).fromNow()}</li>
-                <li>
-                  <Link to={"/project/category/" + state.category._id}>
-                    <span className="material-icons material-icons-outlined">
-                      local_offer
-                    </span>{" "}
-                    {state.category.name}
+              {user ? (
+                user._id === state.owner._id ? (
+                  <Link
+                    className="default-button mt-3 pb-3 edit-button"
+                    to={"/project/edit/" + state._id}
+                  >
+                    Edit Project
                   </Link>
-                </li>
-              </ul>
-              {/* campaign detail */}
-              <div
-                className="campaign-content mt-3"
-                dangerouslySetInnerHTML={{
-                  __html: json_to_html(JSON.parse(state.content)),
-                }}
-              />
-            </div>
-            {user ? (
-              user._id === state.owner._id ? (
-                <Link
-                  className="default-button mt-3 pb-3 edit-button"
-                  to={"/project/edit/" + state._id}
-                >
-                  Edit Project
-                </Link>
-              ) : null
-            ) : null}
-          </>
+                ) : null
+              ) : null}
+            </>
+          ) : (
+            <p className="text-center w-100 pt-2">No project found</p>
+          )
         ) : (
-          <p className="text-center w-100 pt-2">No project found</p>
-        )
-      ) : (
-        <div className="text-center w-100 pt-5">
-          <Spinner size="sm" color="secondary" />
-        </div>
-      )}
+          <div className="text-center w-100 pt-5">
+            <Spinner size="sm" color="secondary" />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

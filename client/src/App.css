@@ -63,3 +63,6 @@
 .fs-16 {
   font-size: 16px;
 }
+.flex-center {
+  justify-content: center;
+}
