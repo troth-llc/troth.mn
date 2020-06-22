@@ -100,6 +100,7 @@ const CreateProject = () => {
         console.log("editor not ready");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
   return (
     <div className="project-row p-rem">

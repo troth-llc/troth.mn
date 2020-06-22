@@ -80,7 +80,6 @@ const CapstonePremium = () => {
                   src={`data:image/png;base64,${state.qr_image}`}
                   alt={state.qr_code}
                   className="qr-image"
-                  alt="Invoice QR"
                 />
                 {deeplink === "khanbank://q?qPay_QRcode=" ||
                 deeplink === "statebank://q?qPay_QRcode=" ||
@@ -162,7 +161,7 @@ const CapstonePremium = () => {
                   >
                     <p className="bank-label">Most Money</p>
                     <img
-                      src="https://cdn.troth.mn/media/mostmoney.png"
+                      src="https://lh3.googleusercontent.com/9IyPmQNDdI72wxG0hQ8HhrBk6s561TgxCavHChhj0Qu8ak6RtH-q-DBlCbeKtQtGYPeM=s180-rw"
                       alt="mostmoney"
                       className="bank-icon"
                     />
@@ -173,7 +172,7 @@ const CapstonePremium = () => {
                   >
                     <p className="bank-label">ХХБ</p>
                     <img
-                      src="https://cdn.troth.mn/media/tdb.png"
+                      src="https://lh3.googleusercontent.com/oLKxnYGEgAyoxZ4rG6ogqzoLQMIUC7wrAuE7tca9PKWZubIev1t3CvvnJvpvj7KhKL4=s180-rw"
                       alt="tradedevbank"
                       className="bank-icon"
                     />
@@ -184,7 +183,7 @@ const CapstonePremium = () => {
                   >
                     <p className="bank-label">УБХБ</p>
                     <img
-                      src="https://cdn.troth.mn/media/ubb.png"
+                      src="https://lh3.googleusercontent.com/HykFBw7Rf8yNdytlsrtA4AQaIuybO0hmLsWMsKAU0MO7hKce_EEqyZp-zZooGs-Rq4XO=s180-rw"
                       alt="UB City Bank"
                       className="bank-icon"
                     />
@@ -195,7 +194,7 @@ const CapstonePremium = () => {
                   >
                     <p className="bank-label">Хаанбанк</p>
                     <img
-                      src="https://cdn.troth.mn/media/khanbank.png"
+                      src="https://lh3.googleusercontent.com/p7hXFskPhLktF-tlcwlZ62WlOKP3i4nJ3iIhMNGXJT28vHdCheSw228PgRuu8Q7WejoY=s180-rw"
                       alt="Khaanbank"
                       className="bank-icon"
                     />
@@ -206,8 +205,8 @@ const CapstonePremium = () => {
                   >
                     <p className="bank-label">Хасбанк</p>
                     <img
-                      src="https://cdn.troth.mn/media/khasbank.png"
-                      alt="khasbank"
+                      src="https://lh3.googleusercontent.com/XdgGl-1W5nsU5vl-qyq1QaaHifnq-SgEh6Dh_DdJ4hEtMfGSgjpQIkOq7Ly3zfG3zA8=s180-rw"
+                      alt="xacbank"
                       className="bank-icon"
                     />
                   </div>
@@ -217,7 +216,7 @@ const CapstonePremium = () => {
                   >
                     <p className="bank-label">Төрийн банк</p>
                     <img
-                      src="https://cdn.troth.mn/media/statebank.png"
+                      src="https://lh3.googleusercontent.com/KYQyVTgP4ZV60gxNOsKYssScNe17NMgHpO_nRY4WRBYj_4YTZ0e8t6zwh38sTFmyCco=s180-rw"
                       alt="statebank"
                       className="bank-icon"
                     />

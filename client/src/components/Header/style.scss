@@ -51,7 +51,7 @@
 .drawer-link {
   display: flex;
   flex-direction: column;
-  min-height: calc(100% - 120px);
+  min-height: calc(100% - 130px);
   a {
     color: rgba(0, 0, 0, 0.6);
     font-size: 14px;
@@ -130,4 +130,9 @@
   background-repeat: no-repeat;
   border-radius: 50%;
   background-position: center;
+}
+.drawer-footer {
+  padding-top: 10px;
+  height: 56px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }

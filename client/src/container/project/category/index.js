@@ -9,7 +9,7 @@ const CategoryList = (props) => {
     axios
       .get("/api/project/category/" + props.match.params.id)
       .then((res) => setState(res.data.result));
-  }, []);
+  }, [props.match.params.id]);
   return (
     <div className="browse container">
       {state ? (

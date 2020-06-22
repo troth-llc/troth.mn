@@ -134,7 +134,9 @@ const ProjectEdit = (props) => {
         console.log("editor not ready");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
+
   useEffect(() => {}, [category, data]);
   return (
     <div className="project-row p-rem">

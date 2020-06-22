@@ -73,7 +73,7 @@ exports.create = function (req, res) {
                       { id: user._id },
                       process.env.JWTSECRET,
                       {
-                        expiresIn: 36000, // 10 hours
+                        expiresIn: 604800, // 7 days
                       },
                       (err, token) => {
                         if (err) throw err;
@@ -133,7 +133,7 @@ exports.login = function (req, res) {
           { id: user.id },
           process.env.JWTSECRET,
           {
-            expiresIn: 36000, // 10 hours
+            expiresIn: 604800, // 7 days
           },
           (err, token) => {
             if (err) throw err;
@@ -234,7 +234,7 @@ exports.reset_password = function (req, res) {
                 { id: user._id },
                 process.env.JWTSECRET,
                 {
-                  expiresIn: 36000, // 10 hours
+                  expiresIn: 604800, // 7 days
                 },
                 (err, token) => {
                   if (err) throw err;
@@ -280,7 +280,7 @@ exports.email = function (req, res) {
           Click the button below to verify your email. If you didn't make this request, ignore this email.</p>
           <a href="https://troth.mn/auth/email/${
             user.email_token ? user.email_token : token
-            }">Click here to verify your email</>`
+          }">Click here to verify your email</>`
           ).then((result) => {
             if (!result) console.log("email sending failed");
             else

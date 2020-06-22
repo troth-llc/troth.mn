@@ -78,9 +78,7 @@ const App = () => {
     }
   };
   useEffect(() => {
-    console.log(`
-    𝗧𝗥𝗢𝗧𝗛
-    Developed by https://github.com/tuguldur`);
+    console.log(`𝗧𝗥𝗢𝗧𝗛 - Developed by https://github.com/tuguldur`);
     login();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

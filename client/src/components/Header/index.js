@@ -14,6 +14,7 @@ const Header = () => {
     { name: "Home", to: "/", exact: true },
     { name: "Settings", to: "/settings/info", exact: false },
     { name: "About", to: "/about", exact: true },
+    { name: "Join Capstone", to: "/capstone/premium", exact: true },
     {
       name: "Logout",
       to: "/logout",
@@ -32,6 +33,7 @@ const Header = () => {
   const routes = [
     { name: "Home", to: "/", exact: true },
     { name: "About", to: "/about", exact: true },
+    { name: "Join Capstone", to: "/capstone/premium", exact: true },
   ];
   return (
     <>
@@ -122,7 +124,7 @@ const Header = () => {
               <p className="text-muted text-center mb-0 f-12">
                 &copy; {new Date().getFullYear()} TROTH
                 <br />
-                Beta v0.9.3
+                Beta v0.9.3.4
               </p>
             </div>
           </div>

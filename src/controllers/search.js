@@ -30,7 +30,7 @@ exports.user = (req, res) => {
   User.find(
     query,
     "name username avatar verified type",
-    { sort: "followers" },
+    { sort: "followers", limit: 80 },
     (err, user) => {
       res.json({ status: true, user });
     }
@@ -62,7 +62,12 @@ exports.project = (req, res) => {
       ],
     };
   }
-  Project.find(query, "-__v", { sort: "amount" }, (err, project) => {
-    res.json({ status: true, project });
-  });
+  Project.find(
+    query,
+    "-__v",
+    { sort: "created", limit: 80 },
+    (err, project) => {
+      res.json({ status: true, project });
+    }
+  );
 };
