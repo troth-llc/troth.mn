@@ -23,8 +23,8 @@ const ProjectView = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const json_to_html = (json) => {
-    return json.blocks.map((obj) => {
-      let articleHTML = "";
+    let articleHTML = "";
+    json.blocks.map((obj) => {
       switch (obj.type) {
         case "paragraph":
           articleHTML += `<div class="campaing-block"><p>${obj.data.text}</p></div>\n`;
@@ -99,8 +99,8 @@ const ProjectView = (props) => {
         default:
           return "";
       }
-      return articleHTML;
     });
+    return articleHTML;
   };
   return (
     <div className="d-flex flex-center">
