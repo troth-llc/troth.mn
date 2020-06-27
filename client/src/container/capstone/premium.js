@@ -1,4 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import moment from "moment";
+import io from "socket.io-client";
+import QRCode from "qrcode";
 import "./style.scss";
 import { Spinner, Modal, ModalHeader, ModalBody, Button } from "reactstrap";
 import axios from "axios";
@@ -10,6 +13,8 @@ const CapstonePremium = () => {
   const [error, setError] = useState("");
   const { user } = useContext(User);
   const [modal, setModal] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [countdown, setCountDown] = useState(600);
   const toggle = () => setModal(!modal);
   const create = (bank) => {
     setLoading(true);
@@ -23,6 +28,55 @@ const CapstonePremium = () => {
       setLoading(false);
     });
   };
+  const candypay = () => {
+    setLoading(true);
+    setError("");
+    axios.post("/api/invoice/candypay").then((response) => {
+      const { status, result } = response.data;
+      if (status) {
+        QRCode.toDataURL(
+          result.qrcode,
+          {
+            width: 300,
+            height: 300,
+            margin: 2,
+            color: {
+              dark: "#20733f",
+              light: "#fff",
+            },
+          },
+          (err, url) => {
+            if (err) setError("QR код үүсгэхэд алдаа гарлаа");
+            else {
+              var qr_image = url.split(",")[1];
+              setState({
+                type: "candypay",
+                qr_image,
+                qr_code: result.qrcode.split("|")[4],
+              });
+            }
+          }
+        );
+
+        const socket = io();
+        socket.emit("candypay");
+        socket.on("candypay", (data) => {
+          setStatus(data);
+          if (data.code) socket.close();
+        });
+      } else if (response.data.msg) setError(response.data.msg);
+      else setError("Some thing went wrong try again later.");
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => {
+    if (!countdown) return;
+    const interval = setInterval(() => {
+      setCountDown(countdown - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [countdown]);
   return (
     <>
       <div className="container">
@@ -79,7 +133,7 @@ const CapstonePremium = () => {
                 <img
                   src={`data:image/png;base64,${state.qr_image}`}
                   alt={state.qr_code}
-                  className="qr-image"
+                  className={`qr-image ${countdown < 5 ? "blurred" : ""}`}
                 />
                 {deeplink === "khanbank://q?qPay_QRcode=" ||
                 deeplink === "statebank://q?qPay_QRcode=" ||
@@ -89,9 +143,25 @@ const CapstonePremium = () => {
                     Шилжүүлэх дүн 500'000.
                   </p>
                 ) : null}
-                <a href={deeplink + state.qr_code} className="deeplink">
-                  Энд дарж үргэлжлүүлнэ үү.
-                </a>
+                {deeplink ? (
+                  <a href={deeplink + state.qr_code} className="deeplink">
+                    Энд дарж үргэлжлүүлнэ үү.
+                  </a>
+                ) : null}
+                {status ? (
+                  <>
+                    <p className="mb-0">{status.state}</p>
+                    <p
+                      className={status.code ? "d-none" : ""}
+                      style={{ color: countdown < 300 ? "#dc3545" : "" }}
+                    >
+                      Session expired in{" "}
+                      {moment.unix(countdown).utc().format("mm[:]ss []")}
+                    </p>
+                  </>
+                ) : (
+                  "Холбогдож байна"
+                )}
               </div>
             ) : (
               <>
@@ -218,6 +288,14 @@ const CapstonePremium = () => {
                     <img
                       src="https://lh3.googleusercontent.com/KYQyVTgP4ZV60gxNOsKYssScNe17NMgHpO_nRY4WRBYj_4YTZ0e8t6zwh38sTFmyCco=s180-rw"
                       alt="statebank"
+                      className="bank-icon"
+                    />
+                  </div>
+                  <div className="bank-container" onClick={candypay}>
+                    <p className="bank-label">Candy Pay</p>
+                    <img
+                      src="https://lh3.googleusercontent.com/gwLFWRVuNcdqYrfqPxFu8mhxHPW2Aaz3l3Hy4TK310S68K8TcksOi13e0gmHCgqy0gE=s180-rw"
+                      alt="candypay"
                       className="bank-icon"
                     />
                   </div>

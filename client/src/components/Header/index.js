@@ -124,7 +124,14 @@ const Header = () => {
               <p className="text-muted text-center mb-0 f-12">
                 &copy; {new Date().getFullYear()} TROTH
                 <br />
-                Beta v0.9.3.5
+                Beta v0.9.4 •{" "}
+                <a
+                  href="https://discord.gg/HaQC5r3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Discord
+                </a>
               </p>
             </div>
           </div>

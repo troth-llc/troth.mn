@@ -142,7 +142,7 @@ exports.avatar = function (req, res) {
       });
     });
     sharp(Buffer.from(req.file.buffer))
-      .resize(320)
+      .resize(150)
       .toBuffer()
       .then((data) => {
         blobStream.end(data);

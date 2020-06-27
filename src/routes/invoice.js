@@ -12,7 +12,7 @@ const xmlparser = require("express-xml-bodyparser");
  *     responses:
  *       200:
  */
-router.get("/", token, invoice.index);
 router.post("/mostmoney", xmlparser({ strict: false }), invoice.premium_hook);
+router.post("/candypay", token, invoice.candypay);
 router.post("/premium", token, invoice.premium);
 module.exports = router;

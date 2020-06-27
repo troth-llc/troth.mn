@@ -45,6 +45,10 @@
     .qr-image {
       max-width: 300px;
       margin: 0 auto;
+      transition: 0.3s filter ease;
+      &.blurred {
+        filter: blur(8px);
+      }
       @media (max-width: 320px) {
         width: 260px;
       }
@@ -131,6 +135,7 @@
     justify-content: flex-start;
     flex-direction: row;
     overflow-x: auto;
+    padding-bottom: 8px;
     .bank-container {
       width: 80px;
       max-width: 80px;
