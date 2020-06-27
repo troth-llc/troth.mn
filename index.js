@@ -1,4 +1,5 @@
-const app = require("express")();
+const express = require("express");
+const app = express();
 const mongoose = require("mongoose");
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
@@ -8,7 +9,7 @@ const mongodb = process.env.MONGO;
 const path = require("path");
 if (process.env.DEV == "false")
   app.use(express.static(path.join(__dirname, "/client/build")));
-app.use(require("express").json());
+app.use(express.json());
 // call routes
 app.set("io", io);
 app.use("/api", require("./src/routes"));
