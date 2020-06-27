@@ -58,7 +58,7 @@ const CapstonePremium = () => {
           }
         );
 
-        const socket = io();
+        const socket = io({ transports: ["websocket"] });
         socket.emit("candypay");
         socket.on("candypay", (data) => {
           setStatus(data);
@@ -294,7 +294,7 @@ const CapstonePremium = () => {
                       className="bank-icon"
                     />
                   </div>
-                  <div className="bank-container" onClick={candypay}>
+                  <div className="bank-container candypay" onClick={candypay}>
                     <p className="bank-label">Candy Pay</p>
                     <img
                       src="https://lh3.googleusercontent.com/gwLFWRVuNcdqYrfqPxFu8mhxHPW2Aaz3l3Hy4TK310S68K8TcksOi13e0gmHCgqy0gE=s180-rw"

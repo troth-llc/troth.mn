@@ -137,6 +137,11 @@
     overflow-x: auto;
     padding-bottom: 8px;
     .bank-container {
+      &.candypay {
+        @media (max-width: 820px) {
+          display: none;
+        }
+      }
       width: 80px;
       max-width: 80px;
       min-width: 72px;
