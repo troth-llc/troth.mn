@@ -166,13 +166,14 @@ exports.candypay = (req, res) => {
   var io = req.app.get("io");
   var socket = io.to("candypay");
   io.on("connection", (socket) => {
-    socket.emit("candypay", { state: "Төлөгдөөгүй" });
+    socket.emit("candypay", { state: "Төлөгдөөгүй", connected: true });
   });
   const check = (uuid, id) => {
     var check_uuid = setInterval(async () => {
       //10 секунд болгон төлөгдсөн эсэхийн шалгах
       socket.emit("candypay", {
         state: "Төлөгдөөгүй",
+        connected: true,
       });
       try {
         let response = await axios({
@@ -184,12 +185,15 @@ exports.candypay = (req, res) => {
           },
         });
         let { code, result, info } = await response.data;
-        // add some validation
         if (
           code === 0 &&
           result.amount === Number(process.env.PREMIUM_AMOUNT)
         ) {
-          socket.emit("candypay", { state: "Төлөгдсөн", code: true });
+          socket.emit("candypay", {
+            state: "Төлөгдсөн",
+            code: true,
+            connected: true,
+          });
           clearInterval(check_uuid);
           var save = {
             status: "CANDYPAY",

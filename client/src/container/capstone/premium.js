@@ -69,14 +69,23 @@ const CapstonePremium = () => {
       setLoading(false);
     });
   };
-
-  useEffect(() => {
-    if (!countdown) return;
-    const interval = setInterval(() => {
-      setCountDown(countdown - 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [countdown]);
+  const Counter = () => {
+    useEffect(() => {
+      if (!countdown) return;
+      const interval = setInterval(() => {
+        setCountDown(countdown - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }, [countdown]);
+    return (
+      <p
+        className={status.code ? "d-none" : ""}
+        style={{ color: countdown < 300 ? "#dc3545" : "" }}
+      >
+        Session expired in {moment.unix(countdown).utc().format("mm[:]ss []")}
+      </p>
+    );
+  };
   return (
     <>
       <div className="container">
@@ -151,13 +160,7 @@ const CapstonePremium = () => {
                 {status ? (
                   <>
                     <p className="mb-0">{status.state}</p>
-                    <p
-                      className={status.code ? "d-none" : ""}
-                      style={{ color: countdown < 300 ? "#dc3545" : "" }}
-                    >
-                      Session expired in{" "}
-                      {moment.unix(countdown).utc().format("mm[:]ss []")}
-                    </p>
+                    <Counter />
                   </>
                 ) : (
                   "Холбогдож байна"
