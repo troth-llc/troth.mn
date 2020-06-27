@@ -76,6 +76,7 @@ const CapstonePremium = () => {
         setCountDown(countdown - 1);
       }, 1000);
       return () => clearInterval(interval);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [countdown]);
     return (
       <p
@@ -157,14 +158,16 @@ const CapstonePremium = () => {
                     Энд дарж үргэлжлүүлнэ үү.
                   </a>
                 ) : null}
-                {status ? (
-                  <>
-                    <p className="mb-0">{status.state}</p>
-                    <Counter />
-                  </>
-                ) : (
-                  "Холбогдож байна"
-                )}
+                {state.type === "candypay" ? (
+                  status ? (
+                    <>
+                      <p className="mb-0">{status.state}</p>
+                      <Counter />
+                    </>
+                  ) : (
+                    "Холбогдож байна"
+                  )
+                ) : null}
               </div>
             ) : (
               <>
