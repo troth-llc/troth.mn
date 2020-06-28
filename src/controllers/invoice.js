@@ -123,9 +123,6 @@ exports.premium_hook = (req, res) => {
           <pre>https://capstone.troth.mn</pre>
           `
           );
-          console.log(
-            "user " + data.name + " bought premium status " + new Date()
-          );
         })
         .catch((err) => console.log("invoice error: ", err));
     } else if (

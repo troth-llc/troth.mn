@@ -58,7 +58,7 @@ const CapstonePremium = () => {
           }
         );
 
-        const socket = io({ transports: ["websocket"] });
+        const socket = io();
         socket.emit("candypay");
         socket.on("candypay", (data) => {
           setStatus(data);
