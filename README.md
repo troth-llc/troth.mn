@@ -139,4 +139,11 @@ This repository has the following structure:
     └───routes
 ```
 
-`Updated 2020-06-29`
+## Google Services
+
+**Virtual Machine** [https://cloud.google.com/compute/docs/instances](https://cloud.google.com/compute/docs/instances)<br>
+**Storage** _google-storage.json_
+[Google Bucket](https://cloud.google.com/storage/docs/creating-buckets)<br>
+**Email Service Account** _config.json_ [Google Service Accounts](https://cloud.google.com/iam/docs/service-accounts)<br>
+
+_Updated 2020-06-29_
