@@ -50,7 +50,7 @@ const Home = () => {
   ];
   useEffect(() => {
     // if (window.screen.width >= 786) window.location.href = "/coming-soon";
-    window.location.href = "https://capstone.troth.mn?ref=troth";
+    // window.location.href = "https://capstone.troth.mn?ref=troth";
   }, []);
   return (
     <div className="d-flex flex-column container home-container">
