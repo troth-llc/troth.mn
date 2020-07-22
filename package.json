@@ -14,7 +14,7 @@
     "url": "git+https://github.com/troth-llc/troth.mn.git"
   },
   "author": "Khuvituguldur Narantsetseg",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/troth-llc/troth.mn/issues"
   },
