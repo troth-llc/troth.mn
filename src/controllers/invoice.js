@@ -45,7 +45,26 @@ exports.premium = (req, res) => {
       RS: "00",
     },
     data: JSON.stringify({
-      //
+      SD: "tVWQIAIXxyBxV4RJmGIGkek7uTu8Ap2cJQnqpPPJNuM=",
+      EK:
+        "KfbsuGZKsq1gM3an6JdA6LQny/8hjKkYa6eQot/tAE/aEGOwLWJOxKsZsQ2bvxHv/T7VZLuEF3eS1CGyxZQmRsjQaNfh36kA9MVQUe2zXtA1kRMNb6H8YXACVhe4Snx0SbEztFnMXt9uskA7iEwcnW/lpaRkwxmhbh3NiNjlCSw=",
+      SG: "MPdUd+c0jdmdpir6FIfBRKSO3T8=",
+      srcInstId: null,
+      channel: "44",
+      lang: "0",
+      traceNo: "2020052703472500",
+      tranCur: "MNT",
+      tranAmount: process.env.PREMIUM_AMOUNT,
+      billId: req.user.id,
+      posNo: null,
+      payeeId: null,
+      tranDesc: "TROTH PREMIUM SUBSCRIPTION",
+      qrPaidLimit: "1",
+      deviceIp: req.headers["x-forwarded-for"] || req.connection.remoteAddress,
+      deviceMac: "",
+      deviceName: "",
+      PbKA:
+        "&lt;RSAKeyValue&gt;&lt;Modulus&gt;n0GT9szLkGl6ST349vqiMqXnYOv0S64FKmtecYFxztDHy89baEezBNtefeHGLKtFCWehshLoqd/ClYb0zm/A2Jhbxc6+nHeJCw3jLsh9qJsgyg2qYcTYxUEA3UCOIz0uHu6BRB+ZQpASAn1jN1OFAQeP3CaIEy2+QxWZHKPHkNE=&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;/RSAKeyValue&gt;",
     }),
   };
   User.findById(req.user.id).then((user) => {
